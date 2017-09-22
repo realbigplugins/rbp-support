@@ -1,0 +1,3 @@
+[submodule "includes/EDD-License-handler"]
+	path = includes/EDD-License-handler
+	url = https://github.com/easydigitaldownloads/EDD-License-handler.git
