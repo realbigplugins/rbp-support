@@ -28,9 +28,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * The Plugin Data Array is REQUIRED as it makes grabbing data from EDD's API possible
 		 * However, the other two parameters can either be provided by your own code or you can allow this class to determine them
 		 * 
-		 * @param		array	$plugin_data   get_plugin_data( <your_plugin_file>, false ); This is REQUIRED.
-		 * @param		string  $license_key   License Key for this plugin. Null is not set.
-		 * @param		boolean $license_validity True for Valid, False for Invalid. Null to grab validity from Server
+		 * @param		array	$plugin_data	  get_plugin_data( <your_plugin_file>, false ); This is REQUIRED.
+		 * @param		string  $license_key	  License Key for this plugin. Null is not set.
+		 * @param		string  $license_validity True for Valid, False for Invalid. Null to grab validity from Server
 		 *                                                                                              
 		 * @since		{{VERSION}}
 		 */
@@ -46,7 +46,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$this->plugin_data = $plugin_data;
 			
 			// Create Prefix used for things like Transients
-			// This is only optionally used if License Key and/or Validity aren't provided
+			// This is used for some Actions/Filters and if License Key and/or Validity aren't provided
 			$this->prefix = str_replace( '-', '_', $this->plugin_data['TextDomain'] );
 			
 			if ( $license_key == null ) {
@@ -113,9 +113,35 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function support_form() {
 			
-			if ( $this->license_validity == 'valid' ) {
+			// Makes the variable make more sense within the context of the HTML
+			$plugin_prefix = $this->prefix;
+			
+			if ( $this->get_license_validity() == 'valid' ) {
+				
+				include_once apply_filters( $this->prefix . '_sidebar_support_path', __DIR__ . '/views/sidebar-support.php' );
 				
 			}
+			else {
+				
+				include_once apply_filters( $this->prefix . '_sidebar_support_disabled_path', __DIR__ . '/views/sidebar-support-disabled.php' );
+			}
+			
+		}
+		
+		/**
+		 * Getter Method for License Validty
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		string License Validity
+		 */
+		public function get_license_validity() {
+			
+			if ( ! $this->license_validity ) {
+				$this->license_validity = $this->check_license_validity();
+			}
+			
+			return $this->license_validity;
 			
 		}
 		
@@ -124,7 +150,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *                                                   
 		 * @access		private
 		 * @since		{{VERSION}}
-		 * @return		boolean License Validity
+		 * @return		string License Validity
 		 */
 		private function check_license_validity() {
 			
@@ -143,9 +169,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$api_params = array(
 				'edd_action' => 'check_license',
-				'license'    => $this->license_key,
-				'item_name'  => $this->plugin_data['Name'],
-				'url'        => home_url(),
+				'license' => $this->license_key,
+				'item_name' => $this->plugin_data['Name'],
+				'url' => home_url(),
 			);
 			
 			// Call the custom API.
