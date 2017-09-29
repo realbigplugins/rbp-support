@@ -17,18 +17,28 @@ javascript:
     root: "./assets/js"
     filename: "admin.js"
     vendor:
-      - "bower_components/jquery.repeater/jquery.repeater.min.js"
-      - "bower_components/foundation-sites/js/foundation.core.js"
-      - "bower_components/foundation-sites/js/foundation.util.keyboard.js"
-      - "bower_components/foundation-sites/js/foundation.util.box.js"
-      - "bower_components/foundation-sites/js/foundation.util.mediaQuery.js"
-      - "bower_components/foundation-sites/js/foundation.util.triggers.js"
-      - "bower_components/foundation-sites/js/foundation.util.motion.js"
-      - "bower_components/foundation-sites/js/foundation.reveal.js"
-      - "bower_components/webshim/js-webshim/minified/polyfiller.js"
+      - ""
     notification: "Running Admin JavaScript"
     src:
       - "build/js/admin/**/*.js"
+      - "!build/js/admin/form/**/*.js"
+      - "!build/js/admin/licensing/**/*.js"
+  form:
+    root: "./assets/js"
+    filename: "form.js"
+    vendor:
+      - ""
+    notification: "Running Form JavaScript"
+    src:
+      - "build/js/admin/form/**/*.js"
+  form:
+    root: "./assets/js"
+    filename: "licensing.js"
+    vendor:
+      - ""
+    notification: "Running Licensing JavaScript"
+    src:
+      - "build/js/admin/licensing/**/*.js"
   tinymce:
     root: "./tinymce/"
     notification: "Running TinyMCE JavaScript"
@@ -51,9 +61,23 @@ sass:
     root: "./assets/css"
     filename: "admin.css"
     vendor:
-      - "bower_components/foundation-sites/scss"
+      - ""
     notification: "Running Admin Sass"
     src: "build/sass/admin/main.scss"
+  form:
+    root: "./assets/css"
+    filename: "form.css"
+    vendor:
+      - ""
+    notification: "Running Form Sass"
+    src: "build/sass/admin/form/main.scss"
+  licensing:
+    root: "./assets/css"
+    filename: "licensing.css"
+    vendor:
+      - ""
+    notification: "Running Licensing Sass"
+    src: "build/sass/licensing/main.scss"
 
 watch:
   javascript:
@@ -61,13 +85,27 @@ watch:
       - "build/js/**/*.js"
       - "!build/js/admin/**/*.js"
       - "!build/js/tinymce/**/*.js"
-    admin: "build/js/admin/**/*.js"
+    admin: 
+      - "build/js/admin/**/*.js"
+      - "!build/js/admin/form/**/*.js"
+      - "!build/js/admin/licensing/**/*.js"
+    form:
+      - "build/js/admin/form/**/*.js"
+    licensing:
+      - "build/js/admin/licensing/**/*.js"
     tinymce: "build/js/tinymce/**/*.js"
   sass: 
     front: 
       - "build/sass/**/*.scss"
       - "!build/sass/admin/**/*.scss"
-    admin: "build/sass/admin/**/*.scss"
+    admin:
+      - "build/sass/admin/**/*.scss"
+      - "!build/sass/admin/form/**/*.scss"
+      - "!build/sass/admin/licensing/**/*.scss"
+    form:
+      - "build/sass/admin/form/**/*.scss"
+    licensing:
+      - "build/sass/admin/licensing/**/*.scss"
 
 release:
   type: 'plugin'

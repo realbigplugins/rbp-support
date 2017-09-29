@@ -56,6 +56,48 @@ gulp.task( 'uglify:admin', function() {
 
 } );
 
+gulp.task( 'uglify:form', function() {
+
+	return gulp.src( config.form.vendor.concat( config.form.src ) )
+		.pipe( $.plumber( { errorHandler: onError } ) )
+		.pipe( $.sourcemaps.init() )
+		.pipe( $.babel( {
+			presets: ['es2015'] // Gulp-uglify has no official support for ECMAScript 2015 (aka ES6, aka Harmony), so we'll transpile to EcmaScript5
+		} ) )
+		.pipe( $.concat( config.form.filename ) )
+		.pipe( $.uglify() )
+		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulp.dest( config.form.root ) )
+		.pipe( $.plumber.stop() )
+		.pipe( notify( {
+			title: pkg.name,
+			message: 'Form JS Complete',
+			onLast: true
+		} ) );
+
+} );
+
+gulp.task( 'uglify:licensing', function() {
+
+	return gulp.src( config.licensing.vendor.concat( config.licensing.src ) )
+		.pipe( $.plumber( { errorHandler: onError } ) )
+		.pipe( $.sourcemaps.init() )
+		.pipe( $.babel( {
+			presets: ['es2015'] // Gulp-uglify has no official support for ECMAScript 2015 (aka ES6, aka Harmony), so we'll transpile to EcmaScript5
+		} ) )
+		.pipe( $.concat( config.licensing.filename ) )
+		.pipe( $.uglify() )
+		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulp.dest( config.licensing.root ) )
+		.pipe( $.plumber.stop() )
+		.pipe( notify( {
+			title: pkg.name,
+			message: 'Licensing JS Complete',
+			onLast: true
+		} ) );
+
+} );
+
 gulp.task( 'uglify:tinymce', function() {
 
 	return gulp.src( config.tinymce.src )

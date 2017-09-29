@@ -64,6 +64,58 @@ gulp.task( 'sass:admin', function() {
 
 } );
 
-gulp.task( 'sass', ['sass:front', 'sass:admin'], function( done ) {
+gulp.task( 'sass:form', function() {
+
+	return gulp.src( config.form.src )
+		.pipe( $.sourcemaps.init() )
+		.pipe( 
+			$.sass( {
+				includePaths: config.form.vendor
+			} )
+			.on( 'error', notify.onError( {
+				title: pkg.name,
+				message: "<%= error.message %>",
+			} )
+		 ) )
+		.pipe( concat( config.form.filename ) )
+		.pipe( autoprefixer( config.compatibility ) )
+		.pipe( $.cssnano() )
+		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulp.dest( config.form.root ) )
+		.pipe( notify( {
+			title: pkg.name,
+			message: 'Form SASS Complete',
+			onLast: true
+		} ) );
+
+} );
+
+gulp.task( 'sass:licensing', function() {
+
+	return gulp.src( config.licensing.src )
+		.pipe( $.sourcemaps.init() )
+		.pipe( 
+			$.sass( {
+				includePaths: config.licensing.vendor
+			} )
+			.on( 'error', notify.onError( {
+				title: pkg.name,
+				message: "<%= error.message %>",
+			} )
+		 ) )
+		.pipe( concat( config.licensing.filename ) )
+		.pipe( autoprefixer( config.compatibility ) )
+		.pipe( $.cssnano() )
+		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulp.dest( config.licensing.root ) )
+		.pipe( notify( {
+			title: pkg.name,
+			message: 'Licensing SASS Complete',
+			onLast: true
+		} ) );
+
+} );
+
+gulp.task( 'sass', ['sass:front', 'sass:admin', 'sass:form', 'sass:licensing'], function( done ) {
 	done();
 } );
