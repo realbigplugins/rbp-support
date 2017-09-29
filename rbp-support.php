@@ -143,6 +143,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
 			
+			// Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
+			add_action( 'admin_init', array( $this, 'register_scripts' ) );
+			
 		}
 		
 		/**
@@ -294,6 +297,48 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			</tr>
 
 			<?php
+		}
+		
+		public function register_scripts() {
+			
+			wp_register_script(
+				$this->prefix . '_form',
+				plugins_url( '/assets/js/form.js', __FILE__ ),
+				array( 'jquery' ),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				true
+			);
+			
+			wp_register_script(
+				$this->prefix . '_licensing',
+				plugins_url( '/assets/js/licensing.js', __FILE__ ),
+				array( 'jquery' ),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				true
+			);
+			
+			wp_localize_script( 
+				$this->prefix . '_form',
+				$this->prefix . '_support_form',
+				apply_filters( $this->prefix . '_localize_form_script', array(
+					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+					'license_data' => $this->get_license_data(),
+				) )
+			);
+			
+		}
+		
+		public function enqueue_all_scripts() {
+			
+			$this->enqueue_form_scripts();
+			$this->enqueue_licensing_scripts();
+			
+		}
+		
+		public function enqueue_form_scripts() {
+			
+			wp_enqueue_script( $this->prefix . '_form' );
+			
 		}
 		
 		/**
@@ -545,6 +590,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 		}
 		
+		/**
+		 * Create Debug File to attach to the Email. This is a base64 buffer.
+		 * @param  string $plugin_prefix Plugin Prefix
+		 * @return string base64 buffer
+		 */
 		public static function debug_file( $plugin_prefix ) {
 
 			$output = '';
@@ -625,10 +675,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		public static function send_support_mail() {
 			
 			$plugin_prefix = $_POST['plugin_prefix'];
-			$license_data = json_decode( $_POST['license_data'] );
+			$license_data = $_POST['license_data'];
 			
-			if ( ! isset( $_POST[ $plugin_prefix . '_nonce' ] ) ||
-				! wp_verify_nonce( $_POST[ $plugin_prefix . '_nonce' ],  $plugin_prefix . '_send_support_email' ) ||
+			if ( ! isset( $_POST[ $plugin_prefix . '_support_nonce' ] ) ||
+				//! check_ajax_referer( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ) ||
 				! current_user_can( 'manage_options' ) ) {
 
 				return;
@@ -657,19 +707,50 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			else {
 
-				$debugging_file = self::debug_file( $plugin_prefix );
+				// Grab Debug Info as a String
+				$debug_file = self::debug_file( $plugin_prefix );
+				
+				// This is where things start to look confusing.
+				// Emails with Attachments are Multipart with a "Boundary" between each part. This boundary goes in the Message Body.
+				// We generate a Boundary for the message (Every example I saw has a semi-random boundary) and place that between everything.
+				// Each "Part" has its own Headers, but those Headers go within the Message Body
+				
+				// Generate a semi-random boundary
+				$semi_rand = md5( time() );
+				$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x"; 
+				
+				$message_multipart = "--{$mime_boundary}\n";
+				
+				// Wrap the Message in a boundary with its own Headers
+				$message_multipart .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
+				$message_multipart .= "Content-Transfer-Encoding: 7bit\n\n";
+				$message_multipart .= $message . "\n\n";
+				
+				$message_multipart .= "--{$mime_boundary}\n";
+				
+				// Wrap the Attachment Buffer in a boundary with its own Headers
+				$message_multipart .= "Content-Type: text/plain\n";
+				$message_multipart .= " charset=UTF-8\n";
+				$message_multipart .= " name=\"support_site_info.txt\"\n";
+				$message_multipart .= "Content-Transfer-Encoding: base64\n";
+				$message_multipart .= "Content-Disposition: attachment;\n";
+				$message_multipart .= " filename=\"support_site_info.txt\";\n\n\n";
+				$message_multipart .= chunk_split( base64_encode( $debug_file ) ) . "\n\n";
+				
+				$message_multipart .= "--{$mime_boundary}--";
 
 				$result = wp_mail(
 					'support@realbigplugins.com',
-					$data['subject'],
-					$data['message'],
+					$subject,
+					$message_multipart,
 					array(
 						"From: $license_data[customer_name] <$license_data[customer_email]>",
+						"Content-Type: multipart/mixed boundary=\"{$mime_boundary}\"", // Here we define the Boundary within the primary Email Header
 					),
 					array(
-						$debugging_file,
 					)
 				);
+				
 			}
 			
 		}
@@ -678,4 +759,4 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 	
 }
 
-add_action( 'wp_ajax_rbp_support', array( 'RBP_Support', 'send_support_mail' ) );
+add_action( 'wp_ajax_rbp_support_form', array( 'RBP_Support', 'send_support_mail' ) );
