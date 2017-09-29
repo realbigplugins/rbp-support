@@ -117,6 +117,6 @@ gulp.task( 'uglify:tinymce', function() {
 
 } );
 
-gulp.task( 'uglify', ['uglify:front', 'uglify:admin', 'uglify:tinymce'], function( done ) {
+gulp.task( 'uglify', ['uglify:front', 'uglify:admin', 'uglify:form', 'uglify:licensing', 'uglify:tinymce'], function( done ) {
 	done();
 } );
