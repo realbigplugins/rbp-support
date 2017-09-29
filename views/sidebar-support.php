@@ -25,14 +25,14 @@ defined( 'ABSPATH' ) || die();
 
 		<p>
 			<label>
-				<input type="text" name="<?php echo $plugin_prefix; ?>_pro_support_subject" required
+				<input type="text" name="support_subject" required
 				       placeholder="<?php _e( 'Subject', 'rbp-support' ); ?>"/>
 			</label>
 		</p>
 
 		<p>
 			<label>
-					<textarea name="<?php echo $plugin_prefix; ?>_pro_support_message" rows="5" required
+					<textarea name="support_message" rows="5" required
 					          placeholder="<?php _e( 'Message', 'rbp-support' ); ?>"></textarea>
 			</label>
 		</p>
