@@ -678,7 +678,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$license_data = $_POST['license_data'];
 			
 			if ( ! isset( $_POST[ $plugin_prefix . '_support_nonce' ] ) ||
-				//! check_ajax_referer( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ) ||
+				! check_ajax_referer( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce', false ) ||
 				! current_user_can( 'manage_options' ) ) {
 
 				return;

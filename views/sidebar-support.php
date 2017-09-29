@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || die();
 
 	<form id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form" data-prefix="<?php echo $plugin_prefix; ?>">
 
-		<?php wp_nonce_field( $plugin_prefix . '_support_send_support_email', $plugin_prefix . '_support_nonce' ); ?>
+		<?php wp_nonce_field( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ); ?>
 
 		<p>
 			<label>
