@@ -31,7 +31,7 @@ javascript:
     notification: "Running Form JavaScript"
     src:
       - "build/js/admin/form/**/*.js"
-  form:
+  licensing:
     root: "./assets/js"
     filename: "licensing.js"
     vendor:
