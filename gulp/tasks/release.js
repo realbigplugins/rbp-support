@@ -35,15 +35,6 @@ gulp.task( 'release:copy', function( done ) {
 
 gulp.task( 'release:rename', function( done ) {
 	
-	// Grab Version from the appropriate file. This way it doesn't matter if I forget to update package.json
-	var sourceFile = '';
-	if ( config.type == 'plugin' ) {
-		sourceFile = './' + packageName + '.php';
-	}
-	else {
-		sourceFile = './style.css';
-	}
-	
 	var version = pkg.version;
 	
 	fs.renameSync( './' + packageName + '.zip', './' + packageName + '-' + version + '.zip' );
