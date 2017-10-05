@@ -9,20 +9,22 @@
 			event.preventDefault(); // Don't submit via PHP
 			event.stopPropagation(); // Don't let this get called 17 times if more than one instance of the script is active
 			
+			var $form = $( this );
+			
 			// Grab the correct data based on Prefix. This is helpful if for some reason, multiple instances of this script are active at once
-			var prefix = $( this ).data( 'prefix' ),
+			var prefix = $form.data( 'prefix' ),
 				l18n = window[ prefix + '_support_form' ];
 			
 			// This captures the Submit button
 			// activeElement ensures it is the correct one in the event more Submit Buttons get added for some reason
 			var $submitButton = $( document.activeElement );
 				
-			//$submitButton.attr( 'disabled', true );
+			$submitButton.attr( 'disabled', true );
 
 			// Used to construct HTML Name Attribute
 			var data = {};
 
-			$( this ).find( '.form-field' ).each( function( index, field ) {
+			$form.find( '.form-field' ).each( function( index, field ) {
 
 				if ( $( field ).parent().hasClass( 'hidden' ) ) return true;
 
@@ -43,7 +45,7 @@
 			data.action = 'rbp_support_form';
 			
 			// Grab the Nonce Value
-			var $nonce = $( this ).find( 'input[id$="_support_nonce"]' );
+			var $nonce = $form.find( 'input[id$="_support_nonce"]' );
 			data[ $nonce.attr( 'name' ) ] = $nonce.val();
 			
 			data.plugin_prefix = prefix;
@@ -55,9 +57,10 @@
 				'data' : data,
 				success : function( response ) {
 					
-					console.log( response );
-
-					$submitButton.attr( 'disabled', false );
+					$form.parent().find( '.success-message' ).fadeIn();
+					
+					$form.fadeOut();
+					
 
 				},
 				error : function( request, status, error ) {

@@ -198,6 +198,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			// Makes the variable make more sense within the context of the HTML
 			$plugin_prefix = $this->prefix;
 			
+			$plugin_name = $this->plugin_data['Name'];
+			
 			if ( $this->get_license_validity() == 'valid' ) {
 				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
@@ -299,6 +301,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			<?php
 		}
 		
+		/**
+		 * Register Scripts
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}}
+		 * @return		void
+		 */
 		public function register_scripts() {
 			
 			wp_register_script(
@@ -307,6 +316,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
 				true
+			);
+			
+			wp_register_style(
+				$this->prefix . '_form',
+				plugins_url( '/assets/css/form.css', __FILE__ ),
+				array(),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				'all'
 			);
 			
 			wp_register_script(
@@ -328,6 +345,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 		}
 		
+		/**
+		 * Enqueues Styles and Scripts for both the Form and Licensing. Use this if they're on the same page
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
 		public function enqueue_all_scripts() {
 			
 			$this->enqueue_form_scripts();
@@ -335,9 +359,31 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 		}
 		
+		/**
+		 * Enqueues the Styles and Scripts for the Support Form only
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
 		public function enqueue_form_scripts() {
 			
 			wp_enqueue_script( $this->prefix . '_form' );
+			wp_enqueue_style( $this->prefix . '_form' );
+			
+		}
+		
+		/**
+		 * Enqueues the Styles and Scripts for the Licensing stuff only
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function enqueue_licensing_scripts() {
+			
+			wp_enqueue_script( $this->prefix . '_licensing' );
+			wp_enqueue_style( $this->prefix . '_licensing' );
 			
 		}
 		

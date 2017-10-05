@@ -1,0 +1,20 @@
+.rbp-support-sidebar {
+
+	.sidebar-section {
+
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		border-bottom-width: 0;
+		padding: 0.625em;
+
+		&:last-of-type {
+
+			border-bottom-width: 1px;
+			background: url(../images/rbp-logo.png) no-repeat bottom center #fff;
+			padding-bottom: 83px;
+
+		}
+
+	}
+
+}
