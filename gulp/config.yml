@@ -77,7 +77,7 @@ sass:
     vendor:
       - ""
     notification: "Running Licensing Sass"
-    src: "build/sass/licensing/main.scss"
+    src: "build/sass/admin/licensing/main.scss"
 
 watch:
   javascript:

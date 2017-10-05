@@ -360,6 +360,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				true
 			);
 			
+			wp_register_style(
+				$this->prefix . '_licensing',
+				plugins_url( '/assets/css/licensing.css', __FILE__ ),
+				array(),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				'all'
+			);
+			
 			wp_localize_script( 
 				$this->prefix . '_form',
 				$this->prefix . '_support_form',
@@ -408,7 +416,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function enqueue_licensing_scripts() {
 			
-			wp_enqueue_script( $this->prefix . '_licensing' );
+			//wp_enqueue_script( $this->prefix . '_licensing' );
 			wp_enqueue_style( $this->prefix . '_licensing' );
 			
 		}
