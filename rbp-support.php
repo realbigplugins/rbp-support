@@ -496,7 +496,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->plugin_data
 				);
 				
-				add_settings_error( $this->prefix, '', $message, 'error ' . $this->prefix . '-notice' );
+				//add_settings_error( $this->prefix, '', $message, 'error ' . $this->prefix . '-notice' );
 				
 			}
 			
