@@ -5,7 +5,7 @@
  * @since {{VERSION}}
  *
  * @package rbp-support
- * @subpackage rbp-support/core/views
+ * @subpackage rbp-support/views
  */
 
 defined( 'ABSPATH' ) || die();
@@ -23,8 +23,7 @@ defined( 'ABSPATH' ) || die();
 
 		<p>
 			<em>
-				<?php _e( 'Premium support is disabled. Please register your product and activate your license for this ' .
-						  'website to enable.', 'rbp-support' ); ?>
+				<?php _e( 'Premium support is disabled. Please register your product and activate your license for this website to enable.', 'rbp-support' ); ?>
 			</em>
 		</p>
 	</section>

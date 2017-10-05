@@ -6,7 +6,7 @@
  * @since {{VERSION}}
  *
  * @package rpb-support
- * @subpackage rpb-support/core/views
+ * @subpackage rpb-support/views
  */
 
 defined( 'ABSPATH' ) || die();

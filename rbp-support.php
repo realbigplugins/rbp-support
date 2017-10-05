@@ -224,6 +224,32 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
+		 * Outputs the Support Form. Call this method within whatever container you like.
+		 * You can override the Template as needed, but it should pull in any and all data for your Plugin automatically
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function licensing_fields() {
+			
+			// Makes the variable make more sense within the context of the HTML
+			$plugin_prefix = $this->prefix;
+			$license_status = $this->get_license_validity();
+			
+			$license_key = $this->get_license_key();
+			$plugin_name = $this->plugin_data['Name'];
+				
+			if ( file_exists( $this->plugin_dir . 'rbp-support/licensing-fields.php' ) ) {
+				include_once $this->plugin_dir . 'rbp-support/licensing-fields.php';
+			}
+			else {
+				include_once __DIR__ . '/views/licensing-fields.php';
+			}
+			
+		}
+		
+		/**
 		 * Sets up Plugin Updates as well as place a License Nag within the Plugins Table
 		 * 
 		 * @access		public
