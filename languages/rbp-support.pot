@@ -1,0 +1,135 @@
+# Copyright (C) 2017 RBP_Support
+# This file is distributed under the same license as the RBP_Support package.
+msgid ""
+msgstr ""
+"Project-Id-Version: RBP_Support\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: rbp-support.php:127
+msgid "Missing Plugin File Path in RBP_Support Constructor"
+msgstr ""
+
+#: rbp-support.php:450
+msgid "This field is required"
+msgstr ""
+
+#: rbp-support.php:679
+msgid "Register your copy of %s now to receive automatic updates and support."
+msgstr ""
+
+#: rbp-support.php:687
+msgid " If you do not have a license key, you can %1$spurchase one%2$s."
+msgstr ""
+
+#: rbp-support.php:764
+msgid "%s license successfully activated."
+msgstr ""
+
+#: rbp-support.php:835
+msgid "Error: could not deactivate the license"
+msgstr ""
+
+#: rbp-support.php:850
+msgid "%s license successfully deactivated."
+msgstr ""
+
+#: rbp-support.php:878
+msgid "Your license key expired on %s."
+msgstr ""
+
+#: rbp-support.php:883
+msgid "Your license key has been disabled."
+msgstr ""
+
+#: rbp-support.php:886
+msgid "Invalid license."
+msgstr ""
+
+#: rbp-support.php:890
+msgid "Your license is not active for this URL."
+msgstr ""
+
+#: rbp-support.php:893
+msgid "This appears to be an invalid license key for %s."
+msgstr ""
+
+#: rbp-support.php:896
+msgid "Your license key has reached its activation limit."
+msgstr ""
+
+#: rbp-support.php:899
+msgid "An error occurred, please try again."
+msgstr ""
+
+#: rbp-support.php:1071
+msgid "Support message succesfully sent!"
+msgstr ""
+
+#: rbp-support.php:1072
+msgid "Could not send support message."
+msgstr ""
+
+#: views/licensing-fields.php:27
+msgid "%s License"
+msgstr ""
+
+#: views/licensing-fields.php:45
+msgid "Deactivate"
+msgstr ""
+
+#: views/licensing-fields.php:52
+msgid "Activate"
+msgstr ""
+
+#: views/licensing-fields.php:62
+msgid "Delete and Deactivate"
+msgstr ""
+
+#: views/licensing-fields.php:68
+msgid "Delete"
+msgstr ""
+
+#: views/licensing-fields.php:79
+msgid "License Active"
+msgstr ""
+
+#: views/licensing-fields.php:83
+msgid "License Inactive"
+msgstr ""
+
+#: views/licensing-fields.php:93
+msgid "Save and Activate"
+msgstr ""
+
+#: views/sidebar-support-disabled.php:20, views/sidebar-support.php:22
+msgid "Need some help?"
+msgstr ""
+
+#: views/sidebar-support-disabled.php:26
+msgid "Premium support is disabled. Please register your product and activate your license for this website to enable."
+msgstr ""
+
+#: views/sidebar-support.php:53
+msgid "Subject"
+msgstr ""
+
+#: views/sidebar-support.php:60
+msgid "Message"
+msgstr ""
+
+#: views/sidebar-support.php:65
+msgid "Send"
+msgstr ""
+
+#: views/sidebar-support.php:76
+msgid "We make other cool plugins and share updates and special offers to anyone who %ssubscribes here%s."
+msgstr ""

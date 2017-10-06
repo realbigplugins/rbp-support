@@ -2,7 +2,7 @@
 /**
  * Outputs the licensing settings.
  *
- * @since {{VERSION}}
+ * @since 1.0.0
  *
  * @var string $plugin_prefix
  * @var string $license_key

@@ -2,7 +2,7 @@
 /**
  * Outputs the sidebar support disabled section.
  *
- * @since {{VERSION}}
+ * @since 1.0.0
  *
  * @package rbp-support
  * @subpackage rbp-support/views

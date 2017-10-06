@@ -3,7 +3,7 @@
  * Outputs the sidebar support section.
  * The <form> _must_ have a data attribute named "prefix" with the Plugin Prefix for this to work!
  *
- * @since {{VERSION}}
+ * @since 1.0.0
  *
  * @package rpb-support
  * @subpackage rpb-support/views
@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || die();
 		 * 
 		 * If this is a <form> the JS should still function as it merely checks the Name Attribute of the Submit Button
 		 * 
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string Tag
 		 * 
 		 */

@@ -5,7 +5,7 @@ if ( ! HTMLFormElement.prototype.reportValidity ) {
 		/**
 		 * Wait, people use IE and Safari outside of downloading Chrome?
 		 * 
-		 * @since	  {{VERSION}}
+		 * @since	  1.0.0
 		 * @return	  void
 		 */
 		HTMLFormElement.prototype.reportValidity = function () {

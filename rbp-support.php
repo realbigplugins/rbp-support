@@ -5,7 +5,7 @@
  * Allows a Support Form to be quickly added to our Plugins
  * It includes a bunch of (filterable) Debug Info that gets sent along with the Email
  *
- * @since {{VERSION}}
+ * @since 1.0.0
  */
 
 // Exit if accessed directly
@@ -18,7 +18,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The RBP Store URL
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -27,7 +27,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The full Plugin File path of the Plugin this Class is instantiated from
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -36,7 +36,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The full path to the containing directory of the Plugin File. This is for convenience within the Class
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -45,7 +45,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The Plugin's Data as an Array. This is used by the Licensing aspects of this Class
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			array
 		 */
@@ -54,7 +54,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The stored License Key for this Plugin
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -63,7 +63,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The stored License Status for the License Key
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -72,7 +72,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The stored License Validity for the License Key
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -81,7 +81,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The stored License Data for the License Key
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			array
 		 */
@@ -92,7 +92,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * If License Key and/or License Validity are not defined, this is used to determine where to look in the Database for them
 		 * It is also used to form the occasional Hook or Filter to make it specific to your Plugin
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 *
 		 * @var			string
 		 */
@@ -102,7 +102,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * This stores the "Setting" to apply Settings Errors to. EDD in particular is picky about this and it needs to be 'edd-notices'
 		 * There is a Filter in the Constructor for this for cases like this. Otherwise this is <prefix>_license_key
 		 * 
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * 
 		 * @var			string
 		 */
@@ -116,7 +116,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @param		string	$plugin_file	  Path to the Plugin File. REQUIRED
 		 * @param		array	$plugin_data	  get_plugin_data( <your_plugin_file>, false ); This is REQUIRED.
 		 *                                                                                              
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 */
 		function __construct( $plugin_file = null ) {
 			
@@ -142,7 +142,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * Allows the "Setting" for Settings Errors to be overriden
 			 * EDD in particular is picky about this and it needs to be 'edd-notices', so this can be very useful
 			 *
-			 * @since		{{VERSION}}
+			 * @since		1.0.0
 			 * @return		string
 			 */
 			$this->settings_error = apply_filters( $this->prefix . '_settings_error', $this->prefix . '_license_key' );
@@ -229,7 +229,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * You can override the Template as needed, but it should pull in any and all data for your Plugin automatically
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function support_form() {
@@ -267,7 +267,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * You can override the Template as needed, but it should pull in any and all data for your Plugin automatically
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function licensing_fields() {
@@ -292,7 +292,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Enqueues Styles and Scripts for both the Form and Licensing. Use this if they're on the same page
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function enqueue_all_scripts() {
@@ -306,7 +306,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Enqueues the Styles and Scripts for the Support Form only
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function enqueue_form_scripts() {
@@ -320,7 +320,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Enqueues the Styles and Scripts for the Licensing stuff only
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function enqueue_licensing_scripts() {
@@ -334,7 +334,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Getter Method for License Validty
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string License Validity
 		 */
 		public function get_license_validity() {
@@ -351,7 +351,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Getter Method for License Status
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string License Status
 		 */
 		public function get_license_status() {
@@ -368,7 +368,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Getter Method for License Key
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string License Key
 		 */
 		public function get_license_key() {
@@ -387,7 +387,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Getter Method for License Data
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		array License Data
 		 */
 		public function get_license_data() {
@@ -405,7 +405,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Register Scripts
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}}
+		 * @since		1.0.0}
 		 * @return		void
 		 */
 		public function register_scripts() {
@@ -457,7 +457,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Check the License Key's Validity
 		 *                                                   
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string License Validity
 		 */
 		private function check_license_validity() {
@@ -525,7 +525,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Gets the License Status from the Database
 		 * 
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string License Status
 		 */
 		private function retrieve_license_status() {
@@ -551,7 +551,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Gets the License Key from the Database
 		 * 
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string License Key
 		 */
 		private function retrieve_license_key() {
@@ -575,7 +575,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Gets License Data from Database/Remote Store
 		 * 
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return array License Data
 		 */
 		private function retrieve_license_data() {
@@ -624,7 +624,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Sets up Plugin Updates as well as place a License Nag within the Plugins Table
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function setup_plugin_updates() {
@@ -659,7 +659,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Displays a nag to activate the license.
 		 *
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function show_license_nag() {
@@ -702,7 +702,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Activates the License Key
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function activate_license() {
@@ -777,7 +777,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Deletes the License Key
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function delete_license() {
@@ -790,7 +790,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Deactivates the License Key
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function deactivate_license() {
@@ -866,7 +866,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @param		array  $plugin_data  get_plugin_data( <your_plugin_file>, false );
 		 *                                                                         
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		string Error Message
 		 */
 		public function get_license_error_message( $error_code, $license_data ) {
@@ -971,7 +971,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allow additional information to be added to the Debug File
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.0.0
 			 */
 			$output = apply_filters( $plugin_prefix . '_debug_file', $output );
 
@@ -984,7 +984,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * This is done via Ajax to allow more flexibility in DOM structure. Depending on the plugin, you may not have much freedom in how or where the Support Form is placed. Using Ajax helps alleviate any conflicts where you may potentially submit the wrong Form
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function send_support_email() {
@@ -1000,7 +1000,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Data to be sent in the support email.
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.0.0
 			 */
 			$data = apply_filters( $this->prefix . '_support_email_data', array(
 				'subject' => esc_attr( $_POST['support_subject'] ),

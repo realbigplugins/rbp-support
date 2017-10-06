@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 		compress: {
 			main: {
 				options: {
-					archive: 'edd-slack.zip'
+					archive: 'rbp-support.zip'
 				},
 				files: [
 					{expand: true, dot: true, src: ['./rbp-support/**/*.*'], dest: './'}
