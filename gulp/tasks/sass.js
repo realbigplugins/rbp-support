@@ -10,7 +10,7 @@ var fs			  = require( 'fs' );
 var pkg		     = JSON.parse( fs.readFileSync( './package.json' ) );
 
 // This needs defined here too to prevent errors on default task
-isRelease = false;
+isDebug = false;
 
 gulp.task( 'sass:front', function() {
 
@@ -28,7 +28,7 @@ gulp.task( 'sass:front', function() {
 		.pipe( concat( config.front.filename ) )
 		.pipe( autoprefixer( config.compatibility ) )
 		.pipe( $.cssnano() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.front.root ) )
 		.pipe( notify( {
 			title: pkg.name,
@@ -54,7 +54,7 @@ gulp.task( 'sass:admin', function() {
 		.pipe( concat( config.admin.filename ) )
 		.pipe( autoprefixer( config.compatibility ) )
 		.pipe( $.cssnano() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.admin.root ) )
 		.pipe( notify( {
 			title: pkg.name,
@@ -80,7 +80,7 @@ gulp.task( 'sass:form', function() {
 		.pipe( concat( config.form.filename ) )
 		.pipe( autoprefixer( config.compatibility ) )
 		.pipe( $.cssnano() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.form.root ) )
 		.pipe( notify( {
 			title: pkg.name,
@@ -106,7 +106,7 @@ gulp.task( 'sass:licensing', function() {
 		.pipe( concat( config.licensing.filename ) )
 		.pipe( autoprefixer( config.compatibility ) )
 		.pipe( $.cssnano() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.licensing.root ) )
 		.pipe( notify( {
 			title: pkg.name,

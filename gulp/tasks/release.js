@@ -12,8 +12,7 @@ require( 'gulp-grunt' )( gulp, {
 
 gulp.task( 'release:localization', function( done ) {
 	
-	// Set as a Release build, important for Source Files
-	isRelease = true;
+	isDebug = false;
 
 	return gulp.src( './**/*.php' )
 		.pipe( $.sort() )
@@ -38,9 +37,7 @@ gulp.task( 'release:rename', function( done ) {
 	var version = pkg.version;
 	
 	fs.renameSync( './' + packageName + '.zip', './' + packageName + '-' + version + '.zip' );
-	
-	// We need to recreate those files with Source Maps now
-	isRelease = false;
+	isDebug = false;
 	
 	return done();
 	
@@ -58,5 +55,5 @@ gulp.task( 'release:cleanup', function( done ) {
 } );
 
 gulp.task( 'release', function( done ) {
-	$.sequence( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'sass', 'uglify', 'release:cleanup', done );
+	$.sequence( 'release:localization', 'sass', 'uglify', 'release:copy', 'release:grunt-compress', 'release:rename', 'release:cleanup', done );
 } );

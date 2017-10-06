@@ -12,7 +12,7 @@ var onError	  	= notify.onError( {
 } );
 
 // This needs defined here too to prevent errors on default task
-isRelease = false;
+isDebug = false;
 
 gulp.task( 'uglify:front', function() {
 
@@ -24,7 +24,7 @@ gulp.task( 'uglify:front', function() {
 		} ) )
 		.pipe( $.concat( config.front.filename ) )
 		.pipe( $.uglify() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.front.root ) )
 		.pipe( $.plumber.stop() )
 		.pipe( notify( {
@@ -45,7 +45,7 @@ gulp.task( 'uglify:admin', function() {
 		} ) )
 		.pipe( $.concat( config.admin.filename ) )
 		.pipe( $.uglify() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.admin.root ) )
 		.pipe( $.plumber.stop() )
 		.pipe( notify( {
@@ -66,7 +66,7 @@ gulp.task( 'uglify:form', function() {
 		} ) )
 		.pipe( $.concat( config.form.filename ) )
 		.pipe( $.uglify() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.form.root ) )
 		.pipe( $.plumber.stop() )
 		.pipe( notify( {
@@ -87,7 +87,7 @@ gulp.task( 'uglify:licensing', function() {
 		} ) )
 		.pipe( $.concat( config.licensing.filename ) )
 		.pipe( $.uglify() )
-		.pipe( gulpif( ! isRelease, $.sourcemaps.write( '.' ) ) )
+		.pipe( gulpif( isDebug, $.sourcemaps.write( '.' ) ) )
 		.pipe( gulp.dest( config.licensing.root ) )
 		.pipe( $.plumber.stop() )
 		.pipe( notify( {
