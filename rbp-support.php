@@ -99,6 +99,16 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		private $prefix;
 		
 		/**
+		 * This stores the "Setting" to apply Settings Errors to. EDD in particular is picky about this and it needs to be 'edd-notices'
+		 * There is a Filter in the Constructor for this for cases like this. Otherwise this is <prefix>_license_key
+		 * 
+		 * @since		{{VERSION}}
+		 * 
+		 * @var			string
+		 */
+		private $settings_error;
+		
+		/**
 		 * RBP_Support constructor.
 		 * The Plugin Data Array is REQUIRED as it makes grabbing data from EDD's API possible
 		 * However, the other two parameters can either be provided by your own code or you can allow this class to determine them
@@ -131,7 +141,16 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// Create Prefix used for things like Transients
 			// This is used for some Actions/Filters and if License Key and/or Validity aren't provided
-			$this->prefix = str_replace( '-', '_', $this->plugin_data['TextDomain'] );
+			$this->prefix = strtolower( trim( str_replace( '-', '_', $this->plugin_data['TextDomain'] ) ) );
+			
+			/**
+			 * Allows the "Setting" for Settings Errors to be overriden
+			 * EDD in particular is picky about this and it needs to be 'edd-notices', so this can be very useful
+			 *
+			 * @since		{{VERSION}}
+			 * @return		string
+			 */
+			$this->settings_error = apply_filters( $this->prefix . '_settings_error', $this->prefix . '_license_key' );
 			
 			$this->license_key = $this->retrieve_license_key();
 			
@@ -140,17 +159,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				switch ( $_REQUEST[ $this->prefix . '_license_action' ] ) {
 					case 'activate':
 					case 'save':
-						add_action( 'admin_init', array( $this, 'activate_license' ), 100 );
+						add_action( 'admin_init', array( $this, 'activate_license' ) );
 						break;
 					case 'deactivate':
-						add_action( 'admin_init', array( $this, 'deactivate_license' ), 100 );
+						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 					case 'delete':
-						add_action( 'admin_init', array( $this, 'delete_license' ), 100 );
+						add_action( 'admin_init', array( $this, 'delete_license' ) );
 						break;
 					case 'delete_deactivate':
-						add_action( 'admin_init', array( $this, 'delete_license' ), 99 );
-						add_action( 'admin_init', array( $this, 'deactivate_license' ), 100 );
+						add_action( 'admin_init', array( $this, 'delete_license' ) );
+						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 				}
 				
@@ -225,7 +244,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$plugin_name = $this->plugin_data['Name'];
 			
-			if ( $this->get_license_validity() == 'valid' ) {
+			if ( $this->get_license_status() == 'valid' ) {
 				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
 					include_once $this->plugin_dir . 'rbp-support/sidebar-support.php';
@@ -271,262 +290,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			else {
 				include_once __DIR__ . '/views/licensing-fields.php';
 			}
-			
-		}
-		
-		/**
-		 * Sets up Plugin Updates as well as place a License Nag within the Plugins Table
-		 * 
-		 * @access		public
-		 * @since		{{VERSION}}
-		 * @return		void
-		 */
-		public function setup_plugin_updates() {
-			
-			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-				require_once __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php';
-			}
-			
-			if ( is_admin() ) {
-				
-				$license = new EDD_SL_Plugin_Updater(
-					$this->store_url,
-					$this->plugin_file,
-					array(
-						'item_name' => $this->plugin_data['Name'],
-						'version'   => $this->plugin_data['Version'],
-						'license'   => $this->license_key,
-						'author'    => $this->plugin_data['Author'],
-					)
-				);
-				
-				if ( $this->get_license_validity() != 'valid' ) {
-					add_action( 'after_plugin_row_' . plugin_basename( $this->plugin_file ),
-						array( $this, 'show_license_nag' ), 10, 2 );
-				}
-				
-			}
-			
-		}
-		
-		public function activate_license() {
-			
-			global $wp_settings_errors;
-			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
-			   ) {
-				return;
-			}
-			
-			$key = $this->get_license_key();
-			
-			$plugin_data = $this->plugin_data;
-			
-			$api_params = array(
-				'edd_action' => 'activate_license',
-				'license' => $key,
-				'item_name' => urlencode( $plugin_data['Name'] ),
-				'url' => home_url()
-			);
-			
-			$response = wp_remote_get(
-				add_query_arg( $api_params, $this->store_url ),
-				array(
-					'timeout' => 10,
-					'sslverify' => false,
-				)
-			);
-			
-			if ( is_wp_error( $response ) ) {
-				return false;
-			}
-			
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
-			
-			set_transient( $this->prefix . '_license_status', $license_data->license, HOUR_IN_SECONDS );
-			
-			if ( $license_data->success === false ) {
-				$message = self::get_license_error_message( $license_data->error, $license_data );
-				add_settings_error( $this->prefix . '', '', $message, 'error cd-pro-notice' );
-			}
-			else {
-				add_settings_error( $this->prefix . '', '', __(
-					'Client Dash Pro license successfully activated.', 'rbp-support'
-				), 'updated cd-pro-notice' );
-				update_option( $this->prefix . '_license_key', $key );
-				update_option( $this->prefix . '_license_status', $license_data->license );
-				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
-			}
-			
-			set_transient( 'settings_errors', $wp_settings_errors, 30 );
-			
-			//wp_redirect( add_query_arg( 'settings-updated', 1, admin_url( 'options-general.php?page=cd_settings&tab=licensing' ) ) );
-			
-			//exit();
-			
-		}
-		
-		public function delete_license() {
-			
-			delete_option( $this->prefix . '_license_key' );
-			
-		}
-		
-		public function deactivate_license() {
-			
-			global $wp_settings_errors;
-			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license' ] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license' ], $this->prefix . '_license' )
-			   ) {
-				return;
-			}
-			
-			$key = $this->get_license_key();
-			
-			$plugin_data = $this->plugin_data;
-			
-			// data to send in our API request
-			$api_params = array(
-				'edd_action' => 'deactivate_license',
-				'license'    => $key,
-				'item_name'  => $plugin_data['Name'],
-				'url'        => home_url()
-			);
-			
-			// Call the custom API.
-			$response = wp_remote_get(
-				add_query_arg( $api_params, $this->store_url ),
-				array(
-					'timeout'   => 10,
-					'sslverify' => false
-				)
-			);
-			
-			// make sure the response came back okay
-			if ( is_wp_error( $response ) ) {
-				return false;
-			}
-			
-			// decode the license data
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			
-			if ( $license_data->success === false ) {
-				$message = __( 'Error: could not deactivate the license', 'rbp-support' );
-				add_settings_error( 'cd_pro', '', $message, 'error cd-pro-notice' );
-			}
-			else {
-				add_settings_error( 'cd_pro', '', __(
-					'Client Dash Pro license successfully deactivated.', 'rbp-support'
-				), 'updated cd-pro-notice' );
-				delete_option( $this->prefix . '_license_status' );
-				delete_transient( $this->prefix . '_license_validity' );
-			}
-			
-			set_transient( 'settings_errors', $wp_settings_errors, 30 );
-			//wp_redirect( add_query_arg(
-				//'settings-updated',
-				//1,
-				//admin_url( 'options-general.php?page=cd_settings&tab=licensing' )
-			//) );
-			//exit();
-			
-		}
-		
-		/**
-		 * Displays a nag to activate the license.
-		 *
-		 * @access		public
-		 * @since		{{VERSION}}
-		 * @return		void
-		 */
-		public function show_license_nag() {
-			
-			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-			
-			?>
-
-			<tr class="plugin-update-tr">
-				<td colspan="<?php echo $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
-					<div class="update-message">
-						<?php
-			
-							// We can't know or predict the URL of your Plugin's Settings/Licensing page
-							// This filter will allow you to include a link to it if you want
-							$register_message = apply_filters( $this->prefix . '_register_message', sprintf(
-								__( 'Register your copy of %s now to receive automatic updates and support.', 'rbp-support' ),
-								$this->plugin_data['Name']
-							) );
-			
-							echo $register_message;
-			
-							if ( ! $this->get_license_key() ) {
-								printf(
-									__( ' If you do not have a license key, you can %1$spurchase one%2$s.', 'rbp-support' ),
-									'<a href="' . $this->plugin_data['PluginURI'] . '">',
-									'</a>'
-								);
-							}
-			
-						?>
-					</div>
-				</td>
-			</tr>
-
-			<?php
-		}
-		
-		/**
-		 * Register Scripts
-		 * 
-		 * @access		public
-		 * @since		{{VERSION}}}
-		 * @return		void
-		 */
-		public function register_scripts() {
-			
-			wp_register_script(
-				$this->prefix . '_form',
-				plugins_url( '/assets/js/form.js', __FILE__ ),
-				array( 'jquery' ),
-				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
-				true
-			);
-			
-			wp_register_style(
-				$this->prefix . '_form',
-				plugins_url( '/assets/css/form.css', __FILE__ ),
-				array(),
-				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
-				'all'
-			);
-			
-			wp_register_script(
-				$this->prefix . '_licensing',
-				plugins_url( '/assets/js/licensing.js', __FILE__ ),
-				array( 'jquery' ),
-				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
-				true
-			);
-			
-			wp_register_style(
-				$this->prefix . '_licensing',
-				plugins_url( '/assets/css/licensing.css', __FILE__ ),
-				array(),
-				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
-				'all'
-			);
-			
-			wp_localize_script( 
-				$this->prefix . '_form',
-				$this->prefix . '_support_form',
-				apply_filters( $this->prefix . '_localize_form_script', array(
-					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-					'validationError' => __( 'This field is required', 'rbp-support' ), // Only used for legacy browsers
-				) )
-			);
 			
 		}
 		
@@ -626,7 +389,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
-		 * Returns license data.
+		 * Getter Method for License Data
 		 * 
 		 * @access		public
 		 * @since		{{VERSION}}
@@ -641,6 +404,58 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 
 			return $this->license_data;
+		}
+		
+		/**
+		 * Register Scripts
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}}
+		 * @return		void
+		 */
+		public function register_scripts() {
+			
+			wp_register_script(
+				$this->prefix . '_form',
+				plugins_url( '/assets/js/form.js', __FILE__ ),
+				array( 'jquery' ),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				true
+			);
+			
+			wp_register_style(
+				$this->prefix . '_form',
+				plugins_url( '/assets/css/form.css', __FILE__ ),
+				array(),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				'all'
+			);
+			
+			wp_register_script(
+				$this->prefix . '_licensing',
+				plugins_url( '/assets/js/licensing.js', __FILE__ ),
+				array( 'jquery' ),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				true
+			);
+			
+			wp_register_style(
+				$this->prefix . '_licensing',
+				plugins_url( '/assets/css/licensing.css', __FILE__ ),
+				array(),
+				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : time(),
+				'all'
+			);
+			
+			wp_localize_script( 
+				$this->prefix . '_form',
+				$this->prefix . '_support_form',
+				apply_filters( $this->prefix . '_localize_form_script', array(
+					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+					'validationError' => __( 'This field is required', 'rbp-support' ), // Only used for legacy browsers
+				) )
+			);
+			
 		}
 		
 		/**
@@ -692,13 +507,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			if ( ! $license_data->success ||
 				$license_data->license !== 'valid' ) {
 				
-				$message = self::get_license_error_message(
+				$message = $this->get_license_error_message(
 					! $license_data->success ? $license_data->error : $license_data->license,
-					$license_data,
-					$this->plugin_data
+					$license_data
 				);
 				
-				add_settings_error( $this->prefix, '', $message, 'error ' . $this->prefix . '-notice' );
+				add_settings_error( $this->prefix, '_license_key', $message, 'error ' . $this->prefix . '-notice' );
 				
 			}
 			
@@ -712,6 +526,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 		}
 		
+		/**
+		 * Gets the License Status from the Database
+		 * 
+		 * @access		private
+		 * @since		{{VERSION}}
+		 * @return		string License Status
+		 */
 		private function retrieve_license_status() {
 			
 			if ( ! ( $license_status = $this->license_status = get_option( $this->prefix . '_license_status' ) ) ) {
@@ -805,8 +626,245 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
+		 * Sets up Plugin Updates as well as place a License Nag within the Plugins Table
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function setup_plugin_updates() {
+			
+			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+				require_once __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php';
+			}
+			
+			if ( is_admin() ) {
+				
+				$license = new EDD_SL_Plugin_Updater(
+					$this->store_url,
+					$this->plugin_file,
+					array(
+						'item_name' => $this->plugin_data['Name'],
+						'version'   => $this->plugin_data['Version'],
+						'license'   => $this->license_key,
+						'author'    => $this->plugin_data['Author'],
+					)
+				);
+				
+				if ( $this->get_license_validity() != 'valid' ) {
+					add_action( 'after_plugin_row_' . plugin_basename( $this->plugin_file ),
+						array( $this, 'show_license_nag' ), 10, 2 );
+				}
+				
+			}
+			
+		}
+		
+		/**
+		 * Displays a nag to activate the license.
+		 *
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function show_license_nag() {
+			
+			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+			
+			?>
+
+			<tr class="plugin-update-tr">
+				<td colspan="<?php echo $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
+					<div class="update-message">
+						<?php
+			
+							// We can't know or predict the URL of your Plugin's Settings/Licensing page
+							// This filter will allow you to include a link to it if you want
+							$register_message = apply_filters( $this->prefix . '_register_message', sprintf(
+								__( 'Register your copy of %s now to receive automatic updates and support.', 'rbp-support' ),
+								$this->plugin_data['Name']
+							) );
+			
+							echo $register_message;
+			
+							if ( ! $this->get_license_key() ) {
+								printf(
+									__( ' If you do not have a license key, you can %1$spurchase one%2$s.', 'rbp-support' ),
+									'<a href="' . $this->plugin_data['PluginURI'] . '">',
+									'</a>'
+								);
+							}
+			
+						?>
+					</div>
+				</td>
+			</tr>
+
+			<?php
+		}
+		
+		/**
+		 * Activates the License Key
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function activate_license() {
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
+			   ) {
+				return;
+			}
+			
+			$key = $this->get_license_key();
+			
+			$plugin_data = $this->plugin_data;
+			
+			$api_params = array(
+				'edd_action' => 'activate_license',
+				'license' => $key,
+				'item_name' => urlencode( $plugin_data['Name'] ),
+				'url' => home_url()
+			);
+			
+			$response = wp_remote_get(
+				add_query_arg( $api_params, $this->store_url ),
+				array(
+					'timeout' => 10,
+					'sslverify' => false,
+				)
+			);
+			
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+			
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
+			
+			set_transient( $this->prefix . '_license_status', $license_data->license, HOUR_IN_SECONDS );
+			
+			if ( $license_data->success === false ) {
+				
+				$message = $this->get_license_error_message(
+					$license_data->error,
+					$license_data
+				);
+				
+				add_settings_error(
+					$this->settings_error,
+					'',
+					$message,
+					'error ' . $this->prefix . '-notice'
+				);
+				
+			}
+			else {
+				
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( __( '%s license successfully activated.', 'rbp-support' ), $this->plugin_data['Name'] ),
+					'updated ' . $this->prefix . '-notice'
+				);
+				
+				update_option( $this->prefix . '_license_key', $key );
+				update_option( $this->prefix . '_license_status', $license_data->license );
+				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
+				
+			}
+			
+		}
+		
+		/**
+		 * Deletes the License Key
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function delete_license() {
+			
+			delete_option( $this->prefix . '_license_key' );
+			
+		}
+		
+		/**
+		 * Deactivates the License Key
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function deactivate_license() {
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license' ] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license' ], $this->prefix . '_license' )
+			   ) {
+				return;
+			}
+			
+			$key = $this->get_license_key();
+			
+			$plugin_data = $this->plugin_data;
+			
+			// data to send in our API request
+			$api_params = array(
+				'edd_action' => 'deactivate_license',
+				'license'    => $key,
+				'item_name'  => $plugin_data['Name'],
+				'url'        => home_url()
+			);
+			
+			// Call the custom API.
+			$response = wp_remote_get(
+				add_query_arg( $api_params, $this->store_url ),
+				array(
+					'timeout'   => 10,
+					'sslverify' => false
+				)
+			);
+			
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+			
+			// decode the license data
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			
+			if ( $license_data->success === false ) {
+				
+				$message = __( 'Error: could not deactivate the license', 'rbp-support' );
+				
+				add_settings_error(
+					$this->settings_error,
+					'',
+					$message,
+					'error ' . $this->prefix . '-notice'
+				);
+				
+			}
+			else {
+				
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( __( '%s license successfully deactivated.', 'rbp-support' ), $this->plugin_data['Name'] ),
+					'updated ' . $this->prefix . '-notice'
+				);
+				
+				delete_option( $this->prefix . '_license_status' );
+				delete_transient( $this->prefix . '_license_validity' );
+				
+			}
+			
+		}
+		
+		/**
 		 * Grabs the appropriate Error Message for each License Error
-		 * This is a "static" method so that if necessary, this method can be used without an instance of the Class
 		 * 
 		 * @param		string $error_code   Type of Error
 		 * @param		object $license_data License Data response object from EDD API
@@ -816,12 +874,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @since		{{VERSION}}
 		 * @return		string Error Message
 		 */
-		public static function get_license_error_message( $error_code, $license_data, $plugin_data = null ) {
-			
-			if ( $plugin_data == null || 
-			   ! is_array( $plugin_data ) ) {
-				throw new Exception( __( 'Missing Plugin Data Array while checking License Error Message', 'rbp-support' ) );
-			}
+		public function get_license_error_message( $error_code, $license_data ) {
 			
 			switch ( $error_code ) {
 					
@@ -842,7 +895,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$message = __( 'Your license is not active for this URL.', 'rbp-support' );
 					break;
 				case 'item_name_mismatch':
-					$message = sprintf( __( 'This appears to be an invalid license key for %s.', 'rbp-support' ), $plugin_data['Name'] );
+					$message = sprintf( __( 'This appears to be an invalid license key for %s.', 'rbp-support' ), $this->plugin_data['Name'] );
 					break;
 				case 'no_activations_left':
 					$message = __( 'Your license key has reached its activation limit.', 'rbp-support' );
@@ -1015,6 +1068,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					),
 					array(
 					)
+				);
+					
+				add_settings_error(
+					$this->settings_error,
+					'',
+					$result ? __( 'Support message succesfully sent!', 'rbp-support' ) :
+						__( 'Could not send support message.', 'rbp-support' ),
+					$result ? 'updated' : 'error'
 				);
 				
 			}
