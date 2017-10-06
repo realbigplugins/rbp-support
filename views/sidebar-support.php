@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || die();
 		
 		?>
 
-		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form" data-prefix="<?php echo $plugin_prefix; ?>">
+		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form<?php echo ( $form_tag == 'div' ) ? ' javascript-interrupt' : ''; ?>" data-prefix="<?php echo $plugin_prefix; ?>">
 
 			<?php wp_nonce_field( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ); ?>
 

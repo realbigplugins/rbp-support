@@ -2,7 +2,7 @@
 	
 	$( document ).ready( function() {
 		
-		if ( $( '.rbp-support-form' ).length <= 0 ) return;
+		if ( $( '.rbp-support-form.javascript-interrupt' ).length <= 0 ) return;
 		
 		$( 'form' ).on( 'submit', function( event ) {
 			
