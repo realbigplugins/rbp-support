@@ -22,34 +22,50 @@ defined( 'ABSPATH' ) || die();
 				<?php _e( 'Need some help?', 'rbp-support' ); ?>
 			</strong>
 		</p>
+		
+		<?php 
+		
+		
+		/**
+		 * This one is a doozy, so let me take a bit to explain
+		 * In most cases, it is obviously ideal to have the Form actually be a <form>.
+		 * However, most of our plugins are tying into other, 3rd party services where we often have to place our things inside of another <form>
+		 * HTML doesn't let you nest <form>s (It will strip them out), so by using a <div> we can use some creative JavaScript to conditionally validate this subform
+		 * See ./build/js/admin/form/submit.js for more details
+		 * 
+		 * If this is a <form> the JS should still function as it merely checks the Name Attribute of the Submit Button
+		 * 
+		 * @since		{{VERSION}}
+		 * @return		string Tag
+		 * 
+		 */
+		$form_tag = apply_filters( $plugin_prefix . '_support_form_tag', 'div' );
+		
+		?>
 
-		<form id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form" data-prefix="<?php echo $plugin_prefix; ?>">
+		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form" data-prefix="<?php echo $plugin_prefix; ?>">
 
 			<?php wp_nonce_field( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ); ?>
 
 			<p>
 				<label>
-					<input type="text" name="support_subject" class="form-field" required
+					<input type="text" name="support_subject" class="form-field required"
 						   placeholder="<?php _e( 'Subject', 'rbp-support' ); ?>"/>
 				</label>
 			</p>
 
 			<p>
 				<label>
-						<textarea name="support_message" class="form-field" rows="5" required
+						<textarea name="support_message" class="form-field required" rows="5"
 								  placeholder="<?php _e( 'Message', 'rbp-support' ); ?>"></textarea>
 				</label>
 			</p>
 
 			<p>
-				<input type="submit" class="button" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
+				<input type="submit" name="<?php echo $plugin_prefix; ?>_support_submit" class="button" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
 			</p>
 
-		</form>
-
-		<div class="success-message hidden">
-			<?php _e( 'Message Sent Successfully', 'rbp-support' ); ?>
-		</div>
+		</<?php echo $form_tag; ?>>
 
 	</section>
 

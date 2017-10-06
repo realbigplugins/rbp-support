@@ -61,6 +61,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		private $license_key;
 		
 		/**
+		 * The stored License Status for the License Key
+		 *
+		 * @since		{{VERSION}}
+		 *
+		 * @var			string
+		 */
+		private $license_status;
+		
+		/**
 		 * The stored License Validity for the License Key
 		 *
 		 * @since		{{VERSION}}
@@ -96,12 +105,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * 
 		 * @param		string	$plugin_file	  Path to the Plugin File. REQUIRED
 		 * @param		array	$plugin_data	  get_plugin_data( <your_plugin_file>, false ); This is REQUIRED.
-		 * @param		string  $license_key	  License Key for this plugin. Null is not set.
-		 * @param		string  $license_validity True for Valid, False for Invalid. Null to grab validity from Server
 		 *                                                                                              
 		 * @since		{{VERSION}}
 		 */
-		function __construct( $plugin_file = null, $plugin_data = null, $license_key = null, $license_validity = null ) {
+		function __construct( $plugin_file = null, $plugin_data = null ) {
 			
 			$this->load_textdomain();
 			
@@ -126,22 +133,40 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			// This is used for some Actions/Filters and if License Key and/or Validity aren't provided
 			$this->prefix = str_replace( '-', '_', $this->plugin_data['TextDomain'] );
 			
-			if ( $license_key == null ) {
-				$this->license_key = $this->retrieve_license_key();
-			}
-			else {
-				$this->license_key = $license_key;
+			$this->license_key = $this->retrieve_license_key();
+			
+			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
+				
+				switch ( $_REQUEST[ $this->prefix . '_license_action' ] ) {
+					case 'activate':
+					case 'save':
+						add_action( 'admin_init', array( $this, 'activate_license' ), 100 );
+						break;
+					case 'deactivate':
+						add_action( 'admin_init', array( $this, 'deactivate_license' ), 100 );
+						break;
+					case 'delete':
+						add_action( 'admin_init', array( $this, 'delete_license' ), 100 );
+						break;
+					case 'delete_deactivate':
+						add_action( 'admin_init', array( $this, 'delete_license' ), 99 );
+						add_action( 'admin_init', array( $this, 'deactivate_license' ), 100 );
+						break;
+				}
+				
 			}
 			
-			if ( $license_validity == null ) {
-				// Check validity itself
-				$this->license_validity = $this->retrieve_license_validity( $this->license_key, $this->plugin_data );
-			}
-			else {
-				$this->license_validity = $license_validity;
+			if ( isset( $_REQUEST[ $this->prefix . '_support_submit' ] ) ) {
+				
+				add_action( 'admin_init', array( $this, 'send_support_email' ) );
+				
 			}
 			
+			// Set up plugin updates
 			add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
+			
+			// Check License Validity
+			add_action( 'admin_init', array( $this, 'get_license_validity') );
 			
 			// Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
 			add_action( 'admin_init', array( $this, 'register_scripts' ) );
@@ -235,7 +260,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// Makes the variable make more sense within the context of the HTML
 			$plugin_prefix = $this->prefix;
-			$license_status = $this->get_license_validity();
+			$license_status = $this->get_license_status();
 			
 			$license_key = $this->get_license_key();
 			$plugin_name = $this->plugin_data['Name'];
@@ -281,6 +306,132 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				}
 				
 			}
+			
+		}
+		
+		public function activate_license() {
+			
+			global $wp_settings_errors;
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
+			   ) {
+				return;
+			}
+			
+			$key = $this->get_license_key();
+			
+			$plugin_data = $this->plugin_data;
+			
+			$api_params = array(
+				'edd_action' => 'activate_license',
+				'license' => $key,
+				'item_name' => urlencode( $plugin_data['Name'] ),
+				'url' => home_url()
+			);
+			
+			$response = wp_remote_get(
+				add_query_arg( $api_params, $this->store_url ),
+				array(
+					'timeout' => 10,
+					'sslverify' => false,
+				)
+			);
+			
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+			
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
+			
+			set_transient( $this->prefix . '_license_status', $license_data->license, HOUR_IN_SECONDS );
+			
+			if ( $license_data->success === false ) {
+				$message = self::get_license_error_message( $license_data->error, $license_data );
+				add_settings_error( $this->prefix . '', '', $message, 'error cd-pro-notice' );
+			}
+			else {
+				add_settings_error( $this->prefix . '', '', __(
+					'Client Dash Pro license successfully activated.', 'rbp-support'
+				), 'updated cd-pro-notice' );
+				update_option( $this->prefix . '_license_key', $key );
+				update_option( $this->prefix . '_license_status', $license_data->license );
+				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
+			}
+			
+			set_transient( 'settings_errors', $wp_settings_errors, 30 );
+			
+			//wp_redirect( add_query_arg( 'settings-updated', 1, admin_url( 'options-general.php?page=cd_settings&tab=licensing' ) ) );
+			
+			//exit();
+			
+		}
+		
+		public function delete_license() {
+			
+			delete_option( $this->prefix . '_license_key' );
+			
+		}
+		
+		public function deactivate_license() {
+			
+			global $wp_settings_errors;
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license' ] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license' ], $this->prefix . '_license' )
+			   ) {
+				return;
+			}
+			
+			$key = $this->get_license_key();
+			
+			$plugin_data = $this->plugin_data;
+			
+			// data to send in our API request
+			$api_params = array(
+				'edd_action' => 'deactivate_license',
+				'license'    => $key,
+				'item_name'  => $plugin_data['Name'],
+				'url'        => home_url()
+			);
+			
+			// Call the custom API.
+			$response = wp_remote_get(
+				add_query_arg( $api_params, $this->store_url ),
+				array(
+					'timeout'   => 10,
+					'sslverify' => false
+				)
+			);
+			
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+			
+			// decode the license data
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			
+			if ( $license_data->success === false ) {
+				$message = __( 'Error: could not deactivate the license', 'rbp-support' );
+				add_settings_error( 'cd_pro', '', $message, 'error cd-pro-notice' );
+			}
+			else {
+				add_settings_error( 'cd_pro', '', __(
+					'Client Dash Pro license successfully deactivated.', 'rbp-support'
+				), 'updated cd-pro-notice' );
+				delete_option( $this->prefix . '_license_status' );
+				delete_transient( $this->prefix . '_license_validity' );
+			}
+			
+			set_transient( 'settings_errors', $wp_settings_errors, 30 );
+			//wp_redirect( add_query_arg(
+				//'settings-updated',
+				//1,
+				//admin_url( 'options-general.php?page=cd_settings&tab=licensing' )
+			//) );
+			//exit();
 			
 		}
 		
@@ -373,7 +524,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$this->prefix . '_support_form',
 				apply_filters( $this->prefix . '_localize_form_script', array(
 					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-					'license_data' => $this->get_license_data(),
+					'validationError' => __( 'This field is required', 'rbp-support' ), // Only used for legacy browsers
 				) )
 			);
 			
@@ -431,10 +582,27 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		public function get_license_validity() {
 			
 			if ( ! $this->license_validity ) {
-				$this->license_validity = $this->retrieve_license_validity();
+				$this->license_validity = $this->check_license_validity();
 			}
 			
 			return $this->license_validity;
+			
+		}
+		
+		/**
+		 * Getter Method for License Status
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		string License Status
+		 */
+		public function get_license_status() {
+			
+			if ( ! $this->license_status ) {
+				$this->license_status = $this->retrieve_license_status();
+			}
+			
+			return $this->license_status;
 			
 		}
 		
@@ -476,13 +644,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
-		 * Check the License Key's Validity. This is used if Validity is not provided.
+		 * Check the License Key's Validity
 		 *                                                   
 		 * @access		private
 		 * @since		{{VERSION}}
 		 * @return		string License Validity
 		 */
-		private function retrieve_license_validity() {
+		private function check_license_validity() {
 			
 			if ( $this->license_validity !== null ) {
 				return $this->license_validity;
@@ -493,8 +661,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			if ( ! isset( $_GET['force-check-license'] ) && 
-				$license_status = get_transient( $this->prefix . '_license_validity' ) ) {
-				return $license_status;
+				$license_validity = get_transient( $this->prefix . '_license_validity' ) ) {
+				return $license_validity;
 			}
 			
 			$api_params = array(
@@ -530,22 +698,41 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->plugin_data
 				);
 				
-				//add_settings_error( $this->prefix, '', $message, 'error ' . $this->prefix . '-notice' );
+				add_settings_error( $this->prefix, '', $message, 'error ' . $this->prefix . '-notice' );
 				
 			}
 			
-			$license_status = isset( $license_data->license ) ? $license_data->license : 'invalid';
+			$license_validity = isset( $license_data->license ) ? $license_data->license : 'invalid';
 			
-			set_transient( $this->prefix . '_license_validity', $license_status, DAY_IN_SECONDS );
+			set_transient( $this->prefix . '_license_validity', $license_validity, DAY_IN_SECONDS );
 			
-			$this->license_validity = $license_status;
+			$this->license_validity = $license_validity;
 			
-			return $license_status;
+			return $license_validity;
+			
+		}
+		
+		private function retrieve_license_status() {
+			
+			if ( ! ( $license_status = $this->license_status = get_option( $this->prefix . '_license_status' ) ) ) {
+				
+				return 'invalid';
+				
+			}
+			
+			if ( get_transient( $this->prefix . '_license_validity' ) !== 'valid' &&
+				$this->check_license_validity() !== 'valid' ) {
+				
+				return 'invalid';
+				
+			}
+			
+			return 'valid';
 			
 		}
 		
 		/**
-		 * Gets the License Key from the Database. This is used when one is not provided by the constructor.
+		 * Gets the License Key from the Database
 		 * 
 		 * @access		private
 		 * @since		{{VERSION}}
@@ -752,13 +939,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @since		{{VERSION}}
 		 * @return		void
 		 */
-		public static function send_support_mail() {
+		public function send_support_email() {
 			
-			$plugin_prefix = $_POST['plugin_prefix'];
-			$license_data = $_POST['license_data'];
-			
-			if ( ! isset( $_POST[ $plugin_prefix . '_support_nonce' ] ) ||
-				! check_ajax_referer( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce', false ) ||
+			if ( ! isset( $_POST[ $this->prefix . '_support_nonce' ] ) ||
+				! wp_verify_nonce( $_POST[ $this->prefix . '_support_nonce' ], $this->prefix . '_send_support_email' ) ||
 				! current_user_can( 'manage_options' ) ) {
 
 				return;
@@ -770,11 +954,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @since		{{VERSION}}
 			 */
-			$data = apply_filters( $plugin_prefix . '_support_email_data', array(
+			$data = apply_filters( $this->prefix . '_support_email_data', array(
 				'subject' => esc_attr( $_POST['support_subject'] ),
 				'message' => esc_attr( $_POST['support_message'] ),
+				'license_data' => $this->get_license_data(),
 			), $_POST );
 
+			$license_data = $data['license_data'];
 			$subject = trim( $data['subject'] );
 			$message = trim( $data['message'] );
 
@@ -788,7 +974,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			else {
 
 				// Grab Debug Info as a String
-				$debug_file = self::debug_file( $plugin_prefix );
+				$debug_file = self::debug_file( $this->prefix );
 				
 				// This is where things start to look confusing.
 				// Emails with Attachments are Multipart with a "Boundary" between each part. This boundary goes in the Message Body.
@@ -824,7 +1010,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$subject,
 					$message_multipart,
 					array(
-						"From: $license_data[customer_name] <$license_data[customer_email]>",
+						"From: $license_data->customer_name <$license_data->customer_email>",
 						"Content-Type: multipart/mixed boundary=\"{$mime_boundary}\"", // Here we define the Boundary within the primary Email Header
 					),
 					array(
@@ -838,5 +1024,3 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 	}
 	
 }
-
-add_action( 'wp_ajax_rbp_support_form', array( 'RBP_Support', 'send_support_mail' ) );

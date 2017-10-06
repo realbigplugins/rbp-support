@@ -4,73 +4,43 @@
 		
 		if ( $( '.rbp-support-form' ).length <= 0 ) return;
 		
-		$( '.rbp-support-form' ).on( 'submit', function( event ) {
+		$( 'form' ).on( 'submit', function( event ) {
 			
-			event.preventDefault(); // Don't submit via PHP
-			event.stopPropagation(); // Don't let this get called 17 times if more than one instance of the script is active
-			
-			var $form = $( this );
-			
-			// Grab the correct data based on Prefix. This is helpful if for some reason, multiple instances of this script are active at once
-			var prefix = $form.data( 'prefix' ),
-				l18n = window[ prefix + '_support_form' ];
-			
-			// This captures the Submit button
-			// activeElement ensures it is the correct one in the event more Submit Buttons get added for some reason
 			var $submitButton = $( document.activeElement );
+			
+			// Check to see if it is our Submit Button
+			// A lot of our plugins tie into other systems (EDD, PSP, etc.) which often means we're creating something inside of another <form> with little options to place outside of it
+			if ( $submitButton.attr( 'name' ).indexOf( '_support_submit' ) > -1 ) {
 				
-			$submitButton.attr( 'disabled', true );
-
-			// Used to construct HTML Name Attribute
-			var data = {};
-
-			$form.find( '.form-field' ).each( function( index, field ) {
-
-				if ( $( field ).parent().hasClass( 'hidden' ) ) return true;
-
-				var name = $( field ).attr( 'name' ),
-					value = $( field ).val();
-
-				if ( $( field ).is( 'input[type="checkbox"]' ) ) {
-
-					value = ( $( field ).prop( 'checked' ) ) ? 1 : 0;
-
-				}
-
-				// Checkboxes don't place nice with my regex and I'm not rewriting it
-				data[ name ] = value;
-
-			} );
-
-			data.action = 'rbp_support_form';
+				var $form = $( this );
+				
+				// Ensure any required fields have their required status
+				$( this ).find( '.required' ).each( function( index, element ) {
+					$( element ).attr( 'required', true );
+				} );
 			
-			// Grab the Nonce Value
-			var $nonce = $form.find( 'input[id$="_support_nonce"]' );
-			data[ $nonce.attr( 'name' ) ] = $nonce.val();
-			
-			data.plugin_prefix = prefix;
-			data.license_data = l18n.license_data;
-
-			$.ajax( {
-				'type' : 'POST',
-				'url' : l18n.ajaxUrl,
-				'data' : data,
-				success : function( response ) {
+				$form[0].reportValidity(); // Report Validity via HTML5 stuff
+				
+				if ( ! $form[0].checkValidity() ) { 
 					
-					$form.parent().find( '.success-message' ).fadeIn();
+					// Invalid, don't submit
+					event.preventDefault();
 					
-					$form.fadeOut();
+					// If our form is Invalid, remove the Required attributes after 2 seconds
+					// The timeout is used because otherwise the little pop-up Chrome and many other browsers make goes away immediately
+				
+					setTimeout( function() {
+
+						// Reset after reporting validity so future submissions of other forms don't get hung up
+						$form.find( '.required' ).each( function( index, element ) {
+							$( element ).attr( 'required', false );
+						} );
+
+					}, 2000 );
 					
-
-				},
-				error : function( request, status, error ) {
-					
-					console.log( error );
-
-					$submitButton.attr( 'disabled', false );
-
 				}
-			} );
+				
+			}
 			
 		} );
 		
