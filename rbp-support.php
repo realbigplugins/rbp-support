@@ -118,7 +118,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *                                                                                              
 		 * @since		{{VERSION}}
 		 */
-		function __construct( $plugin_file = null, $plugin_data = null ) {
+		function __construct( $plugin_file = null ) {
 			
 			$this->load_textdomain();
 			
@@ -132,12 +132,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			// Helpful for allowing the Plugin to override views
 			$this->plugin_dir = trailingslashit( dirname( $this->plugin_file ) );
 			
-			if ( $plugin_data == null || 
-			   ! is_array( $plugin_data ) ) {
-				throw new Exception( __( 'Missing Plugin Data Array in RBP_Support Constructor', 'rbp-support' ) );
-			}
-			
-			$this->plugin_data = $plugin_data;
+			$this->plugin_data = get_plugin_data( $plugin_file, false );
 			
 			// Create Prefix used for things like Transients
 			// This is used for some Actions/Filters and if License Key and/or Validity aren't provided
