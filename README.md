@@ -32,7 +32,8 @@ Using this submodule is super easy! Just follow the following steps and you'll b
   - To do this, you'll need to know the "prefix" of your Plugin that this Submodule generates. You can find this by:
     - Taking the Text Domain of your Plugin and lowercasing it and swapping any hyphens for underscores
   - The License Key gets stored by this Submodule as `<prefix>_license_key` in `wp_options`.
-* I've found some 3rd party plugins are very picky about Admin Notices when you're tying into them. I've included a Filter to allow the "Setting" for the Admin Notice to be changed to match what they're expecting.
+  - Alternatively, you can use the `rbp_support_prefix` Filter if the only thing that doesn't match is the Prefix. **Just be sure to remove the Filter as soon as your RBP_Support Object is created!**
+* Many 3rd Party Plugins have an expected "Setting" key to show Admin Notices. See [`settings_errors()`](https://codex.wordpress.org/Function_Reference/settings_errors).
   - EDD in particular only shows Admin Notices with the "Setting" `edd-notices` on its Settings Pages
   - You can override the "Setting" key using the Filter `<prefix>_settings_error`
 * The Support Email Form is configured to submit via PHP, but it uses some JavaScript for validation.
@@ -42,3 +43,5 @@ Using this submodule is super easy! Just follow the following steps and you'll b
     ```
     add_filter( '<prefix>_support_form_tag', function() { return 'form'; }
     ```
+* If another plugin includes RBP_Support before yours, the version of RBP_Support included in that other plugin will be the one that it used. See [#5](https://github.com/realbigplugins/rbp-support/issues/5). We will need to keep the submodule up-to-date across our plugins or else things may not work as expected.
+  - Defining your own template files will always work, but any other functions within RBP_Support will be stuck at the version of the Plugin that loaded it. This includes where the "fallback" templates are loaded from.
