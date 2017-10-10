@@ -139,6 +139,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$this->prefix = strtolower( trim( str_replace( '-', '_', $this->plugin_data['TextDomain'] ) ) );
 			
 			/**
+			 * WARNING: This is a global Filter
+			 * You should only apply this directly before creating your RBP_Support object and should remove it immediately after
+			 * 
+			 * @since		{{VERSION}}
+			 * @return		string
+			 */
+			$this->prefix = apply_filters( 'rbp_support_prefix', $this->prefix );
+			
+			/**
 			 * Allows the "Setting" for Settings Errors to be overriden
 			 * EDD in particular is picky about this and it needs to be 'edd-notices', so this can be very useful
 			 *
