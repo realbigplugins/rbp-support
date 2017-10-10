@@ -16,6 +16,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 	class RBP_Support {
 		
 		/**
+		 * Holds the Version Number of RBP_Support.
+		 * This is used in the Support Email to help us know which version of RBP_Support is being used in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version.
+		 * See https://github.com/realbigplugins/rbp-support/issues/5
+		 *
+		 * @since		{{VERSION}}
+		 *
+		 * @var			string
+		 */
+		public $version = '1.0.0';
+		
+		/**
 		 * The RBP Store URL
 		 *
 		 * @since		1.0.0
@@ -916,12 +927,36 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		
 		/**
 		 * Create Debug File to attach to the Email. This is a base64 buffer.
-		 * @param  string $plugin_prefix Plugin Prefix
-		 * @return string base64 buffer
+		 * This has an obscene amount of Filters in it for flexibility. While there is no space between some, I figure
+		 *                                      
+		 * @access		public
+		 * @since		1.0.0
+		 * @return		string base64 buffer
 		 */
-		public static function debug_file( $plugin_prefix ) {
+		public function debug_file() {
 
-			$output = '';
+			$output = "= RBP_Support v" . $this->version . " =\n\n";
+			
+			/**
+			 * Allows text to be included directly after the RBP_Support version. Sorry, no one gets to easily place data before it :P
+			 * Granted, this is a Filter. Adding before it is trivial if you must. Just please don't.
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_start', $output );
+			
+			/**
+			 * Allows text to be included directly before the Installed Plugins Header
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugins_header', $output );
 
 			// Installed Plugins
 			$installed_plugins = get_plugins();
@@ -929,14 +964,68 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			if ( $installed_plugins ) {
 
 				$output .= "= Installed Plugins =\n";
+				
+				/**
+				 * Allows text to be included directly before the Installed Plugins List
+				 * 
+				 * @param		string Debug File Output
+				 *                       
+				 * @since		{{VERSION}}
+				 * @return		string Debug File Output
+				 */
+				$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugins_list', $output );
 
 				foreach ( $installed_plugins as $id => $plugin ) {
+					
+					/**
+					 * Allows additional information about a Installed Plugin to be inserted before it in the Debug File
+					 * 
+					 * @param		string Debug File Output
+					 * @param		array  Plugin Data Array
+					 * @param		string Plugin Path
+					 *                       
+					 * @since		{{VERSION}}
+					 * @return		string Debug File Output
+					 */
+					$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugin', $output, $plugin, $id );
 
 					$output .= "$plugin[Name]: $plugin[Version]\n";
+					
+					/**
+					 * Allows additional information about a Installed Plugin to be inserted after it in the Debug File
+					 * 
+					 * @param		string Debug File Output
+					 * @param		array  Plugin Data Array
+					 * @param		string Plugin Path
+					 *                       
+					 * @since		{{VERSION}}
+					 * @return		string Debug File Output
+					 */
+					$output = apply_filters( $this->prefix . '_debug_file_after_installed_plugin', $output, $plugin, $id );
 					
 				}
 				
 			}
+			
+			/**
+			 * Allows text to be included directly after the Installed Plugins List
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_after_installed_plugins_list', $output );
+			
+			/**
+			 * Allows text to be included directly before the Active Plugins Header
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_before_active_plugins_header', $output );
 
 			// Active Plugins
 			$active_plugins = get_option( 'active_plugins' );
@@ -944,6 +1033,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			if ( $active_plugins ) {
 
 				$output .= "\n= Active Plugins =\n";
+				
+				$output = apply_filters( $this->prefix . '_debug_file_before_active_plugins_list', $output );
 
 				foreach ( $active_plugins as $id ) {
 
@@ -953,10 +1044,50 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					
 				}
 				
+				/**
+				 * Allows text to be included directly before the Active Plugins List
+				 * 
+				 * @param		string Debug File Output
+				 *                       
+				 * @since		{{VERSION}}
+				 * @return		string Debug File Output
+				 */
+				$output = apply_filters( $this->prefix . '_debug_file_after_active_plugins_list', $output );
+				
 			}
+			
+			/**
+			 * Allows text to be included directly after the Active Plugins List
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_after_active_plugins_list', $output );
+			
+			/**
+			 * Allows text to be included directly before the Active Theme Header
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_before_active_theme_header', $output );
 
 			// Theme
 			$output .= "\n= Active Theme =\n";
+			
+			/**
+			 * Allows text to be included directly before the Active Theme Data
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_before_active_theme_data', $output );
 
 			$theme = wp_get_theme();
 
@@ -972,17 +1103,61 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$output .= "Parent Theme: $template\n";
 				
 			}
+			
+			/**
+			 * Allows text to be included directly after the Active Theme Data
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_after_active_theme_data', $output );
+			
+			/**
+			 * Allows text to be included directly before the PHP Info Header
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_before_php_info_header', $output );
 
 			// PHP
 			$output .= "\n= PHP Info =\n";
+			
+			/**
+			 * Allows text to be included directly before the PHP Info List
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_before_php_info_list', $output );
+			
 			$output .= "Version: " . phpversion();
 			
 			/**
-			 * Allow additional information to be added to the Debug File
+			 * Allows text to be included directly after the PHP Info List
 			 * 
-			 * @since		1.0.0
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
 			 */
-			$output = apply_filters( $plugin_prefix . '_debug_file', $output );
+			$output = apply_filters( $this->prefix . '_debug_file_after_php_info_list', $output );
+			
+			/**
+			 * Allows text to be included at the end of the Debug File
+			 * 
+			 * @param		string Debug File Output
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		string Debug File Output
+			 */
+			$output = apply_filters( $this->prefix . '_debug_file_end', $output );
 
 			return $output;
 			
@@ -1031,7 +1206,24 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			else {
 
 				// Grab Debug Info as a String
-				$debug_file = self::debug_file( $this->prefix );
+				$debug_file = $this->debug_file();
+				
+				// Prepend Message with RBP_Support Version and Plugin Name
+				$message_prefix = "Sent via RBP_Support v" . $this->version . "\n" . 
+					"Plugin: " . $this->plugin_data['Name'] . "\n\n";
+				
+				/**
+				 * Prepend some information before the Message Content
+				 * This allows HelpScout to auto-tag and auto-assign Tickets
+				 * 
+				 * @param		string Debug File Output
+				 *                       
+				 * @since		{{VERSION}}
+				 * @return		string Debug File Output
+				 */
+				$message_prefix = apply_filters( $this->prefix . '_support_email_before_message', $message_prefix );
+				
+				$message = $message_prefix . $message;
 				
 				// This is where things start to look confusing.
 				// Emails with Attachments are Multipart with a "Boundary" between each part. This boundary goes in the Message Body.
