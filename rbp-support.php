@@ -896,7 +896,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				case 'expired':
 					$message = sprintf(
 						__( 'Your license key expired on %s.', 'rbp-support' ),
-						date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
+						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 					);
 					break;
 				case 'revoked':
