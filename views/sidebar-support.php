@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || die();
 		 * HTML doesn't let you nest <form>s (It will strip them out), so by using a <div> we can use some creative JavaScript to conditionally validate this subform
 		 * See ./build/js/admin/form/submit.js for more details
 		 * 
-		 * If this is a <form> the JS should still function as it merely checks the Name Attribute of the Submit Button
+		 * If this is a <form>, the JS Validation is not used. Instead the fields use regular ol' `required` validation
 		 * 
 		 * @since		1.0.0
 		 * @return		string Tag
@@ -43,21 +43,21 @@ defined( 'ABSPATH' ) || die();
 		
 		?>
 
-		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form<?php echo ( $form_tag == 'div' ) ? ' javascript-interrupt' : ''; ?>" data-prefix="<?php echo $plugin_prefix; ?>">
+		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form<?php echo ( $form_tag == 'div' ) ? ' javascript-interrupt' : ''; ?>"<?php echo ( $form_tag == 'div' ) ? ' data-prefix="' . $plugin_prefix . '"' : ' method="post"'; ?>>
 
 			<?php wp_nonce_field( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ); ?>
 
 			<p>
 				<label>
 					<input type="text" name="support_subject" class="form-field required"
-						   placeholder="<?php _e( 'Subject', 'rbp-support' ); ?>"/>
+						   placeholder="<?php _e( 'Subject', 'rbp-support' ); ?>"<?php echo ( $form_tag == 'form' ) ? ' required' : ''; ?>/>
 				</label>
 			</p>
 
 			<p>
 				<label>
 						<textarea name="support_message" class="form-field required" rows="5"
-								  placeholder="<?php _e( 'Message', 'rbp-support' ); ?>"></textarea>
+								  placeholder="<?php _e( 'Message', 'rbp-support' ); ?>"<?php echo ( $form_tag == 'form' ) ? ' required' : ''; ?>></textarea>
 				</label>
 			</p>
 
