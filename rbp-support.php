@@ -160,7 +160,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			/**
 			 * Allows the "Setting" for Settings Errors to be overriden
-			 * EDD in particular is picky about this and it needs to be 'edd-notices', so this can be very useful
+			 * EDD in particular requires the "Setting" to be 'edd-notices', so this can be very useful
 			 *
 			 * @since		1.0.0
 			 * @return		string
