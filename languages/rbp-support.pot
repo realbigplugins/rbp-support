@@ -14,67 +14,67 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: rbp-support.php:127
+#: rbp-support.php:138
 msgid "Missing Plugin File Path in RBP_Support Constructor"
 msgstr ""
 
-#: rbp-support.php:450
+#: rbp-support.php:470
 msgid "This field is required"
 msgstr ""
 
-#: rbp-support.php:679
+#: rbp-support.php:699
 msgid "Register your copy of %s now to receive automatic updates and support."
 msgstr ""
 
-#: rbp-support.php:687
+#: rbp-support.php:707
 msgid " If you do not have a license key, you can %1$spurchase one%2$s."
 msgstr ""
 
-#: rbp-support.php:764
+#: rbp-support.php:784
 msgid "%s license successfully activated."
 msgstr ""
 
-#: rbp-support.php:835
+#: rbp-support.php:855
 msgid "Error: could not deactivate the license"
 msgstr ""
 
-#: rbp-support.php:850
+#: rbp-support.php:870
 msgid "%s license successfully deactivated."
 msgstr ""
 
-#: rbp-support.php:878
+#: rbp-support.php:898
 msgid "Your license key expired on %s."
 msgstr ""
 
-#: rbp-support.php:883
+#: rbp-support.php:903
 msgid "Your license key has been disabled."
 msgstr ""
 
-#: rbp-support.php:886
+#: rbp-support.php:906
 msgid "Invalid license."
 msgstr ""
 
-#: rbp-support.php:890
+#: rbp-support.php:910
 msgid "Your license is not active for this URL."
 msgstr ""
 
-#: rbp-support.php:893
+#: rbp-support.php:913
 msgid "This appears to be an invalid license key for %s."
 msgstr ""
 
-#: rbp-support.php:896
+#: rbp-support.php:916
 msgid "Your license key has reached its activation limit."
 msgstr ""
 
-#: rbp-support.php:899
+#: rbp-support.php:919
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: rbp-support.php:1071
+#: rbp-support.php:1272
 msgid "Support message succesfully sent!"
 msgstr ""
 
-#: rbp-support.php:1072
+#: rbp-support.php:1273
 msgid "Could not send support message."
 msgstr ""
 

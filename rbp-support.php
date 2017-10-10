@@ -20,7 +20,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * This is used in the Support Email to help us know which version of RBP_Support is being used in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version.
 		 * See https://github.com/realbigplugins/rbp-support/issues/5
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.0.1
 		 *
 		 * @var			string
 		 */
@@ -153,7 +153,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * WARNING: This is a global Filter
 			 * You should only apply this directly before creating your RBP_Support object and should remove it immediately after
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string
 			 */
 			$this->prefix = apply_filters( 'rbp_support_prefix', $this->prefix );
@@ -943,7 +943,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_start', $output );
@@ -953,7 +953,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugins_header', $output );
@@ -970,7 +970,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * 
 				 * @param		string Debug File Output
 				 *                       
-				 * @since		{{VERSION}}
+				 * @since		1.0.1
 				 * @return		string Debug File Output
 				 */
 				$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugins_list', $output );
@@ -984,7 +984,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		{{VERSION}}
+					 * @since		1.0.1
 					 * @return		string Debug File Output
 					 */
 					$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugin', $output, $plugin, $id );
@@ -998,7 +998,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		{{VERSION}}
+					 * @since		1.0.1
 					 * @return		string Debug File Output
 					 */
 					$output = apply_filters( $this->prefix . '_debug_file_after_installed_plugin', $output, $plugin, $id );
@@ -1012,7 +1012,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_after_installed_plugins_list', $output );
@@ -1022,7 +1022,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_before_active_plugins_header', $output );
@@ -1049,7 +1049,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * 
 				 * @param		string Debug File Output
 				 *                       
-				 * @since		{{VERSION}}
+				 * @since		1.0.1
 				 * @return		string Debug File Output
 				 */
 				$output = apply_filters( $this->prefix . '_debug_file_after_active_plugins_list', $output );
@@ -1061,7 +1061,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_after_active_plugins_list', $output );
@@ -1071,7 +1071,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_before_active_theme_header', $output );
@@ -1084,7 +1084,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_before_active_theme_data', $output );
@@ -1109,7 +1109,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_after_active_theme_data', $output );
@@ -1119,7 +1119,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_before_php_info_header', $output );
@@ -1132,7 +1132,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_before_php_info_list', $output );
@@ -1144,7 +1144,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_after_php_info_list', $output );
@@ -1154,7 +1154,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * 
 			 * @param		string Debug File Output
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.1
 			 * @return		string Debug File Output
 			 */
 			$output = apply_filters( $this->prefix . '_debug_file_end', $output );
@@ -1218,7 +1218,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * 
 				 * @param		string Debug File Output
 				 *                       
-				 * @since		{{VERSION}}
+				 * @since		1.0.1
 				 * @return		string Debug File Output
 				 */
 				$message_prefix = apply_filters( $this->prefix . '_support_email_before_message', $message_prefix );
