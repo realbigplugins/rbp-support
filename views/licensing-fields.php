@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die();
 
 ?>
 
-<div class="rbp-support-licensing <?php echo $license_status != 'valid' ? 'licensing-inactive' : ''; ?>">
+<div class="rbp-support-licensing<?php echo ( $license_status !== 'valid' ) ? ' licensing-inactive' : ''; ?>">
 
 	<?php wp_nonce_field( $plugin_prefix . '_license', $plugin_prefix . '_license' ); ?>
 
