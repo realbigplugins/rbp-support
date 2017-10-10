@@ -24,7 +24,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		public $version = '1.0.0';
+		private $version = '1.0.0';
 		
 		/**
 		 * The RBP Store URL
@@ -204,6 +204,20 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
 			add_action( 'admin_init', array( $this, 'register_scripts' ) );
+			
+		}
+		
+		/**
+		 * This returns the version of the RBP_Support Class
+		 * This is helpful for debugging as the version you included in your Plugin may not necessarily be the one being loaded if multiple Plugins are utilizing it
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		string Version Number
+		 */
+		public function get_version() {
+			
+			return $this->version;
 			
 		}
 		
@@ -935,7 +949,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function debug_file() {
 
-			$output = "= RBP_Support v" . $this->version . " =\n\n";
+			$output = "= RBP_Support v" . $this->get_version() . " =\n\n";
 			
 			/**
 			 * Allows text to be included directly after the RBP_Support version. Sorry, no one gets to easily place data before it :P
@@ -1209,7 +1223,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$debug_file = $this->debug_file();
 				
 				// Prepend Message with RBP_Support Version and Plugin Name
-				$message_prefix = "Sent via RBP_Support v" . $this->version . "\n" . 
+				$message_prefix = "Sent via RBP_Support v" . $this->get_version() . "\n" . 
 					"Plugin: " . $this->plugin_data['Name'] . "\n\n";
 				
 				/**
