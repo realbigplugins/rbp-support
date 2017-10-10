@@ -425,7 +425,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Register Scripts
 		 * 
 		 * @access		public
-		 * @since		1.0.0}
+		 * @since		1.0.0
 		 * @return		void
 		 */
 		public function register_scripts() {
