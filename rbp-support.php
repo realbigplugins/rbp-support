@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * This Constant gets defined the first time RBP_Support gets loaded
  * This is useful in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version. This can assist in pinning down the source of an outdated version.
  * 
- * @since		{{VERSION}}
+ * @since		1.0.2
  * 
  * @var			string
  */
@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.0.0';
+		private $version = '1.0.2';
 		
 		/**
 		 * The RBP Store URL
@@ -226,7 +226,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * This is helpful for debugging as the version you included in your Plugin may not necessarily be the one being loaded if multiple Plugins are utilizing it
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.2
 		 * @return		string Version Number
 		 */
 		public function get_version() {
