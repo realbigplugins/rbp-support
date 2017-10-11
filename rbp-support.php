@@ -241,7 +241,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * 
 		 * @return		string File Path to loaded copy of RBP_Support
 		 */
-		public function get_source() {
+		public function get_file_path() {
 			
 			if ( ! defined( 'RBP_SUPPORT_INCLUDED_FROM' ) ) {
 				return __( 'The RBP_SUPPORT_INCLUDED_FROM Constant is undefined. This should never happen.', 'rbp-support' );
@@ -979,7 +979,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function debug_file() {
 
-			$output = "= RBP_Support v" . $this->get_version() . " =\n\n";
+			$output = "= RBP_Support v" . $this->get_version() . " =\n";
+			$output .= "Loaded from: " . $this->get_file_path() . " =\n\n";
 			
 			/**
 			 * Allows text to be included directly after the RBP_Support version. Sorry, no one gets to easily place data before it :P
