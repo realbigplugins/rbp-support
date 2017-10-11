@@ -11,6 +11,20 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * This Constant gets defined the first time RBP_Support gets loaded
+ * This is useful in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version. This can assist in pinning down the source of an outdated version.
+ * 
+ * @since		{{VERSION}}
+ * 
+ * @var			string
+ */
+if ( ! defined( 'RBP_SUPPORT_LOADED_FROM' ) ) {
+
+	define( 'RBP_SUPPORT_LOADED_FROM', __FILE__ );
+
+}
+
 if ( ! class_exists( 'RBP_Support' ) ) {
 	
 	class RBP_Support {
@@ -218,6 +232,22 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		public function get_version() {
 			
 			return $this->version;
+			
+		}
+		
+		/**
+		 * Returns the File Path to the loaded copy of RBP_Support
+		 * This is useful in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version. This can assist in pinning down the source of an outdated version.
+		 * 
+		 * @return		string File Path to loaded copy of RBP_Support
+		 */
+		public function get_source() {
+			
+			if ( ! defined( 'RBP_SUPPORT_INCLUDED_FROM' ) ) {
+				return __( 'The RBP_SUPPORT_INCLUDED_FROM Constant is undefined. This should never happen.', 'rbp-support' );
+			}
+			
+			return RBP_SUPPORT_INCLUDED_FROM;
 			
 		}
 		
