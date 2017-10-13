@@ -17,11 +17,11 @@
 		
 		$( 'form' ).on( 'submit', function( event ) {
 			
-			var $submitButton = $( this ).find( 'button[type="submit"]' );
+			var $submitButton = $( '.rbp-support-form.javascript-interrupt' ).find( 'button[type="submit"]' );
 			
 			// Check to see if it is our Submit Button
 			// A lot of our plugins tie into other systems (EDD, PSP, etc.) which often means we're creating something inside of another <form> with little options to place outside of it
-			if ( $submitButton.attr( 'name' ).indexOf( '_support_submit' ) > -1 ) {
+			if ( $( document.activeElement ).attr( 'name' ).indexOf( '_support_submit' ) > -1 ) {
 				
 				$submitButton.attr( 'disabled', true );
 				
