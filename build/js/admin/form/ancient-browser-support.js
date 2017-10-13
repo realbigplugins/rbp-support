@@ -1,6 +1,6 @@
 if ( ! HTMLFormElement.prototype.reportValidity ) {
 	
-	if ( jQuery( '.rbp-support-form.javascript-interrupt' ).length > 0 ) {
+	if ( jQuery( '.rbp-support-form' ).length > 0 ) {
 
 		/**
 		 * Wait, people use IE and Safari outside of downloading Chrome?
@@ -13,11 +13,11 @@ if ( ! HTMLFormElement.prototype.reportValidity ) {
 			var $form;
 			
 			// This allows us to properly find our form whether it is in a <form> or a <div>
-			if ( jQuery( this ).hasClass( 'rbp-support-form.javascript-interrupt' ) ) {
+			if ( jQuery( this ).hasClass( 'rbp-support-form' ) ) {
 				$form = jQuery( this );
 			}
 			else {
-				$form = jQuery( this ).find( '.rbp-support-form.javascript-interrupt' );
+				$form = jQuery( this ).find( '.rbp-support-form' );
 			}
 
 			var prefix = $form.data( 'prefix' ),

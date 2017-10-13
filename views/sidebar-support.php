@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || die();
 		
 		?>
 
-		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form<?php echo ( $form_tag == 'div' ) ? ' javascript-interrupt' : ''; ?>"<?php echo ( $form_tag == 'div' ) ? ' data-prefix="' . $plugin_prefix . '"' : ' method="post"'; ?>>
+		<<?php echo $form_tag; ?> id="<?php echo $plugin_prefix; ?>-settings-sidebar-support-form" class="rbp-support-form<?php echo ( $form_tag == 'div' ) ? ' javascript-interrupt' : ''; ?>"<?php echo ( $form_tag == 'form' ) ? ' method="post"' : ''; ?> data-prefix="<?php echo $plugin_prefix; ?>">
 
 			<?php wp_nonce_field( $plugin_prefix . '_send_support_email', $plugin_prefix . '_support_nonce' ); ?>
 
@@ -65,7 +65,20 @@ defined( 'ABSPATH' ) || die();
 			</p>
 
 			<p>
-				<input type="submit" name="<?php echo $plugin_prefix; ?>_support_submit" class="button" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
+				
+				<input type="submit" name="<?php echo $plugin_prefix; ?>_rbp_support_submit" class="button" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
+				
+				<?php
+				/**
+				 * This allows submission to happen despite disabling our Submit Button
+				 * This gets passed through and lets our code know that the submission was successful and to fire off the email
+				 * This is _mostly_ necessary for the <div> version of the form, but the <form> version uses it too 
+				 * 
+				 * @since		{{VERSION}}
+				 */
+				?>
+				<input type="hidden" name="<?php echo $plugin_prefix; ?>_rbp_support_submit" class="submit-hidden" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
+				
 			</p>
 
 		</<?php echo $form_tag; ?>>

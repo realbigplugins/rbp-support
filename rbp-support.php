@@ -204,7 +204,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			
-			if ( isset( $_REQUEST[ $this->prefix . '_support_submit' ] ) ) {
+			if ( isset( $_REQUEST[ $this->prefix . '_rbp_support_submit' ] ) ) {
 				
 				add_action( 'admin_init', array( $this, 'send_support_email' ) );
 				

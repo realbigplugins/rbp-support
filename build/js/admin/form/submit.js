@@ -7,9 +7,20 @@
 		// Only apply to <form> variant
 		$( 'form.rbp-support-form' ).on( 'submit', function( event ) {
 			
-			var $submitButton = $( this ).find( 'button[type="submit"]' );
+			var $form = $( this );
 			
-			$submitButton.attr( 'disabled', true );
+			var $submitButton = $form.find( 'input[type="submit"]' );
+			
+			$submitButton.prop( 'disabled', true );
+			
+			$form[0].reportValidity(); // Report Validity via HTML5 stuff
+			
+			if ( $form[0].checkValidity() ) { 
+				
+				// Allow submission to be detected properly by PHP
+				$form.find( '.submit-hidden' ).attr( 'disabled', false );
+				
+			}
 			
 		} );
 		
@@ -17,11 +28,13 @@
 		
 		$( 'form' ).on( 'submit', function( event ) {
 			
-			var $submitButton = $( '.rbp-support-form.javascript-interrupt' ).find( 'button[type="submit"]' );
+			var $submitButton = $( '.rbp-support-form.javascript-interrupt' ).find( 'input[type="submit"]' );
+			
+			console.log( $submitButton );
 			
 			// Check to see if it is our Submit Button
 			// A lot of our plugins tie into other systems (EDD, PSP, etc.) which often means we're creating something inside of another <form> with little options to place outside of it
-			if ( $( document.activeElement ).attr( 'name' ).indexOf( '_support_submit' ) > -1 ) {
+			if ( $( document.activeElement ).attr( 'name' ).indexOf( '_rbp_support_submit' ) > -1 ) {
 				
 				$submitButton.attr( 'disabled', true );
 				
@@ -53,6 +66,12 @@
 						$submitButton.attr( 'disabled', false );
 
 					}, 2000 );
+					
+				}
+				else {
+					
+					// Allow submission to be detected properly by PHP
+					$form.find( '.submit-hidden' ).attr( 'disabled', false );
 					
 				}
 				
