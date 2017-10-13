@@ -74,7 +74,7 @@ defined( 'ABSPATH' ) || die();
 				 * This gets passed through and lets our code know that the submission was successful and to fire off the email
 				 * This is _mostly_ necessary for the <div> version of the form, but the <form> version uses it too 
 				 * 
-				 * @since		{{VERSION}}
+				 * @since		1.0.3
 				 */
 				?>
 				<input type="hidden" name="<?php echo $plugin_prefix; ?>_rbp_support_submit" class="submit-hidden" value="<?php _e( 'Send', 'rbp-support' ); ?>" />

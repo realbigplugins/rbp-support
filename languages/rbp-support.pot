@@ -114,26 +114,26 @@ msgstr ""
 msgid "Save and Activate"
 msgstr ""
 
-#: views/sidebar-support-disabled.php:20, views/sidebar-support.php:22
-msgid "Need some help?"
+#: views/sidebar-support-disabled.php:23, views/sidebar-support.php:25
+msgid "Need some help with %s?"
 msgstr ""
 
-#: views/sidebar-support-disabled.php:26
+#: views/sidebar-support-disabled.php:29
 msgid "Premium support is disabled. Please register your product and activate your license for this website to enable."
 msgstr ""
 
-#: views/sidebar-support.php:53
+#: views/sidebar-support.php:56
 msgid "Subject"
 msgstr ""
 
-#: views/sidebar-support.php:60
+#: views/sidebar-support.php:63
 msgid "Message"
 msgstr ""
 
-#: views/sidebar-support.php:65
+#: views/sidebar-support.php:69, views/sidebar-support.php:80
 msgid "Send"
 msgstr ""
 
-#: views/sidebar-support.php:76
+#: views/sidebar-support.php:92
 msgid "We make other cool plugins and share updates and special offers to anyone who %ssubscribes here%s."
 msgstr ""
