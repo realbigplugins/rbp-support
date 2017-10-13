@@ -3,6 +3,9 @@
  * Outputs the sidebar support disabled section.
  *
  * @since 1.0.0
+ * 
+ * @var string $plugin_prefix
+ * @var string $plugin_name
  *
  * @package rbp-support
  * @subpackage rbp-support/views
@@ -17,7 +20,7 @@ defined( 'ABSPATH' ) || die();
 		<p>
 			<span class="dashicons dashicons-editor-help"></span>
 			<strong>
-				<?php _e( 'Need some help?', 'rbp-support' ); ?>
+				<?php printf( __( 'Need some help with %s?', 'rbp-support' ), $plugin_name ); ?>
 			</strong>
 		</p>
 

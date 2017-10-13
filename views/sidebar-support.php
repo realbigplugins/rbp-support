@@ -4,6 +4,9 @@
  * The <form> _must_ have a data attribute named "prefix" with the Plugin Prefix for this to work!
  *
  * @since 1.0.0
+ * 
+ * @var string $plugin_prefix
+ * @var string $plugin_name
  *
  * @package rpb-support
  * @subpackage rpb-support/views
@@ -19,7 +22,7 @@ defined( 'ABSPATH' ) || die();
 		<p>
 			<span class="dashicons dashicons-editor-help"></span>
 			<strong>
-				<?php _e( 'Need some help?', 'rbp-support' ); ?>
+				<?php printf( __( 'Need some help with %s?', 'rbp-support' ), $plugin_name ); ?>
 			</strong>
 		</p>
 		
