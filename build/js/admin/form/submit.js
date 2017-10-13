@@ -7,8 +7,6 @@
 		// Only apply to <form> variant
 		$( 'form.rbp-support-form' ).on( 'submit', function( event ) {
 			
-			// For some dumb reason, if we use document.activeElement here it prevents the form submission
-			// Not in the JavaScript validation version though
 			var $submitButton = $( this ).find( 'button[type="submit"]' );
 			
 			$submitButton.attr( 'disabled', true );
@@ -19,7 +17,7 @@
 		
 		$( 'form' ).on( 'submit', function( event ) {
 			
-			var $submitButton = $( document.activeElement );
+			var $submitButton = $( this ).find( 'button[type="submit"]' );
 			
 			// Check to see if it is our Submit Button
 			// A lot of our plugins tie into other systems (EDD, PSP, etc.) which often means we're creating something inside of another <form> with little options to place outside of it
