@@ -17,8 +17,18 @@
 
 	}
 	
+	.form-field {
+		width: 100%;
+	}
+	
 	.validation-error {
 		color: #D8000C;
+	}
+	
+	input[type="submit"] {
+		
+		width: 100%;
+		
 	}
 
 }
