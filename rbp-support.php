@@ -179,7 +179,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.0
 			 * @return		string
 			 */
-			$this->settings_error = apply_filters( $this->prefix . '_settings_error', $this->prefix . '_license_key' );
+			$this->settings_error = apply_filters( $this->prefix . '_settings_error', $this->prefix . '_support' );
 			
 			$this->license_key = $this->retrieve_license_key();
 			
@@ -571,7 +571,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$license_data
 				);
 				
-				add_settings_error( $this->prefix, '_license_key', $message, 'error ' . $this->prefix . '-notice' );
+				add_settings_error( $this->settings_error, $message, 'error ' . $this->prefix . '-notice' );
 				
 			}
 			
