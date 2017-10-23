@@ -306,20 +306,20 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			if ( $this->get_license_status() == 'valid' ) {
 				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
-					include_once $this->plugin_dir . 'rbp-support/sidebar-support.php';
+					include $this->plugin_dir . 'rbp-support/sidebar-support.php';
 				}
 				else {
-					include_once __DIR__ . '/views/sidebar-support.php';
+					include __DIR__ . '/views/sidebar-support.php';
 				}
 				
 			}
 			else {
 				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php' ) ) {
-					include_once $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php';
+					include $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php';
 				}
 				else {
-					include_once __DIR__ . '/views/sidebar-support-disabled.php';
+					include __DIR__ . '/views/sidebar-support-disabled.php';
 				}
 				
 			}
@@ -344,10 +344,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$plugin_name = $this->plugin_data['Name'];
 				
 			if ( file_exists( $this->plugin_dir . 'rbp-support/licensing-fields.php' ) ) {
-				include_once $this->plugin_dir . 'rbp-support/licensing-fields.php';
+				include $this->plugin_dir . 'rbp-support/licensing-fields.php';
 			}
 			else {
-				include_once __DIR__ . '/views/licensing-fields.php';
+				include __DIR__ . '/views/licensing-fields.php';
 			}
 			
 		}
