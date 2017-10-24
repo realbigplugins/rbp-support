@@ -559,15 +559,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				return false;
 			}
 			
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			$license_data = json_decode( wp_remote_retrieve_body( $response ), true );
 			
 			set_transient( $this->prefix . '_license_data', $license_data, DAY_IN_SECONDS );
 			
-			if ( ! $license_data->success ||
-				$license_data->license !== 'valid' ) {
+			if ( ! $license_data['success'] ||
+				$license_data['license'] !== 'valid' ) {
 				
 				$message = $this->get_license_error_message(
-					! $license_data->success ? $license_data->error : $license_data->license,
+					! $license_data['success'] ? $license_data['error'] : $license_data['license'],
 					$license_data
 				);
 				
@@ -575,7 +575,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			
-			$license_validity = isset( $license_data->license ) ? $license_data->license : 'invalid';
+			$license_validity = isset( $license_data['license'] ) ? $license_data['license'] : 'invalid';
 			
 			set_transient( $this->prefix . '_license_validity', $license_validity, DAY_IN_SECONDS );
 			
@@ -640,7 +640,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * 
 		 * @access		private
 		 * @since		1.0.0
-		 * @return array License Data
+		 * @return array|bool License Data or FALSE on error.
 		 */
 		private function retrieve_license_data() {
 
@@ -926,7 +926,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Grabs the appropriate Error Message for each License Error
 		 * 
 		 * @param		string $error_code   Type of Error
-		 * @param		object $license_data License Data response object from EDD API
+		 * @param		array $license_data License Data response object from EDD API
 		 * @param		array  $plugin_data  get_plugin_data( <your_plugin_file>, false );
 		 *                                                                         
 		 * @access		public
@@ -940,7 +940,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				case 'expired':
 					$message = sprintf(
 						__( 'Your license key expired on %s.', 'rbp-support' ),
-						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
+						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data['expires'], current_time( 'timestamp' ) ) )
 					);
 					break;
 				case 'revoked':
