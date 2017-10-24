@@ -340,8 +340,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$plugin_prefix = $this->prefix;
 			$license_status = $this->get_license_status();
 			
-			$license_key = $this->get_license_key();
+			$license_key = '';
 			$plugin_name = $this->plugin_data['Name'];
+			
+			// Only grab the License Key to output on the Form if we haven't just deleted it
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
+				   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'delete' ) === false ) {
+				$license_key = $this->get_license_key();
+			}
 				
 			if ( file_exists( $this->plugin_dir . 'rbp-support/licensing-fields.php' ) ) {
 				include $this->plugin_dir . 'rbp-support/licensing-fields.php';
