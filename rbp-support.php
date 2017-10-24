@@ -1304,7 +1304,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$subject,
 					$message_multipart,
 					array(
-						"From: $license_data->customer_name <$license_data->customer_email>",
+						"From: $license_data[customer_name] <$license_data[customer_email]>",
 						"Content-Type: multipart/mixed boundary=\"{$mime_boundary}\"", // Here we define the Boundary within the primary Email Header
 					),
 					array(
