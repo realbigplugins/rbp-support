@@ -176,19 +176,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
 				
+				// Save always tries to activate, delete always tries to deactivate
+				// Falling through to the next case is intentional
 				switch ( $_REQUEST[ $this->prefix . '_license_action' ] ) {
-					case 'activate':
 					case 'save':
+						add_action( 'admin_init', array( $this, 'save_license' ) );
+					case 'activate':
 						add_action( 'admin_init', array( $this, 'activate_license' ) );
-						break;
-					case 'deactivate':
-						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 					case 'delete':
 						add_action( 'admin_init', array( $this, 'delete_license' ) );
-						break;
-					case 'delete_deactivate':
-						add_action( 'admin_init', array( $this, 'delete_license' ) );
+					case 'deactivate':
 						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 				}
@@ -547,7 +545,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$license_data['license'] !== 'valid' ) {
 				
 				$message = $this->get_license_error_message(
-					! $license_data['success'] ? $license_data['error'] : $license_data['license'],
+					! $license_data['success'] && isset( $license_data['error'] ) ? $license_data['error'] : $license_data['license'],
 					$license_data
 				);
 				
@@ -717,6 +715,27 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
+		 * Saves the License Key
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function save_license() {
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
+			   ) {
+				return;
+			}
+			
+			$key = $this->get_license_key();
+			
+			update_option( $this->prefix . '_license_key', $key );
+			
+		}
+		
+		/**
 		 * Activates the License Key
 		 * 
 		 * @access		public
@@ -780,7 +799,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'updated ' . $this->prefix . '-notice'
 				);
 				
-				update_option( $this->prefix . '_license_key', $key );
 				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
 				
 			}
@@ -795,6 +813,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @return		void
 		 */
 		public function delete_license() {
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
+			   ) {
+				return;
+			}
 			
 			delete_option( $this->prefix . '_license_key' );
 			

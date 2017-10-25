@@ -58,7 +58,7 @@ defined( 'ABSPATH' ) || die();
 
 		<?php if ( $license_validity && $license_validity == 'valid' ) : ?>
 
-			<button class="button" id="<?php echo $plugin_prefix; ?>_license_delete" name="<?php echo $plugin_prefix; ?>_license_action" value="delete_deactivate">
+			<button class="button" id="<?php echo $plugin_prefix; ?>_license_delete" name="<?php echo $plugin_prefix; ?>_license_action" value="delete">
 				<?php _e( 'Delete and Deactivate', 'rbp-support' ); ?>
 			</button>
 
