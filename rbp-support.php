@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.0.3';
+		private $version = '1.0.4';
 		
 		/**
 		 * The RBP Store URL
@@ -993,7 +993,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly after the RBP_Support version. Sorry, no one gets to place data before it :P
 			 *      
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_start' );
@@ -1001,7 +1001,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the Installed Plugins Header
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_installed_plugins_header' );
@@ -1016,7 +1016,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				/**
 				 * Allows text to be included directly before the Installed Plugins List
 				 *                       
-				 * @since		{{VERSION}}
+				 * @since		1.0.4
 				 * @return		void
 				 */
 				do_action( $this->prefix . '_debug_file_before_installed_plugins_list' );
@@ -1029,7 +1029,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		{{VERSION}}
+					 * @since		1.0.4
 					 * @return		void
 					 */
 					do_action( $this->prefix . '_debug_file_before_installed_plugin', $plugin, $id );
@@ -1042,7 +1042,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		{{VERSION}}
+					 * @since		1.0.4
 					 * @return		void
 					 */
 					do_action( $this->prefix . '_debug_file_after_installed_plugin', $plugin, $id );
@@ -1054,7 +1054,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly after the Installed Plugins List
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_after_installed_plugins_list' );
@@ -1062,7 +1062,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the Active Plugins Header
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_active_plugins_header' );
@@ -1077,7 +1077,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				/**
 				 * Allows text to be included directly before the Active Plugins List
 				 *                       
-				 * @since		{{VERSION}}
+				 * @since		1.0.4
 				 * @return		void
 				 */
 				do_action( $this->prefix . '_debug_file_before_active_plugins_list' );
@@ -1093,7 +1093,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		{{VERSION}}
+					 * @since		1.0.4
 					 * @return		void
 					 */
 					do_action( $this->prefix . '_debug_file_before_active_plugin', $plugin, $plugin_path );
@@ -1113,7 +1113,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 						 * This seems to have something to do with some weird legacy support within LearnDash Core
 						 * However, in the off-chance that something similar happens with any other plugins, here's a fallback
 						 * 
-						 * @since		{{VERSION}}
+						 * @since		1.0.4
 						 */ 
 						echo "No Plugin Data found for Plugin at " . $plugin_path . "\n";
 						
@@ -1125,7 +1125,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		{{VERSION}}
+					 * @since		1.0.4
 					 * @return		void
 					 */
 					do_action( $this->prefix . '_debug_file_after_active_plugin', $plugin, $plugin_path );
@@ -1135,7 +1135,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				/**
 				 * Allows text to be included directly before the Active Plugins List
 				 *                       
-				 * @since		{{VERSION}}
+				 * @since		1.0.4
 				 * @return		void
 				 */
 				do_action( $this->prefix . '_debug_file_after_active_plugins_list' );
@@ -1145,7 +1145,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly after the Active Plugins List
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_after_active_plugins_list' );
@@ -1153,7 +1153,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the Active Theme Header
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_active_theme_header' );
@@ -1164,7 +1164,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the Active Theme Data
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_active_theme_data' );
@@ -1187,7 +1187,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly after the Active Theme Data
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_after_active_theme_data' );
@@ -1195,7 +1195,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the PHP Info Header
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_php_info_header' );
@@ -1206,7 +1206,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the PHP Info List
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_php_info_list' );
@@ -1216,7 +1216,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly after the PHP Info List
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_after_php_info_list' );
@@ -1224,7 +1224,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included at the end of the Debug File
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.0.4
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_end' );

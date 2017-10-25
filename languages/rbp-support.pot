@@ -22,63 +22,63 @@ msgstr ""
 msgid "The RBP_SUPPORT_LOADED_FROM Constant is undefined. This should never happen."
 msgstr ""
 
-#: rbp-support.php:514
+#: rbp-support.php:520
 msgid "This field is required"
 msgstr ""
 
-#: rbp-support.php:743
+#: rbp-support.php:749
 msgid "Register your copy of %s now to receive automatic updates and support."
 msgstr ""
 
-#: rbp-support.php:751
+#: rbp-support.php:757
 msgid " If you do not have a license key, you can %1$spurchase one%2$s."
 msgstr ""
 
-#: rbp-support.php:828
+#: rbp-support.php:834
 msgid "%s license successfully activated."
 msgstr ""
 
-#: rbp-support.php:899
+#: rbp-support.php:905
 msgid "Error: could not deactivate the license"
 msgstr ""
 
-#: rbp-support.php:914
+#: rbp-support.php:920
 msgid "%s license successfully deactivated."
 msgstr ""
 
-#: rbp-support.php:942
+#: rbp-support.php:948
 msgid "Your license key expired on %s."
 msgstr ""
 
-#: rbp-support.php:947
+#: rbp-support.php:953
 msgid "Your license key has been disabled."
 msgstr ""
 
-#: rbp-support.php:950
+#: rbp-support.php:956
 msgid "Invalid license."
 msgstr ""
 
-#: rbp-support.php:954
+#: rbp-support.php:960
 msgid "Your license is not active for this URL."
 msgstr ""
 
-#: rbp-support.php:957
+#: rbp-support.php:963
 msgid "This appears to be an invalid license key for %s."
 msgstr ""
 
-#: rbp-support.php:960
+#: rbp-support.php:966
 msgid "Your license key has reached its activation limit."
 msgstr ""
 
-#: rbp-support.php:963
+#: rbp-support.php:969
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: rbp-support.php:1317
+#: rbp-support.php:1344
 msgid "Support message succesfully sent!"
 msgstr ""
 
-#: rbp-support.php:1318
+#: rbp-support.php:1345
 msgid "Could not send support message."
 msgstr ""
 
