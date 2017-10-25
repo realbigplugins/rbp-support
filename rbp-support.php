@@ -984,75 +984,68 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @return		string base64 buffer
 		 */
 		public function debug_file() {
+			
+			ob_start();
 
-			$output = "= RBP_Support v" . $this->get_version() . " =\n";
-			$output .= "Loaded from: " . $this->get_file_path() . "\n\n";
+			echo "= RBP_Support v" . $this->get_version() . " =\n";
+			echo "Loaded from: " . $this->get_file_path() . "\n\n";
 			
 			/**
-			 * Allows text to be included directly after the RBP_Support version. Sorry, no one gets to easily place data before it :P
-			 * Granted, this is a Filter. Adding before it is trivial if you must. Just please don't.
-			 * 
-			 * @param		string Debug File Output
-			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * Allows text to be included directly after the RBP_Support version. Sorry, no one gets to place data before it :P
+			 *      
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_start', $output );
+			do_action( $this->prefix . '_debug_file_start' );
 			
 			/**
 			 * Allows text to be included directly before the Installed Plugins Header
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugins_header', $output );
+			do_action( $this->prefix . '_debug_file_before_installed_plugins_header' );
 
 			// Installed Plugins
 			$installed_plugins = get_plugins();
 
 			if ( $installed_plugins ) {
 
-				$output .= "= Installed Plugins =\n";
+				echo "= Installed Plugins =\n";
 				
 				/**
 				 * Allows text to be included directly before the Installed Plugins List
-				 * 
-				 * @param		string Debug File Output
 				 *                       
-				 * @since		1.0.1
-				 * @return		string Debug File Output
+				 * @since		{{VERSION}}
+				 * @return		void
 				 */
-				$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugins_list', $output );
+				do_action( $this->prefix . '_debug_file_before_installed_plugins_list' );
 
 				foreach ( $installed_plugins as $id => $plugin ) {
 					
 					/**
 					 * Allows additional information about a Installed Plugin to be inserted before it in the Debug File
 					 * 
-					 * @param		string Debug File Output
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		1.0.1
-					 * @return		string Debug File Output
+					 * @since		{{VERSION}}
+					 * @return		void
 					 */
-					$output = apply_filters( $this->prefix . '_debug_file_before_installed_plugin', $output, $plugin, $id );
+					do_action( $this->prefix . '_debug_file_before_installed_plugin', $plugin, $id );
 
-					$output .= "$plugin[Name]: $plugin[Version]\n";
+					echo "$plugin[Name]: $plugin[Version]\n";
 					
 					/**
 					 * Allows additional information about a Installed Plugin to be inserted after it in the Debug File
 					 * 
-					 * @param		string Debug File Output
 					 * @param		array  Plugin Data Array
 					 * @param		string Plugin Path
 					 *                       
-					 * @since		1.0.1
-					 * @return		string Debug File Output
+					 * @since		{{VERSION}}
+					 * @return		void
 					 */
-					$output = apply_filters( $this->prefix . '_debug_file_after_installed_plugin', $output, $plugin, $id );
+					do_action( $this->prefix . '_debug_file_after_installed_plugin', $plugin, $id );
 					
 				}
 				
@@ -1060,155 +1053,183 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			/**
 			 * Allows text to be included directly after the Installed Plugins List
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_after_installed_plugins_list', $output );
+			do_action( $this->prefix . '_debug_file_after_installed_plugins_list' );
 			
 			/**
 			 * Allows text to be included directly before the Active Plugins Header
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_before_active_plugins_header', $output );
+			do_action( $this->prefix . '_debug_file_before_active_plugins_header' );
 
 			// Active Plugins
 			$active_plugins = get_option( 'active_plugins' );
 
 			if ( $active_plugins ) {
 
-				$output .= "\n= Active Plugins =\n";
+				echo "\n= Active Plugins =\n";
 				
-				$output = apply_filters( $this->prefix . '_debug_file_before_active_plugins_list', $output );
+				/**
+				 * Allows text to be included directly before the Active Plugins List
+				 *                       
+				 * @since		{{VERSION}}
+				 * @return		void
+				 */
+				do_action( $this->prefix . '_debug_file_before_active_plugins_list' );
 
 				foreach ( $active_plugins as $id ) {
+					
+					$plugin_path = trailingslashit( WP_PLUGIN_DIR ) . $id;
+					$plugin = get_plugin_data( $plugin_path, false );
+					
+					/**
+					 * Allows additional information about an Active Plugin to be inserted before it in the Debug File
+					 * 
+					 * @param		array  Plugin Data Array
+					 * @param		string Plugin Path
+					 *                       
+					 * @since		{{VERSION}}
+					 * @return		void
+					 */
+					do_action( $this->prefix . '_debug_file_before_active_plugin', $plugin, $plugin_path );
+					
+					if ( isset( $plugin['Name'] ) && 
+					   isset( $plugin['Version'] ) && 
+					   ! empty( $plugin['Name'] ) && 
+					   ! empty( $plugin['Version'] ) ) {
 
-					$plugin = get_plugin_data( trailingslashit( WP_PLUGIN_DIR ) . $id );
-
-					$output .= "$plugin[Name]: $plugin[Version]\n";
+						echo "$plugin[Name]: $plugin[Version]\n";
+						
+					}
+					else {
+						
+						/**
+						 * LearnDash shows as two Plugins somehow, with one being at sfwd-lms/sfwd_lms.php and having no Plugin Data outside of what seems to be an incorrect Text Domain
+						 * This seems to have something to do with some weird legacy support within LearnDash Core
+						 * However, in the off-chance that something similar happens with any other plugins, here's a fallback
+						 * 
+						 * @since		{{VERSION}}
+						 */ 
+						echo "No Plugin Data found for Plugin at " . $plugin_path . "\n";
+						
+					}
+					
+					/**
+					 * Allows additional information about an Active Plugin to be inserted after it in the Debug File
+					 * 
+					 * @param		array  Plugin Data Array
+					 * @param		string Plugin Path
+					 *                       
+					 * @since		{{VERSION}}
+					 * @return		void
+					 */
+					do_action( $this->prefix . '_debug_file_after_active_plugin', $plugin, $plugin_path );
 					
 				}
 				
 				/**
 				 * Allows text to be included directly before the Active Plugins List
-				 * 
-				 * @param		string Debug File Output
 				 *                       
-				 * @since		1.0.1
-				 * @return		string Debug File Output
+				 * @since		{{VERSION}}
+				 * @return		void
 				 */
-				$output = apply_filters( $this->prefix . '_debug_file_after_active_plugins_list', $output );
+				do_action( $this->prefix . '_debug_file_after_active_plugins_list' );
 				
 			}
 			
 			/**
 			 * Allows text to be included directly after the Active Plugins List
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_after_active_plugins_list', $output );
+			do_action( $this->prefix . '_debug_file_after_active_plugins_list' );
 			
 			/**
 			 * Allows text to be included directly before the Active Theme Header
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_before_active_theme_header', $output );
+			do_action( $this->prefix . '_debug_file_before_active_theme_header' );
 
-			// Theme
-			$output .= "\n= Active Theme =\n";
+			// Active Theme
+			echo "\n= Active Theme =\n";
 			
 			/**
 			 * Allows text to be included directly before the Active Theme Data
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_before_active_theme_data', $output );
+			do_action( $this->prefix . '_debug_file_before_active_theme_data' );
 
 			$theme = wp_get_theme();
 
-			$output .= "Name: " . $theme->get( 'Name' ) . "\n";
-			$output .= "Version: " . $theme->get( 'Version' ) . "\n";
-			$output .= "Theme URI: " . $theme->get( 'ThemeURI' ) . "\n";
-			$output .= "Author URI: " . $theme->get( 'AuthorURI' ) . "\n";
+			echo "Name: " . $theme->get( 'Name' ) . "\n";
+			echo "Version: " . $theme->get( 'Version' ) . "\n";
+			echo "Theme URI: " . $theme->get( 'ThemeURI' ) . "\n";
+			echo "Author URI: " . $theme->get( 'AuthorURI' ) . "\n";
 
 			$template = $theme->get( 'Template' );
 
 			if ( $template ) {
 
-				$output .= "Parent Theme: $template\n";
+				echo "Parent Theme: $template\n";
 				
 			}
 			
 			/**
 			 * Allows text to be included directly after the Active Theme Data
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_after_active_theme_data', $output );
+			do_action( $this->prefix . '_debug_file_after_active_theme_data' );
 			
 			/**
 			 * Allows text to be included directly before the PHP Info Header
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_before_php_info_header', $output );
+			do_action( $this->prefix . '_debug_file_before_php_info_header' );
 
-			// PHP
-			$output .= "\n= PHP Info =\n";
+			// PHP Info
+			echo "\n= PHP Info =\n";
 			
 			/**
 			 * Allows text to be included directly before the PHP Info List
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_before_php_info_list', $output );
+			do_action( $this->prefix . '_debug_file_before_php_info_list' );
 			
-			$output .= "Version: " . phpversion();
+			echo "Version: " . phpversion();
 			
 			/**
 			 * Allows text to be included directly after the PHP Info List
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_after_php_info_list', $output );
+			do_action( $this->prefix . '_debug_file_after_php_info_list' );
 			
 			/**
 			 * Allows text to be included at the end of the Debug File
-			 * 
-			 * @param		string Debug File Output
 			 *                       
-			 * @since		1.0.1
-			 * @return		string Debug File Output
+			 * @since		{{VERSION}}
+			 * @return		void
 			 */
-			$output = apply_filters( $this->prefix . '_debug_file_end', $output );
+			do_action( $this->prefix . '_debug_file_end' );
+			
+			$output = ob_get_clean();
 
 			return $output;
 			
