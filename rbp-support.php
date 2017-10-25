@@ -212,11 +212,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			
-			// Set up plugin updates
-			add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
+			// Ensures all License Data is allowed to fully clear out from the database
+			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
+				   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'delete' ) === false ) {
+			
+				// Set up plugin updates
+				add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
 
-			// Check License Validity
-			add_action( 'admin_init', array( $this, 'get_license_validity') );
+				// Check License Validity
+				add_action( 'admin_init', array( $this, 'get_license_validity') );
+				
+			}
 			
 			// Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
 			add_action( 'admin_init', array( $this, 'register_scripts' ) );
@@ -814,9 +820,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-			$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
-			
-			set_transient( $this->prefix . '_license_status', $license_data->license, HOUR_IN_SECONDS );
 			
 			if ( $license_data->success === false ) {
 				
@@ -844,7 +847,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'updated ' . $this->prefix . '-notice'
 				);
 				
-				update_option( $this->prefix . '_license_status', $license_data->license );
+				$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
+				
+				update_option( $this->prefix . '_license_status', $status );
 				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
 				
 			}
@@ -861,6 +866,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		public function delete_license() {
 			
 			delete_option( $this->prefix . '_license_key' );
+			delete_option( $this->prefix . '_license_status' );
+			delete_transient( $this->prefix . '_license_data' );
+			delete_transient( $this->prefix . '_license_validity' );
 			
 			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) && 
 			   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'deactivate' ) === false ) {
