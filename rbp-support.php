@@ -86,6 +86,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		private $license_key;
 		
 		/**
+		 * The stored License Status for the License Key
+		 *
+		 * @since		1.0.0
+		 *
+		 * @var			string
+		 */
+		private $license_status;
+		
+		/**
 		 * The stored License Validity for the License Key
 		 *
 		 * @since		1.0.0
@@ -292,7 +301,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$plugin_name = $this->plugin_data['Name'];
 			
-			if ( $this->get_license_validity() == 'valid' ) {
+			if ( $this->get_license_status() == 'valid' ) {
 				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
 					include $this->plugin_dir . 'rbp-support/sidebar-support.php';
@@ -327,7 +336,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// Makes the variable make more sense within the context of the HTML
 			$plugin_prefix = $this->prefix;
-			$license_validity = $this->get_license_validity();
+			$license_status = $this->get_license_status();
 			
 			$license_key = '';
 			$plugin_name = $this->plugin_data['Name'];
@@ -403,6 +412,23 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			return $this->license_validity;
+			
+		}
+		
+		/**
+		 * Getter Method for License Status
+		 * 
+		 * @access		public
+		 * @since		1.0.0
+		 * @return		string License Status
+		 */
+		public function get_license_status() {
+			
+			if ( ! $this->license_status ) {
+				$this->license_status = $this->retrieve_license_status();
+			}
+			
+			return $this->license_status;
 			
 		}
 		
@@ -560,6 +586,32 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$this->license_validity = $license_validity;
 			
 			return $license_validity;
+			
+		}
+		
+		/**
+		 * Gets the License Status from the Database
+		 * 
+		 * @access		private
+		 * @since		1.0.0
+		 * @return		string License Status
+		 */
+		private function retrieve_license_status() {
+			
+			if ( ! ( $license_status = $this->license_status = get_option( $this->prefix . '_license_status' ) ) ) {
+				
+				return 'invalid';
+				
+			}
+			
+			if ( get_transient( $this->prefix . '_license_validity' ) !== 'valid' &&
+				$this->check_license_validity() !== 'valid' ) {
+				
+				return 'invalid';
+				
+			}
+			
+			return 'valid';
 			
 		}
 		
@@ -774,6 +826,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
+			
+			set_transient( $this->prefix . '_license_status', $license_data->license, HOUR_IN_SECONDS );
 			
 			if ( $license_data->success === false ) {
 				
@@ -799,6 +854,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'updated ' . $this->prefix . '-notice'
 				);
 				
+				update_option( $this->prefix . '_license_status', $license_data->license );
 				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
 				
 			}
@@ -889,6 +945,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'updated ' . $this->prefix . '-notice'
 				);
 				
+				delete_option( $this->prefix . '_license_status' );
 				delete_transient( $this->prefix . '_license_validity' );
 				
 			}
