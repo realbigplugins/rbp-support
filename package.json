@@ -1,6 +1,6 @@
 {
 	"name": "RBP_Support",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"main": "gulpfile.js",
 	"dependencies": {},
 	"devDependencies": {
