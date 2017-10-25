@@ -442,7 +442,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 
-			return $this->license_data;
+			return (array) $this->license_data;
 		}
 		
 		/**
