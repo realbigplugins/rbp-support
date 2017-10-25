@@ -6,7 +6,7 @@
  *
  * @var string $plugin_prefix
  * @var string $license_key
- * @var string $license_status
+ * @var string $license_validity
  * @var string $plugin_name
  *
  * @package RBP_Support
@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die();
 
 ?>
 
-<div class="rbp-support-licensing<?php echo ( $license_status !== 'valid' ) ? ' licensing-inactive' : ''; ?>">
+<div class="rbp-support-licensing<?php echo ( $license_validity !== 'valid' ) ? ' licensing-inactive' : ''; ?>">
 
 	<?php wp_nonce_field( $plugin_prefix . '_license', $plugin_prefix . '_license' ); ?>
 
@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) || die();
 	<?php if ( $license_key ) : ?>
 
 		<?php
-		if ( $license_status == 'valid' ) : ?>
+		if ( $license_validity == 'valid' ) : ?>
 
 			<button name="<?php echo $plugin_prefix; ?>_license_action" value="deactivate" class="button"
 			        id="<?php echo $plugin_prefix; ?>_license_deactivate">
@@ -56,7 +56,7 @@ defined( 'ABSPATH' ) || die();
 
 		&nbsp;
 
-		<?php if ( $license_status && $license_status == 'valid' ) : ?>
+		<?php if ( $license_validity && $license_validity == 'valid' ) : ?>
 
 			<button class="button" id="<?php echo $plugin_prefix; ?>_license_delete" name="<?php echo $plugin_prefix; ?>_license_action" value="delete_deactivate">
 				<?php _e( 'Delete and Deactivate', 'rbp-support' ); ?>
@@ -71,10 +71,10 @@ defined( 'ABSPATH' ) || die();
 		<?php endif; ?>
 
 
-		<p class="license-status <?php echo $license_status === 'valid' ? 'active' : 'inactive'; ?>">
+		<p class="license-status <?php echo $license_validity === 'valid' ? 'active' : 'inactive'; ?>">
 				<span>
 					<?php
-					if ( $license_status === 'valid' ) {
+					if ( $license_validity === 'valid' ) {
 
 						_e( 'License Active', 'rbp-support' );
 
