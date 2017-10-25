@@ -29,6 +29,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 	
 	class RBP_Support {
 		
+		private $activation_failure = false;
+		
 		/**
 		 * Holds the Version Number of RBP_Support.
 		 * This is used in the Support Email to help us know which version of RBP_Support is being used in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version.
@@ -185,17 +187,19 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
 				
-				// Save always tries to activate, delete always tries to deactivate
-				// Falling through to the next case is intentional
 				switch ( $_REQUEST[ $this->prefix . '_license_action' ] ) {
-					case 'save':
-						add_action( 'admin_init', array( $this, 'save_license' ) );
 					case 'activate':
+					case 'save':
 						add_action( 'admin_init', array( $this, 'activate_license' ) );
+						break;
+					case 'deactivate':
+						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 					case 'delete':
 						add_action( 'admin_init', array( $this, 'delete_license' ) );
-					case 'deactivate':
+						break;
+					case 'delete_deactivate':
+						add_action( 'admin_init', array( $this, 'delete_license' ) );
 						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 				}
@@ -210,7 +214,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// Set up plugin updates
 			add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
-			
+
 			// Check License Validity
 			add_action( 'admin_init', array( $this, 'get_license_validity') );
 			
@@ -575,7 +579,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$license_data
 				);
 				
-				add_settings_error( $this->settings_error, $message, 'error ' . $this->prefix . '-notice' );
+				// Don't throw up an error. The License Action already has
+				if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
+					add_settings_error( $this->settings_error, $message, 'error ' . $this->prefix . '-notice' );
+				}
 				
 			}
 			
@@ -767,27 +774,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
-		 * Saves the License Key
-		 * 
-		 * @access		public
-		 * @since		{{VERSION}}
-		 * @return		void
-		 */
-		public function save_license() {
-			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
-			   ) {
-				return;
-			}
-			
-			$key = $this->get_license_key();
-			
-			update_option( $this->prefix . '_license_key', $key );
-			
-		}
-		
-		/**
 		 * Activates the License Key
 		 * 
 		 * @access		public
@@ -803,6 +789,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			$key = $this->get_license_key();
+			
+			update_option( $this->prefix . '_license_key', $key );
 			
 			$plugin_data = $this->plugin_data;
 			
@@ -844,6 +832,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'error ' . $this->prefix . '-notice'
 				);
 				
+				$this->activation_failure = true;
+				
 			}
 			else {
 				
@@ -870,13 +860,19 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function delete_license() {
 			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
-			   ) {
-				return;
-			}
-			
 			delete_option( $this->prefix . '_license_key' );
+			
+			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) && 
+			   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'deactivate' ) === false ) {
+				
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( __( '%s license successfully deleted.', 'rbp-support' ), $this->plugin_data['Name'] ),
+					'updated ' . $this->prefix . '-notice'
+				);
+				
+			}
 			
 		}
 		
