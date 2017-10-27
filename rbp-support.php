@@ -40,7 +40,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.0.5';
+		private $version = '1.0.6';
 		
 		/**
 		 * The RBP Store URL
@@ -1356,7 +1356,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @param		object $phpmailer PHPMailer object passed by reference
 		 *                                                      
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.0.6
 		 * @return		void
 		 */
 		public function add_debug_file_to_email( &$phpmailer ) {
@@ -1372,7 +1372,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * 
 					 * @param		object PHPMailer object passed by reference
 					 * 
-					 * @since		{{VERSION}}
+					 * @since		1.0.6
+					 * @return		void
 					 */
 					do_action_ref_array( $this->prefix . '_rbp_support_phpmailer_init', array( &$phpmailer ) );
 					
