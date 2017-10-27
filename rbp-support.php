@@ -208,9 +208,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( isset( $_REQUEST[ $this->prefix . '_rbp_support_submit' ] ) ) {
 				
+				add_action( 'phpmailer_init', array( $this, 'add_debug_file_to_email' ) );
+				
 				add_action( 'admin_init', array( $this, 'send_support_email' ) );
 				
 			}
+			
+			
 			
 			// Ensures all License Data is allowed to fully clear out from the database
 			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
@@ -1304,9 +1308,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 
 			}
 			else {
-
-				// Grab Debug Info as a String
-				$debug_file = $this->debug_file();
 				
 				// Prepend Message with RBP_Support Version and Plugin Name
 				$message_prefix = "Sent via RBP_Support v" . $this->get_version() . "\n" . 
@@ -1324,43 +1325,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$message_prefix = apply_filters( $this->prefix . '_support_email_before_message', $message_prefix );
 				
 				$message = $message_prefix . $message;
-				
-				// This is where things start to look confusing.
-				// Emails with Attachments are Multipart with a "Boundary" between each part. This boundary goes in the Message Body.
-				// We generate a Boundary for the message (Every example I saw has a semi-random boundary) and place that between everything.
-				// Each "Part" has its own Headers, but those Headers go within the Message Body
-				
-				// Generate a semi-random boundary
-				$semi_rand = md5( time() );
-				$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x"; 
-				
-				$message_multipart = "--{$mime_boundary}\n";
-				
-				// Wrap the Message in a boundary with its own Headers
-				$message_multipart .= "Content-Type: text/plain; charset=\"iso-8859-1\"\n";
-				$message_multipart .= "Content-Transfer-Encoding: 7bit\n\n";
-				$message_multipart .= $message . "\n\n";
-				
-				$message_multipart .= "--{$mime_boundary}\n";
-				
-				// Wrap the Attachment Buffer in a boundary with its own Headers
-				$message_multipart .= "Content-Type: text/plain\n";
-				$message_multipart .= " charset=UTF-8\n";
-				$message_multipart .= " name=\"support_site_info.txt\"\n";
-				$message_multipart .= "Content-Transfer-Encoding: base64\n";
-				$message_multipart .= "Content-Disposition: attachment;\n";
-				$message_multipart .= " filename=\"support_site_info.txt\";\n\n\n";
-				$message_multipart .= chunk_split( base64_encode( $debug_file ) ) . "\n\n";
-				
-				$message_multipart .= "--{$mime_boundary}--";
 
 				$result = wp_mail(
 					'support@realbigplugins.com',
 					$subject,
-					$message_multipart,
+					$message,
 					array(
 						"From: $license_data[customer_name] <$license_data[customer_email]>",
-						"Content-Type: multipart/mixed boundary=\"{$mime_boundary}\"", // Here we define the Boundary within the primary Email Header
+						"X-RBP-SUPPORT: " . $this->get_version(),
 					),
 					array(
 					)
@@ -1373,6 +1345,40 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 						__( 'Could not send support message.', 'rbp-support' ),
 					$result ? 'updated' : 'error'
 				);
+				
+			}
+			
+		}
+		
+		/**
+		 * Add the Debug File to the Email in a way that PHPMailer can understand
+		 * 
+		 * @param		object $phpmailer PHPMailer object passed by reference
+		 *                                                      
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function add_debug_file_to_email( &$phpmailer ) {
+			
+			foreach ( $phpmailer->getCustomHeaders() as $header ) {
+				
+				if ( $header[0] == 'X-RBP-SUPPORT' ) {
+					
+					$phpmailer->addStringAttachment( $this->debug_file(), 'support_site_info.txt' );
+					
+					/**
+					 * Allows easy access to the PHPMailer object for our RBP Support Emails on a Per-Plugin Basis
+					 * 
+					 * @param		object PHPMailer object passed by reference
+					 * 
+					 * @since		{{VERSION}}
+					 */
+					do_action_ref_array( $this->prefix . '_rbp_support_phpmailer_init', array( &$phpmailer ) );
+					
+					break;
+					
+				}
 				
 			}
 			
