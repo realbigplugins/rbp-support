@@ -20,7 +20,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
         - `./wp-content/plugins/your-plugin/rbp-support/sidebar-support-disabled.php` for when there is no active License Key
     - `$this->support->licensing_fields()` outputs the Activate/Deactivate License Field. 
       - You can override the template like so:
-        - `./wp-content/plugins/your-plugin/rbp-support/licensing-fields.php` for when a License Key is active
+        - `./wp-content/plugins/your-plugin/rbp-support/licensing-fields.php`
     - `$this->support->enqueue_all_scripts()` enqueues all the CSS/JS the submodule utitlizes
       - You can alternatively use `$this->support->enqueue_form_scripts()` or `$this->support->enqueue_licensing_scripts()` for more control.
 
