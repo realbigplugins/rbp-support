@@ -6,7 +6,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 1. Add this submodule as a Git Submodule to your Plugin or otherwise download the ZIP from the Releases Tab.
     - To add it as a Submodule, run:
       - `git submodule add https://github.com/realbigplugins/rbp-support.git ./whatever/path/you/want`
-      - `cd ./whatever/path/you/want && git submodule init && git submodule update`
+      - `git submodule update --init --recursive`
     - This ensures that it pulls in its own dependency as well, which is the [EDD-License-handler](https://github.com/easydigitaldownloads/EDD-License-handler) library.
 2. Next, instantiate the Class like so:
     ```
