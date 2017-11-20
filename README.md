@@ -23,6 +23,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
         - `./wp-content/plugins/your-plugin/rbp-support/licensing-fields.php`
     - `$this->support->enqueue_all_scripts()` enqueues all the CSS/JS the submodule utitlizes
       - You can alternatively use `$this->support->enqueue_form_scripts()` or `$this->support->enqueue_licensing_scripts()` for more control.
+4. Once your plugin has been released/updated, please add it to the [Wiki](https://github.com/realbigplugins/rbp-support/wiki/RBP-Support-Usage-List) so we can keep track of things. Do this each time you increment the version of RBP Support in your plugin so that the list can be kept as up-to-date as possible.
 
 **That's it!** That's all it takes using this Submodule. Everything is preconfigured for you and you have the option to change things up using a few Filters and overriding Templates.
 
