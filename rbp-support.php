@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.0.6';
+		private $version = '1.0.7';
 		
 		/**
 		 * The RBP Store URL
