@@ -29,8 +29,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 	
 	class RBP_Support {
 		
-		private $activation_failure = false;
-		
 		/**
 		 * Holds the Version Number of RBP_Support.
 		 * This is used in the Support Email to help us know which version of RBP_Support is being used in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version.
@@ -251,6 +249,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Returns the File Path to the loaded copy of RBP_Support
 		 * This is useful in the event multiple Plugins are utilizing it on a certain site. If a plugin loads an outdated version, all other Plugins will use that outdated version. This can assist in pinning down the source of an outdated version.
 		 * 
+		 * @access		public
+		 * @since		1.0.2
 		 * @return		string File Path to loaded copy of RBP_Support
 		 */
 		public function get_file_path() {
@@ -568,7 +568,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * Allow using Download ID for License interactions if desired
 			 * 
 			 * @since		{{VERSION}}
-			 * @return		integer|boolean
+			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
 			$item_id = apply_filters( $this->prefix . '_download_id', false );
 			
@@ -676,7 +676,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * 
 		 * @access		private
 		 * @since		1.0.0
-		 * @return array|bool License Data or FALSE on error.
+		 * @return 		array|bool License Data or FALSE on error.
 		 */
 		private function retrieve_license_data() {
 
@@ -746,7 +746,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * Allow using Download ID for License interactions if desired
 				 * 
 				 * @since		{{VERSION}}
-				 * @return		integer|boolean
+				 * @return		integer|boolean Download ID, false to use Download Name (default)
 				 */
 				$item_id = apply_filters( $this->prefix . '_download_id', false );
 
@@ -847,7 +847,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * Allow using Download ID for License interactions if desired
 			 * 
 			 * @since		{{VERSION}}
-			 * @return		integer|boolean
+			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
 			$item_id = apply_filters( $this->prefix . '_download_id', false );
 			
@@ -966,7 +966,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * Allow using Download ID for License interactions if desired
 			 * 
 			 * @since		{{VERSION}}
-			 * @return		integer|boolean
+			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
 			$item_id = apply_filters( $this->prefix . '_download_id', false );
 			
@@ -1331,7 +1331,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		
 		/**
 		 * Send a Support Email via Ajax
-		 * This is done via Ajax to allow more flexibility in DOM structure. Depending on the plugin, you may not have much freedom in how or where the Support Form is placed. Using Ajax helps alleviate any conflicts where you may potentially submit the wrong Form
 		 * 
 		 * @access		public
 		 * @since		1.0.0
