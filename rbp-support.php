@@ -567,7 +567,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allow using Download ID for License interactions if desired
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.0.7
 			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
 			$item_id = apply_filters( $this->prefix . '_download_id', false );
@@ -745,7 +745,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				/**
 				 * Allow using Download ID for License interactions if desired
 				 * 
-				 * @since		{{VERSION}}
+				 * @since		1.0.7
 				 * @return		integer|boolean Download ID, false to use Download Name (default)
 				 */
 				$item_id = apply_filters( $this->prefix . '_download_id', false );
@@ -846,7 +846,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allow using Download ID for License interactions if desired
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.0.7
 			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
 			$item_id = apply_filters( $this->prefix . '_download_id', false );
@@ -965,7 +965,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allow using Download ID for License interactions if desired
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.0.7
 			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
 			$item_id = apply_filters( $this->prefix . '_download_id', false );
