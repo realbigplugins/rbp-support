@@ -564,6 +564,21 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				'url' => home_url(),
 			);
 			
+			/**
+			 * Allow using Download ID for License interactions if desired
+			 * 
+			 * @since		{{VERSION}}
+			 * @return		integer|boolean
+			 */
+			$item_id = apply_filters( $this->prefix . '_download_id', false );
+			
+			if ( $item_id ) {
+				
+				$api_params['item_id'] = (int) $item_id;
+				unset( $api_params['item_name'] );
+				
+			}
+			
 			// Call the custom API.
 			$response = wp_remote_get(
 				add_query_arg( $api_params, $this->store_url ),
@@ -720,15 +735,32 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( is_admin() ) {
 				
+				$api_params = array(
+					'item_name' => $this->plugin_data['Name'],
+					'version'   => $this->plugin_data['Version'],
+					'license'   => $this->license_key,
+					'author'    => $this->plugin_data['Author'],
+				);
+				
+				/**
+				 * Allow using Download ID for License interactions if desired
+				 * 
+				 * @since		{{VERSION}}
+				 * @return		integer|boolean
+				 */
+				$item_id = apply_filters( $this->prefix . '_download_id', false );
+
+				if ( $item_id ) {
+
+					$api_params['item_id'] = (int) $item_id;
+					unset( $api_params['item_name'] );
+
+				}
+				
 				$license = new EDD_SL_Plugin_Updater(
 					$this->store_url,
 					$this->plugin_file,
-					array(
-						'item_name' => $this->plugin_data['Name'],
-						'version'   => $this->plugin_data['Version'],
-						'license'   => $this->license_key,
-						'author'    => $this->plugin_data['Author'],
-					)
+					$api_params
 				);
 				
 				if ( $this->get_license_validity() != 'valid' ) {
@@ -810,6 +842,21 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				'item_name' => urlencode( $plugin_data['Name'] ),
 				'url' => home_url()
 			);
+			
+			/**
+			 * Allow using Download ID for License interactions if desired
+			 * 
+			 * @since		{{VERSION}}
+			 * @return		integer|boolean
+			 */
+			$item_id = apply_filters( $this->prefix . '_download_id', false );
+			
+			if ( $item_id ) {
+				
+				$api_params['item_id'] = (int) $item_id;
+				unset( $api_params['item_name'] );
+				
+			}
 			
 			$response = wp_remote_get(
 				add_query_arg( $api_params, $this->store_url ),
@@ -914,6 +961,21 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				'item_name'  => $plugin_data['Name'],
 				'url'        => home_url()
 			);
+			
+			/**
+			 * Allow using Download ID for License interactions if desired
+			 * 
+			 * @since		{{VERSION}}
+			 * @return		integer|boolean
+			 */
+			$item_id = apply_filters( $this->prefix . '_download_id', false );
+			
+			if ( $item_id ) {
+				
+				$api_params['item_id'] = (int) $item_id;
+				unset( $api_params['item_name'] );
+				
+			}
 			
 			// Call the custom API.
 			$response = wp_remote_get(
