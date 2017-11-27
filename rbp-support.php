@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.0.7';
+		private $version = '1.0.8';
 		
 		/**
 		 * The RBP Store URL
@@ -150,6 +150,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			if ( $plugin_file == null || 
 			   ! is_string( $plugin_file ) ) {
 				throw new Exception( __( 'Missing Plugin File Path in RBP_Support Constructor', 'rbp-support' ) );
+			}
+
+			if ( ! function_exists( 'get_plugin_data' ) ) {
+				require_once ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 			
 			$this->plugin_file = $plugin_file;
