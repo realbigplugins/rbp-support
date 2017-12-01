@@ -186,6 +186,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$this->prefix = apply_filters( 'rbp_support_prefix', $this->prefix );
 			
 			/**
+			 * Allow overriding the Store URL for your plugin if necessary
+			 * 
+			 * @since		{{VERSION}}
+			 * @return		string
+			 */
+			$this->store_url = apply_filters( $this->prefix . '_store_url', $this->store_url );
+			
+			/**
 			 * Allows the "Setting" for Settings Errors to be overriden
 			 * EDD in particular requires the "Setting" to be 'edd-notices', so this can be very useful
 			 *
