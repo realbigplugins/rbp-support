@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.0.8';
+		private $version = '1.1.0';
 		
 		/**
 		 * The RBP Store URL
@@ -138,7 +138,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * If no localization for a given String was provided in the Constructor, then it will default to one included in RBP Support
 		 * Using the default RBP Support localizations is not recommended as it will be more difficult/confusing for any volunteers translating your Plugin
 		 * 
-		 * @since		{{VERSION}}
+		 * @since		1.1.0
 		 * 
 		 * @var			array
 		 */
@@ -188,7 +188,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allow overriding the Store URL for your plugin if necessary
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.1.0
 			 * @return		string
 			 */
 			$this->store_url = apply_filters( $this->prefix . '_store_url', $this->store_url );
@@ -208,7 +208,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * Takes passed in localization for Strings and uses those where applicable rather than the "built-in" ones
 			 * This is important in the event that someone is translating your plugin. If they translate your plugin but then the Support/Licensing stuff is still in English, it would be confusing to them
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.1.0
 			 */ 
 			$this->l10n = $this->wp_parse_args_recursive( $l10n, array(
 				'support_form' => array(
@@ -1487,7 +1487,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * 
 				 * @param		string Email Address
 				 *                     
-				 * @since		{{VERSION}}
+				 * @since		1.1.0
 				 * @return		string Email Address
 				 */
 				$mail_to = apply_filters( $this->prefix . '_support_email_mail_to', 'support@realbigplugins.com' );
@@ -1563,7 +1563,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @param		array $b Array of Defaults
 		 *                           
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.1.0
 		 * @return		array Array with defaults filled in
 		 */
 		private function wp_parse_args_recursive( &$a, $b ) {

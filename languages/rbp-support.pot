@@ -14,130 +14,133 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: rbp-support.php:152
+#: rbp-support.php:161
 msgid "Missing Plugin File Path in RBP_Support Constructor"
 msgstr ""
 
-#: rbp-support.php:263
-msgid "The RBP_SUPPORT_LOADED_FROM Constant is undefined. This should never happen."
-msgstr ""
-
-#: rbp-support.php:536
-msgid "This field is required"
-msgstr ""
-
-#: rbp-support.php:800
-msgid "Register your copy of %s now to receive automatic updates and support."
-msgstr ""
-
-#: rbp-support.php:808
-msgid " If you do not have a license key, you can %1$spurchase one%2$s."
-msgstr ""
-
-#: rbp-support.php:901
-msgid "%s license successfully activated."
-msgstr ""
-
-#: rbp-support.php:934
-msgid "%s license successfully deleted."
-msgstr ""
-
-#: rbp-support.php:1003
-msgid "Error: could not deactivate the license"
-msgstr ""
-
-#: rbp-support.php:1018
-msgid "%s license successfully deactivated."
-msgstr ""
-
-#: rbp-support.php:1046
-msgid "Your license key expired on %s."
-msgstr ""
-
-#: rbp-support.php:1051
-msgid "Your license key has been disabled."
-msgstr ""
-
-#: rbp-support.php:1054
-msgid "Invalid license."
-msgstr ""
-
-#: rbp-support.php:1058
-msgid "Your license is not active for this URL."
-msgstr ""
-
-#: rbp-support.php:1061
-msgid "This appears to be an invalid license key for %s."
-msgstr ""
-
-#: rbp-support.php:1064
-msgid "Your license key has reached its activation limit."
-msgstr ""
-
-#: rbp-support.php:1067
-msgid "An error occurred, please try again."
-msgstr ""
-
-#: rbp-support.php:1409
-msgid "Support message succesfully sent!"
-msgstr ""
-
-#: rbp-support.php:1410
-msgid "Could not send support message."
-msgstr ""
-
-#: views/licensing-fields.php:27
-msgid "%s License"
-msgstr ""
-
-#: views/licensing-fields.php:45
-msgid "Deactivate"
-msgstr ""
-
-#: views/licensing-fields.php:52
-msgid "Activate"
-msgstr ""
-
-#: views/licensing-fields.php:62
-msgid "Delete and Deactivate"
-msgstr ""
-
-#: views/licensing-fields.php:68
-msgid "Delete"
-msgstr ""
-
-#: views/licensing-fields.php:79
-msgid "License Active"
-msgstr ""
-
-#: views/licensing-fields.php:83
-msgid "License Inactive"
-msgstr ""
-
-#: views/licensing-fields.php:93
-msgid "Save and Activate"
-msgstr ""
-
-#: views/sidebar-support-disabled.php:23, views/sidebar-support.php:25
+#: rbp-support.php:216, rbp-support.php:226
+msgctxt "%s is the Plugin Name"
 msgid "Need some help with %s?"
 msgstr ""
 
-#: views/sidebar-support-disabled.php:29
-msgid "Premium support is disabled. Please register your product and activate your license for this website to enable."
-msgstr ""
-
-#: views/sidebar-support.php:56
+#: rbp-support.php:217
 msgid "Subject"
 msgstr ""
 
-#: views/sidebar-support.php:63
+#: rbp-support.php:218
 msgid "Message"
 msgstr ""
 
-#: views/sidebar-support.php:69, views/sidebar-support.php:80
+#: rbp-support.php:219, views/sidebar-support.php:70
 msgid "Send"
 msgstr ""
 
-#: views/sidebar-support.php:92
+#: rbp-support.php:220
+msgctxt "Both %s are used to place HTML for the <a> in the message"
 msgid "We make other cool plugins and share updates and special offers to anyone who %ssubscribes here%s."
+msgstr ""
+
+#: rbp-support.php:221
+msgctxt "Only used by legacy browsers for JavaScript Form Validation"
+msgid "This field is required"
+msgstr ""
+
+#: rbp-support.php:222
+msgid "Support message succesfully sent!"
+msgstr ""
+
+#: rbp-support.php:223
+msgid "Could not send support message."
+msgstr ""
+
+#: rbp-support.php:227
+msgid "Premium support is disabled. Please register your product and activate your license for this website to enable."
+msgstr ""
+
+#: rbp-support.php:231
+msgctxt "%s is the Plugin Name"
+msgid "%s License"
+msgstr ""
+
+#: rbp-support.php:232
+msgid "Deactivate"
+msgstr ""
+
+#: rbp-support.php:233
+msgid "Activate"
+msgstr ""
+
+#: rbp-support.php:234
+msgid "Delete and Deactivate"
+msgstr ""
+
+#: rbp-support.php:235
+msgid "Delete"
+msgstr ""
+
+#: rbp-support.php:236
+msgid "License Active"
+msgstr ""
+
+#: rbp-support.php:237
+msgid "License Inactive"
+msgstr ""
+
+#: rbp-support.php:238
+msgid "Save and Activate"
+msgstr ""
+
+#: rbp-support.php:241
+msgctxt "%s is the Plugin Name"
+msgid "Register your copy of %s now to receive automatic updates and support."
+msgstr ""
+
+#: rbp-support.php:244
+msgid "%s license successfully activated."
+msgstr ""
+
+#: rbp-support.php:245
+msgid "%s license successfully deleted."
+msgstr ""
+
+#: rbp-support.php:247
+msgid "Error: could not deactivate the license"
+msgstr ""
+
+#: rbp-support.php:248
+msgid "%s license successfully deactivated."
+msgstr ""
+
+#: rbp-support.php:251
+msgctxt "%s is a localized timestamp"
+msgid "Your license key expired on %s."
+msgstr ""
+
+#: rbp-support.php:252
+msgid "Your license key has been disabled."
+msgstr ""
+
+#: rbp-support.php:253
+msgid "Invalid license."
+msgstr ""
+
+#: rbp-support.php:254
+msgid "Your license is not active for this URL."
+msgstr ""
+
+#: rbp-support.php:255
+msgctxt "%s is the Plugin Name"
+msgid "This appears to be an invalid license key for %s."
+msgstr ""
+
+#: rbp-support.php:256
+msgid "Your license key has reached its activation limit."
+msgstr ""
+
+#: rbp-support.php:257
+msgid "An error occurred, please try again."
+msgstr ""
+
+#: rbp-support.php:332
+msgid "The RBP_SUPPORT_LOADED_FROM Constant is undefined. This should never happen."
 msgstr ""
