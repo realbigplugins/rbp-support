@@ -1453,10 +1453,20 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 */
 				$message_prefix = apply_filters( $this->prefix . '_support_email_before_message', $message_prefix );
 				
+				/**
+				 * In the event that per-plugin we'd like to change the mail-to, we can
+				 * 
+				 * @param		string Email Address
+				 *                     
+				 * @since		{{VERSION}}
+				 * @return		string Email Address
+				 */
+				$mail_to = apply_filters( $this->prefix . '_support_email_mail_to', 'support@realbigplugins.com' );
+				
 				$message = $message_prefix . $message;
 
 				$result = wp_mail(
-					'support@realbigplugins.com',
+					$mail_to,
 					$subject,
 					$message,
 					array(
