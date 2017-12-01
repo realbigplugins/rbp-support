@@ -8,7 +8,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
       - `git submodule add https://github.com/realbigplugins/rbp-support.git ./whatever/path/you/want`
       - `git submodule update --init --recursive`
     - This ensures that it pulls in its own dependency as well, which is the [EDD-License-handler](https://github.com/easydigitaldownloads/EDD-License-handler) library.
-2. Next, instantiate the Class like so. The Array as the second parameter allows you to provide your own Translations or otherwise replace text Strings throughout RBP Support with text that you'd prefer. By doing this, the translations in use also live inside your own Plugin, which will make more sense to volunteer translators.
+2. Next, instantiate the Class like so. The Array as the second parameter allows you to provide your own Translations or otherwise replace text Strings throughout RBP Support with text that you'd prefer. By doing this, the translations in use lives inside your own Plugin, which will make more sense to volunteer translators.
     ```
     require_once __DIR__ . '/whatever/path/you/want/rbp-support.php';
     $this->support = new RBP_Support( <PATH_TO_PLUGIN_FILE>, array(
