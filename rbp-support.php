@@ -336,7 +336,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 
 			// Setup paths to current locale file
 			$mofile_local   = $lang_dir . $mofile;
-			$mofile_global  = WP_LANG_DIR . '/' . 'rbp-support' . '/' . $mofile;
+			$mofile_global  = WP_LANG_DIR . '/rbp-support/' . $mofile;
 
 			if ( file_exists( $mofile_global ) ) {
 				// Look in global /wp-content/languages/rbp-support/ folder
