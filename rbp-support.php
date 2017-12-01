@@ -134,6 +134,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		private $settings_error;
 		
 		/**
+		 * Stores the localization for each String in use by RBP Support
+		 * If no localization for a given String was provided in the Constructor, then it will default to one included in RBP Support
+		 * Using the default RBP Support localizations is not recommended as it will be more difficult/confusing for any volunteers translating your Plugin
+		 * 
+		 * @since		{{VERSION}}
+		 * 
+		 * @var			array
+		 */
+		public $l10n;
+		
+		/**
 		 * RBP_Support constructor.
 		 * 
 		 * @param		string $plugin_file Path to the Plugin File. REQUIRED
