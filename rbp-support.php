@@ -850,9 +850,16 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				<td colspan="<?php echo $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
 					<div class="update-message">
 						<?php
-			
-							// We can't know or predict the URL of your Plugin's Settings/Licensing page
-							// This filter will allow you to include a link to it if you want
+
+							/**
+							 * We can't know or predict the URL of your Plugin's Settings/Licensing page
+							 * This filter will allow you to include a link to it if you want
+							 * 
+							 * @param		string Register Plugin Message
+							 * 
+							 * @since		1.0.0
+							 * @return		string Register Plugin Message
+							 */
 							$register_message = apply_filters( $this->prefix . '_register_message', sprintf(
 								$l10n['register_message'],
 								$this->plugin_data['Name']
