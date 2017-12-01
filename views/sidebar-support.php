@@ -7,6 +7,7 @@
  * 
  * @var string $plugin_prefix
  * @var string $plugin_name
+ * @var array  $l10n
  *
  * @package rpb-support
  * @subpackage rpb-support/views
@@ -22,7 +23,7 @@ defined( 'ABSPATH' ) || die();
 		<p>
 			<span class="dashicons dashicons-editor-help"></span>
 			<strong>
-				<?php printf( __( 'Need some help with %s?', 'rbp-support' ), $plugin_name ); ?>
+				<?php printf( $l10n['title'], $plugin_name ); ?>
 			</strong>
 		</p>
 		
@@ -53,14 +54,14 @@ defined( 'ABSPATH' ) || die();
 			<p>
 				<label>
 					<input type="text" name="support_subject" class="form-field required"
-						   placeholder="<?php _e( 'Subject', 'rbp-support' ); ?>"<?php echo ( $form_tag == 'form' ) ? ' required' : ''; ?>/>
+						   placeholder="<?php echo $l10n['subject_label']; ?>"<?php echo ( $form_tag == 'form' ) ? ' required' : ''; ?>/>
 				</label>
 			</p>
 
 			<p>
 				<label>
 						<textarea name="support_message" class="form-field required" rows="5"
-								  placeholder="<?php _e( 'Message', 'rbp-support' ); ?>"<?php echo ( $form_tag == 'form' ) ? ' required' : ''; ?>></textarea>
+								  placeholder="<?php echo $l10n['message_label']; ?>"<?php echo ( $form_tag == 'form' ) ? ' required' : ''; ?>></textarea>
 				</label>
 			</p>
 
@@ -77,7 +78,7 @@ defined( 'ABSPATH' ) || die();
 				 * @since		1.0.3
 				 */
 				?>
-				<input type="hidden" name="<?php echo $plugin_prefix; ?>_rbp_support_submit" class="submit-hidden" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
+				<input type="hidden" name="<?php echo $plugin_prefix; ?>_rbp_support_submit" class="submit-hidden" value="<?php echo $l10n['send_button']; ?>" />
 				
 			</p>
 
@@ -89,7 +90,7 @@ defined( 'ABSPATH' ) || die();
 		
 		<?php
 			printf(
-				__( 'We make other cool plugins and share updates and special offers to anyone who %ssubscribes here%s.', 'rbp-support' ),
+				$l10n['subscribe_text'],
 				'<a href="http://realbigplugins.com/subscribe/?utm_source=' . rawurlencode( $plugin_name ) . '&utm_medium=Plugin' .
 				'%20settings%20sidebar%20link&utm_campaign=' . rawurlencode( $plugin_name ) . '%20Plugin" target="_blank">',
 				'</a>'

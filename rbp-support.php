@@ -135,15 +135,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		
 		/**
 		 * RBP_Support constructor.
-		 * The Plugin Data Array is REQUIRED as it makes grabbing data from EDD's API possible
-		 * However, the other two parameters can either be provided by your own code or you can allow this class to determine them
 		 * 
-		 * @param		string	$plugin_file	  Path to the Plugin File. REQUIRED
-		 * @param		array	$plugin_data	  get_plugin_data( <your_plugin_file>, false ); This is REQUIRED.
-		 *                                                                                              
+		 * @param		string $plugin_file Path to the Plugin File. REQUIRED
+		 * @param		array  $l10n        Localization for Strings within RBP Support. This also allows you to alter text strings without the need to override templates.
+		 *                                                                                                                           
 		 * @since		1.0.0
 		 */
-		function __construct( $plugin_file = null ) {
+		function __construct( $plugin_file = null, $l10n = array() ) {
 			
 			$this->load_textdomain();
 			
@@ -187,6 +185,61 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$this->license_key = $this->retrieve_license_key();
 			
+			/**
+			 * Takes passed in localization for Strings and uses those where applicable rather than the "built-in" ones
+			 * This is important in the event that someone is translating your plugin. If they translate your plugin but then the Support/Licensing stuff is still in English, it would be confusing to them
+			 * 
+			 * @since		{{VERSION}}
+			 * @return		array
+			 */ 
+			$this->l10n = $this->wp_parse_args_recursive( $l10n, array(
+				'support_form' => array(
+					'enabled' => array(
+						'title' => _x( 'Need some help with %s?', '%s is the Plugin Name', 'rbp-support' ),
+						'subject_label' => __( 'Subject', 'rbp-support' ),
+						'message_label' => __( 'Message', 'rbp-support' ),
+						'send_button' => __( 'Send', 'rbp-support' ),
+						'subscribe_text' => _x( 'We make other cool plugins and share updates and special offers to anyone who %ssubscribes here%s.', 'Both %s are used to place HTML for the <a> in the message', 'rbp-support' ),
+						'validationError' => _x( 'This field is required', 'Only used by legacy browsers for JavaScript Form Validation', 'rbp-support' ),
+						'success' => __( 'Support message succesfully sent!', 'rbp-support' ),
+						'error' => __( 'Could not send support message.', 'rbp-support' ),
+					),
+					'disabled' => array(
+						'title' => _x( 'Need some help with %s?', '%s is the Plugin Name', 'rbp-support' ),
+						'disabled_message' => __( 'Premium support is disabled. Please register your product and activate your license for this website to enable.', 'rbp-support' )
+					),
+				),
+				'licensing_fields' => array(
+					'title' => _x( '%s License', '%s is the Plugin Name', 'rbp-support' ),
+					'deactivate_button' => __( 'Deactivate', 'rbp-support' ),
+					'activate_button' => __( 'Activate', 'rbp-support' ),
+					'delete_deactivate_button' => __( 'Delete and Deactivate', 'rbp-support' ),
+					'delete_button' => __( 'Delete', 'rbp-support' ),
+					'license_active_label' => __( 'License Active', 'rbp-support' ),
+					'license_inactive_label' => __( 'License Inactive', 'rbp-support' ),
+					'save_activate_button' => __( 'Save and Activate', 'rbp-support' ),
+				),
+				'license_nag' => array(
+					'register_message' => _x( 'Register your copy of %s now to receive automatic updates and support.', '%s is the Plugin Name', 'rbp-support' ),
+					'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message' ),
+				),
+				'license_activation' => __( '%s license successfully activated.', '%s is the Plugin Name', 'rbp-support' ),
+				'license_deletion' => __( '%s license successfully deleted.', '%s is the Plugin Name', 'rbp-support' ),
+				'license_deactivation' => array(
+					'error' => __( 'Error: could not deactivate the license', 'rbp-support' ),
+					'success' => __( '%s license successfully deactivated.', '%s is the Plugin Name', 'rbp-support' ),
+				),
+				'license_error_messages' => array(
+					'expired' => _x( 'Your license key expired on %s.', '%s is a localized timestamp', 'rbp-support' ),
+					'revoked' => __( 'Your license key has been disabled.', 'rbp-support' ),
+					'missing' => __( 'Invalid license.', 'rbp-support' ),
+					'site_inactive' => __( 'Your license is not active for this URL.', 'rbp-support' ),
+					'item_name_mismatch' => _x( 'This appears to be an invalid license key for %s.', '%s is the Plugin Name', 'rbp-support' ),
+					'no_activations_left' => __( 'Your license key has reached its activation limit.', 'rbp-support' ),
+					'default' => __( 'An error occurred, please try again.', 'rbp-support' ),
+				),
+			) );
+			
 			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
 				
 				switch ( $_REQUEST[ $this->prefix . '_license_action' ] ) {
@@ -215,8 +268,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				add_action( 'admin_init', array( $this, 'send_support_email' ) );
 				
 			}
-			
-			
 			
 			// Ensures all License Data is allowed to fully clear out from the database
 			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
@@ -321,6 +372,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( $this->get_license_status() == 'valid' ) {
 				
+				$l10n = $this->l10n['support_form']['enabled'];
+				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
 					include $this->plugin_dir . 'rbp-support/sidebar-support.php';
 				}
@@ -330,6 +383,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			else {
+				
+				$l10n = $this->l10n['support_form']['disabled'];
 				
 				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php' ) ) {
 					include $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php';
@@ -358,6 +413,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$license_key = '';
 			$plugin_name = $this->plugin_data['Name'];
+			
+			$l10n = $this->l10n['licensing_fields'];
 			
 			// Only grab the License Key to output on the Form if we haven't just deleted it
 			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
@@ -531,10 +588,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			wp_localize_script( 
 				$this->prefix . '_form',
 				$this->prefix . '_support_form',
-				apply_filters( $this->prefix . '_localize_form_script', array(
+				apply_filters( $this->prefix . '_localize_form_script', wp_parse_args( array(
 					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-					'validationError' => __( 'This field is required', 'rbp-support' ), // Only used for legacy browsers
-				) )
+				), $this->l10n['support_form']['enabled'] ) )
 			);
 			
 		}
@@ -787,6 +843,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 			
+			$l10n = $this->l10n['license_nag'];
+			
 			?>
 
 			<tr class="plugin-update-tr">
@@ -797,7 +855,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 							// We can't know or predict the URL of your Plugin's Settings/Licensing page
 							// This filter will allow you to include a link to it if you want
 							$register_message = apply_filters( $this->prefix . '_register_message', sprintf(
-								__( 'Register your copy of %s now to receive automatic updates and support.', 'rbp-support' ),
+								$l10n['register_message'],
 								$this->plugin_data['Name']
 							) );
 			
@@ -805,7 +863,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 							if ( ! $this->get_license_key() ) {
 								printf(
-									__( ' If you do not have a license key, you can %1$spurchase one%2$s.', 'rbp-support' ),
+									' ' . $l10n['purchase_message'],
 									'<a href="' . $this->plugin_data['PluginURI'] . '">',
 									'</a>'
 								);
@@ -890,15 +948,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'error ' . $this->prefix . '-notice'
 				);
 				
-				$this->activation_failure = true;
-				
 			}
 			else {
+				
+				$l10n = $this->l10n['license_activation'];
 				
 				add_settings_error(
 					$this->settings_error,
 					'',
-					sprintf( __( '%s license successfully activated.', 'rbp-support' ), $this->plugin_data['Name'] ),
+					sprintf( $l10n, $this->plugin_data['Name'] ),
 					'updated ' . $this->prefix . '-notice'
 				);
 				
@@ -928,10 +986,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) && 
 			   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'deactivate' ) === false ) {
 				
+				$l10n = $this->l10n['license_deletion'];
+				
 				add_settings_error(
 					$this->settings_error,
 					'',
-					sprintf( __( '%s license successfully deleted.', 'rbp-support' ), $this->plugin_data['Name'] ),
+					sprintf( $l10n, $this->plugin_data['Name'] ),
 					'updated ' . $this->prefix . '-notice'
 				);
 				
@@ -998,9 +1058,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			// decode the license data
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			
+			$l10n = $this->l10n['license_deactivation'];
+			
 			if ( $license_data->success === false ) {
 				
-				$message = __( 'Error: could not deactivate the license', 'rbp-support' );
+				$message = $l10n['error'];
 				
 				add_settings_error(
 					$this->settings_error,
@@ -1015,7 +1077,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				add_settings_error(
 					$this->settings_error,
 					'',
-					sprintf( __( '%s license successfully deactivated.', 'rbp-support' ), $this->plugin_data['Name'] ),
+					sprintf( $l10n['success'], $this->plugin_data['Name'] ),
 					'updated ' . $this->prefix . '-notice'
 				);
 				
@@ -1039,32 +1101,34 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function get_license_error_message( $error_code, $license_data ) {
 			
+			$l10n = $this->l10n['license_error_messages'];
+			
 			switch ( $error_code ) {
 					
 				case 'expired':
 					$message = sprintf(
-						__( 'Your license key expired on %s.', 'rbp-support' ),
+						$l10n['expired'],
 						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data['expires'], current_time( 'timestamp' ) ) )
 					);
 					break;
 				case 'revoked':
-					$message = __( 'Your license key has been disabled.', 'rbp-support' );
+					$message = $l10n['revoked'];
 					break;
 				case 'missing':
-					$message = __( 'Invalid license.', 'rbp-support' );
+					$message = $l10n['missing'];
 					break;
 				case 'invalid':
 				case 'site_inactive':
-					$message = __( 'Your license is not active for this URL.', 'rbp-support' );
+					$message = $l10n['site_inactive'];
 					break;
 				case 'item_name_mismatch':
-					$message = sprintf( __( 'This appears to be an invalid license key for %s.', 'rbp-support' ), $this->plugin_data['Name'] );
+					$message = sprintf( $l10n['item_name_mismatch'], $this->plugin_data['Name'] );
 					break;
 				case 'no_activations_left':
-					$message = __( 'Your license key has reached its activation limit.', 'rbp-support' );
+					$message = $l10n['no_activations_left'];
 					break;
 				default:
-					$message = __( 'An error occurred, please try again.', 'rbp-support' );
+					$message = $l10n['default'];
 					break;
 					
 			}
@@ -1402,12 +1466,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					array(
 					)
 				);
+				
+				$l10n = $this->l10n['support_form']['enabled'];
 					
 				add_settings_error(
 					$this->settings_error,
 					'',
-					$result ? __( 'Support message succesfully sent!', 'rbp-support' ) :
-						__( 'Could not send support message.', 'rbp-support' ),
+					$result ? $l10n['success'] :
+						$l10n['error'],
 					$result ? 'updated' : 'error'
 				);
 				
@@ -1447,6 +1513,46 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				}
 				
 			}
+			
+		}
+		
+		/**
+		 * Basically wp_parse_args(), but it can go multiple levels deep
+		 * https://mekshq.com/recursive-wp-parse-args-wordpress-function/
+		 * 
+		 * @param		array $a Array you're using
+		 * @param		array $b Array of Defaults
+		 *                           
+		 * @access		private
+		 * @since		{{VERSION}}
+		 * @return		array Array with defaults filled in
+		 */
+		private function wp_parse_args_recursive( &$a, $b ) {
+			
+			$a = (array) $a;
+			$b = (array) $b;
+			
+			// Result is pre-filled with Defaults from the start
+			$result = $b;
+			
+			foreach ( $a as $key => &$value ) {
+				
+				// If $value is an Array and we already have the $key within our $result, start parsing args for $value
+				if ( is_array( $value ) && 
+				   isset( $result[ $key ] ) ) {
+					
+					$result[ $key ] = $this->wp_parse_args_recursive( $value, $result[ $key ] );
+					
+				}
+				else {
+					
+					$result[ $key ] = $value;
+					
+				}
+				
+			}
+			
+			return $result;
 			
 		}
 		

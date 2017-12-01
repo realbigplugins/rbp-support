@@ -8,6 +8,7 @@
  * @var string $license_key
  * @var string $license_status
  * @var string $plugin_name
+ * @var array  $l10n
  *
  * @package RBP_Support
  * @subpackage RBP_Support/views
@@ -24,7 +25,7 @@ defined( 'ABSPATH' ) || die();
 	<p>
 		<label for="<?php echo $plugin_prefix; ?>_license_key">
 			<strong>
-				<?php printf( __( '%s License', 'rbp-support' ), $plugin_name ); ?>
+				<?php printf( $l10n['title'], $plugin_name ); ?>
 			</strong>
 		</label>
 	</p>
@@ -42,14 +43,14 @@ defined( 'ABSPATH' ) || die();
 
 			<button name="<?php echo $plugin_prefix; ?>_license_action" value="deactivate" class="button"
 			        id="<?php echo $plugin_prefix; ?>_license_deactivate">
-				<?php _e( 'Deactivate', 'rbp-support' ); ?>
+				<?php echo $l10n['deactivate_button']; ?>
 			</button>
 
 		<?php else : ?>
 
 			<button name="<?php echo $plugin_prefix; ?>_license_action" value="activate" class="button button-primary"
 			        id="<?php echo $plugin_prefix; ?>_license_activate">
-				<?php _e( 'Activate', 'rbp-support' ); ?>
+				<?php echo $l10n['activate_button']; ?>
 			</button>
 
 		<?php endif; ?>
@@ -59,13 +60,13 @@ defined( 'ABSPATH' ) || die();
 		<?php if ( $license_status && $license_status == 'valid' ) : ?>
 
 			<button class="button" id="<?php echo $plugin_prefix; ?>_license_delete" name="<?php echo $plugin_prefix; ?>_license_action" value="delete_deactivate">
-				<?php _e( 'Delete and Deactivate', 'rbp-support' ); ?>
+				<?php echo $l10n['delete_deactivate_button']; ?>
 			</button>
 
 		<?php else: ?>
 
 			<button class="button" id="<?php echo $plugin_prefix; ?>_license_delete" name="<?php echo $plugin_prefix; ?>_license_action" value="delete">
-				<?php _e( 'Delete', 'rbp-support' ); ?>
+				<?php echo $l10n['delete_button']; ?>
 			</button>
 
 		<?php endif; ?>
@@ -76,11 +77,12 @@ defined( 'ABSPATH' ) || die();
 					<?php
 					if ( $license_status === 'valid' ) {
 
-						_e( 'License Active', 'rbp-support' );
+						echo $l10n['license_active_label'];
 
 					} else {
 
-						_e( 'License Inactive', 'rbp-support' );
+						echo $l10n['license_inactive_label'];
+						
 					}
 					?>
 				</span>
@@ -90,7 +92,7 @@ defined( 'ABSPATH' ) || die();
 
 		<button name="<?php echo $plugin_prefix; ?>_license_action" value="save" class="button button-primary"
 		        id="<?php echo $plugin_prefix; ?>_license_activate">
-			<?php _e( 'Save and Activate', 'rbp-support' ); ?>
+			<?php echo $l10n['save_activate_button']; ?>
 		</button>
 
 	<?php endif; ?>

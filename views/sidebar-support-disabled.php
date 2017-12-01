@@ -6,6 +6,7 @@
  * 
  * @var string $plugin_prefix
  * @var string $plugin_name
+ * @var array  $l10n
  *
  * @package rbp-support
  * @subpackage rbp-support/views
@@ -20,13 +21,13 @@ defined( 'ABSPATH' ) || die();
 		<p>
 			<span class="dashicons dashicons-editor-help"></span>
 			<strong>
-				<?php printf( __( 'Need some help with %s?', 'rbp-support' ), $plugin_name ); ?>
+				<?php printf( $l10n['title'], $plugin_name ); ?>
 			</strong>
 		</p>
 
 		<p>
 			<em>
-				<?php _e( 'Premium support is disabled. Please register your product and activate your license for this website to enable.', 'rbp-support' ); ?>
+				<?php echo $l10n['disabled_message']; ?>
 			</em>
 		</p>
 	</section>
