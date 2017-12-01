@@ -190,7 +190,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * This is important in the event that someone is translating your plugin. If they translate your plugin but then the Support/Licensing stuff is still in English, it would be confusing to them
 			 * 
 			 * @since		{{VERSION}}
-			 * @return		array
 			 */ 
 			$this->l10n = $this->wp_parse_args_recursive( $l10n, array(
 				'support_form' => array(
@@ -1417,7 +1416,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Data to be sent in the support email.
 			 * 
+			 * @param		array Support Email Data
+			 * @param		array $_POST
+			 * 
 			 * @since		1.0.0
+			 * @return		array Support Email Data
 			 */
 			$data = apply_filters( $this->prefix . '_support_email_data', array(
 				'subject' => esc_attr( $_POST['support_subject'] ),
