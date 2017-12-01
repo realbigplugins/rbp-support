@@ -96,18 +96,22 @@ msgid "Register your copy of %s now to receive automatic updates and support."
 msgstr ""
 
 #: rbp-support.php:244
+msgctxt "%s is the Plugin Name"
 msgid "%s license successfully activated."
 msgstr ""
 
 #: rbp-support.php:245
+msgctxt "%s is the Plugin Name"
 msgid "%s license successfully deleted."
 msgstr ""
 
 #: rbp-support.php:247
-msgid "Error: could not deactivate the license"
+msgctxt "%s is the Plugin Name"
+msgid "Error: could not deactivate the license for %s"
 msgstr ""
 
 #: rbp-support.php:248
+msgctxt "%s is the Plugin Name"
 msgid "%s license successfully deactivated."
 msgstr ""
 

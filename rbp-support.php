@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.1.0';
+		private $version = '1.1.1';
 		
 		/**
 		 * The RBP Store URL
@@ -241,11 +241,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'register_message' => _x( 'Register your copy of %s now to receive automatic updates and support.', '%s is the Plugin Name', 'rbp-support' ),
 					'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message' ),
 				),
-				'license_activation' => __( '%s license successfully activated.', '%s is the Plugin Name', 'rbp-support' ),
-				'license_deletion' => __( '%s license successfully deleted.', '%s is the Plugin Name', 'rbp-support' ),
+				'license_activation' => _x( '%s license successfully activated.', '%s is the Plugin Name', 'rbp-support' ),
+				'license_deletion' => _x( '%s license successfully deleted.', '%s is the Plugin Name', 'rbp-support' ),
 				'license_deactivation' => array(
-					'error' => __( 'Error: could not deactivate the license', 'rbp-support' ),
-					'success' => __( '%s license successfully deactivated.', '%s is the Plugin Name', 'rbp-support' ),
+					'error' => _x( 'Error: could not deactivate the license for %s', '%s is the Plugin Name', 'rbp-support' ),
+					'success' => _x( '%s license successfully deactivated.', '%s is the Plugin Name', 'rbp-support' ),
 				),
 				'license_error_messages' => array(
 					'expired' => _x( 'Your license key expired on %s.', '%s is a localized timestamp', 'rbp-support' ),

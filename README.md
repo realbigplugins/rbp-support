@@ -42,11 +42,11 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 			'register_message' => _x( 'Register your copy of %s now to receive automatic updates and support.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
 			'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message' ),
 		),
-		'license_activation' => __( '%s license successfully activated.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
-		'license_deletion' => __( '%s license successfully deleted.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
+		'license_activation' => _x( '%s license successfully activated.', '%s is the Plugin Name', 'rbp-support' ),
+		'license_deletion' => _x( '%s license successfully deleted.', '%s is the Plugin Name', 'rbp-support' ),
 		'license_deactivation' => array(
-			'error' => __( 'Error: could not deactivate the license', <PLUGIN_TEXT_DOMAIN> ),
-			'success' => __( '%s license successfully deactivated.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
+			'error' => _x( 'Error: could not deactivate the license for %s', '%s is the Plugin Name', 'rbp-support' ),
+			'success' => _x( '%s license successfully deactivated.', '%s is the Plugin Name', 'rbp-support' ),
 		),
 		'license_error_messages' => array(
 			'expired' => _x( 'Your license key expired on %s.', '%s is a localized timestamp', <PLUGIN_TEXT_DOMAIN> ),
