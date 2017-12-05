@@ -684,7 +684,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 				// Don't throw up an error. The License Action already has
 				if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
-					add_settings_error( $this->settings_error, $message, 'error ' . $this->prefix . '-notice' );
+					add_settings_error(
+						$this->settings_error,
+						'',
+						$message,
+						'error ' . $this->prefix . '-notice'
+					);
 				}
 				
 			}
