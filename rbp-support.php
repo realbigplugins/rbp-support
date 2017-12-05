@@ -1140,9 +1140,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$message = $l10n['revoked'];
 					break;
 				case 'missing':
+				case 'invalid':
 					$message = $l10n['missing'];
 					break;
-				case 'invalid':
 				case 'site_inactive':
 					$message = $l10n['site_inactive'];
 					break;
