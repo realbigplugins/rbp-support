@@ -40,7 +40,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 		),
 		'license_nag' => array(
 			'register_message' => _x( 'Register your copy of %s now to receive automatic updates and support.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
-			'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message' ),
+			'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message', <PLUGIN_TEXT_DOMAIN> ),
 		),
 		'license_activation' => _x( '%s license successfully activated.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
 		'license_deletion' => _x( '%s license successfully deleted.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),

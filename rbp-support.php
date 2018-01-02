@@ -239,7 +239,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				),
 				'license_nag' => array(
 					'register_message' => _x( 'Register your copy of %s now to receive automatic updates and support.', '%s is the Plugin Name', 'rbp-support' ),
-					'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message' ),
+					'purchase_message' => _x( 'If you do not have a license key, you can %1$spurchase one%2$s.', 'Both %s are used to place HTML for the <a> in the message', 'rbp-support' ),
 				),
 				'license_activation' => _x( '%s license successfully activated.', '%s is the Plugin Name', 'rbp-support' ),
 				'license_deletion' => _x( '%s license successfully deleted.', '%s is the Plugin Name', 'rbp-support' ),
