@@ -357,12 +357,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$mofile_local   = $lang_dir . $mofile;
 			$mofile_global  = WP_LANG_DIR . '/rbp-support/' . $mofile;
 
-			if ( file_exists( $mofile_global ) ) {
+			if ( is_file( $mofile_global ) ) {
 				// Look in global /wp-content/languages/rbp-support/ folder
 				// This way translations can be overridden via the Theme/Child Theme
 				load_textdomain( 'rbp-support', $mofile_global );
 			}
-			else if ( file_exists( $mofile_local ) ) {
+			else if ( is_file( $mofile_local ) ) {
 				// Look in local /wp-content/plugins/<some_plugin_directory>/rbp-support/languages/ folder
 				load_textdomain( 'rbp-support', $mofile_local );
 			}
@@ -392,7 +392,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 				$l10n = $this->l10n['support_form']['enabled'];
 				
-				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
+				if ( is_file( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
 					include $this->plugin_dir . 'rbp-support/sidebar-support.php';
 				}
 				else {
@@ -404,7 +404,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 				$l10n = $this->l10n['support_form']['disabled'];
 				
-				if ( file_exists( $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php' ) ) {
+				if ( is_file( $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php' ) ) {
 					include $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php';
 				}
 				else {
@@ -440,7 +440,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$license_key = $this->get_license_key();
 			}
 				
-			if ( file_exists( $this->plugin_dir . 'rbp-support/licensing-fields.php' ) ) {
+			if ( is_file( $this->plugin_dir . 'rbp-support/licensing-fields.php' ) ) {
 				include $this->plugin_dir . 'rbp-support/licensing-fields.php';
 			}
 			else {
