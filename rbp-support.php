@@ -1474,7 +1474,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 				// Prepend Message with RBP_Support Version and Plugin Name
 				$message_prefix = "Sent via RBP_Support v" . $this->get_version() . "\n" . 
-					"Plugin: " . $this->plugin_data['Name'] . " v" . $this->plugin_data['Version'] . "\n\n";
+					"Plugin: " . $this->plugin_data['Name'] . " v" . $this->plugin_data['Version'] . "\n" . 
+					"Customer Name: $license_data[customer_name]\n" . 
+					"Customer Email: $license_data[customer_email]\n\n";
 				
 				/**
 				 * Prepend some information before the Message Content
