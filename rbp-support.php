@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.1.4';
+		private $version = '1.1.5';
 		
 		/**
 		 * The RBP Store URL
@@ -115,7 +115,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The stored Beta Status for the Plugin
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.1.5
 		 *
 		 * @var			boolean
 		 */
@@ -479,7 +479,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Outputs the Beta Enabler Checkbox
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.1.5
 		 * @return		void
 		 */
 		public function beta_checkbox() {
@@ -617,7 +617,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Getter method for Beta Status
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.1.5
 		 * @return		boolean Beta Status
 		 */
 		public function get_beta_status() { 
@@ -828,7 +828,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Gets the Beta Status from the Database
 		 * 
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.1.5
 		 * @return		boolean Beta Status
 		 */
 		private function retrieve_beta_status() {
@@ -1262,7 +1262,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Save the Beta Status when enabled
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.1.5
 		 * @return		void
 		 */
 		public function save_beta_status() {
@@ -1281,7 +1281,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Delete the Beta Status when disabled
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.1.5
 		 * @return		void
 		 */
 		public function delete_beta_status() {
