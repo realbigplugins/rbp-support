@@ -21,10 +21,14 @@ if ( $license_status == 'valid' ) : ?>
 		
 		<?php wp_nonce_field( $plugin_prefix . '_beta', $plugin_prefix . '_beta' ); ?>
 
-		<label for="<?php echo $plugin_prefix; ?>_enable_beta">
+		<label>
 			<input type="checkbox" name="<?php echo $plugin_prefix; ?>_enable_beta" value="1"<?php echo ( $beta_enabled ) ? ' checked' : ''; ?> />
 			<?php echo $l10n['label']; ?>&nbsp;
 		</label>
+		
+		<p class="description">
+			<?php echo $l10n['disclaimer']; ?>
+		</p>
 
 	</div>
 

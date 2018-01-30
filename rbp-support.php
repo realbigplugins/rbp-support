@@ -268,7 +268,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'default' => __( 'An error occurred, please try again.', 'rbp-support' ),
 				),
 				'beta_checkbox' => array(
-					'label' => __( 'Enable Beta', 'rbp-support' ),
+					'label' => __( 'Enable Beta Releases', 'rbp-support' ),
+					'disclaimer' => __( 'Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk.', 'rbp-support' ),
 				),
 			) );
 			
