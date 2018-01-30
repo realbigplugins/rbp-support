@@ -57,6 +57,10 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 			'no_activations_left' => __( 'Your license key has reached its activation limit.', <PLUGIN_TEXT_DOMAIN> ),
 			'default' => __( 'An error occurred, please try again.', <PLUGIN_TEXT_DOMAIN> ),
 		),
+		'beta_checkbox' => array(
+			'label' => __( 'Enable Beta Releases', <PLUGIN_TEXT_DOMAIN> ),
+			'disclaimer' => __( 'Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk.', <PLUGIN_TEXT_DOMAIN> ),
+		),
 	) );
     ```
 3. From here, you're nearly done! You will just need to use a few methods from the Class to include the Views necessary.
@@ -69,6 +73,16 @@ Using this submodule is super easy! Just follow the following steps and you'll b
         - `./wp-content/plugins/your-plugin/rbp-support/licensing-fields.php`
     - `$this->support->enqueue_all_scripts()` enqueues all the CSS/JS the submodule utitlizes
       - You can alternatively use `$this->support->enqueue_form_scripts()` or `$this->support->enqueue_licensing_scripts()` for more control.
+	- `$this->support->beta_checkbox()` outputs the Beta Releases checkbox and is entirely optional. When Editing your Download on the EDD Store, enable "Enable a beta version of this download" and set a Version Number and upload a ZIP to use as a Beta. Users enrolled into the Beta by checking this checkbox will be able to install the Beta from the comfort of their WordPress site.
+	  - You can override the template like so:
+        - `./wp-content/plugins/your-plugin/rbp-support/beta-checkbox.php`
+	  - The Version Number of your Beta on the EDD Store must be higher than the Version Number of their installed plugin, but it can be entered in many different formats.
+	    - If the installed version is `1.2.0` and the Beta available is `1.2.0-beta1` it will not show as an option for the Customer. The Beta version must be higher than the installed version.
+	    - Examples of tested formats:
+		  - `1.2.0b1`
+		  - `1.2.0-beta1`
+	  - If Beta versions are enabled and they are on an older version of Stable, the user can potentially skip Stable releases in order to upgrade to the Beta. Be mindful with your upgrade scripts!
+	  - The Beta that you upload gets its own Changelog and it will not show the Changelog of Stable below it. If you want to also show Stable's Changelog, you will have to copy/paste it there yourself.
 4. Once your plugin has been released/updated, please add it to the [Wiki](https://github.com/realbigplugins/rbp-support/wiki/RBP-Support-Usage-List) so we can keep track of things. Do this each time you increment the version of RBP Support in your plugin so that the list can be kept as up-to-date as possible.
 
 **That's it!** That's all it takes using this Submodule. Everything is preconfigured for you and you have the option to change things up using a few Filters and overriding Templates.
