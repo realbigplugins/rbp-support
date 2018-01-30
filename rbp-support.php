@@ -113,6 +113,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		private $license_data;
 		
 		/**
+		 * The stored Beta Status for the Plugin
+		 *
+		 * @since		{{VERSION}}
+		 *
+		 * @var			boolean
+		 */
+		private $beta_status;
+		
+		/**
 		 * The Prefix used when creating/reading from the Database. This is determined based on the Text Domain within Plugin Data
 		 * If License Key and/or License Validity are not defined, this is used to determine where to look in the Database for them
 		 * It is also used to form the occasional Hook or Filter to make it specific to your Plugin
@@ -204,6 +213,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$this->license_key = $this->retrieve_license_key();
 			
+			$this->beta_status = $this->retrieve_beta_status();
+			
 			/**
 			 * Takes passed in localization for Strings and uses those where applicable rather than the "built-in" ones
 			 * This is important in the event that someone is translating your plugin. If they translate your plugin but then the Support/Licensing stuff is still in English, it would be confusing to them
@@ -256,6 +267,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'no_activations_left' => __( 'Your license key has reached its activation limit.', 'rbp-support' ),
 					'default' => __( 'An error occurred, please try again.', 'rbp-support' ),
 				),
+				'beta_checkbox' => array(
+					'label' => __( 'Enable Beta', 'rbp-support' ),
+				),
 			) );
 			
 			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
@@ -276,6 +290,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 						add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 						break;
 				}
+				
+			}
+			
+			if ( isset( $_REQUEST[ $this->prefix . '_enable_beta' ] ) ) {
+				
+				add_action( 'admin_init', array( $this, 'save_beta_status' ) );
+				
+			}
+			else {
+				
+				add_action( 'admin_init', array( $this, 'delete_beta_status' ) );
 				
 			}
 			
@@ -450,6 +475,31 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
+		 * Outputs the Beta Enabler Checkbox
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function beta_checkbox() {
+			
+			// Makes the variable make more sense within the context of the HTML
+			$plugin_prefix = $this->prefix;
+			$license_status = $this->get_license_status();
+			$beta_enabled = $this->get_beta_status();
+			
+			$l10n = $this->l10n['beta_checkbox'];
+				
+			if ( file_exists( $this->plugin_dir . 'rbp-support/beta-checkbox.php' ) ) {
+				include $this->plugin_dir . 'rbp-support/beta-checkbox.php';
+			}
+			else {
+				include __DIR__ . '/views/beta-checkbox.php';
+			}
+			
+		}
+		
+		/**
 		 * Enqueues Styles and Scripts for both the Form and Licensing. Use this if they're on the same page
 		 * 
 		 * @access		public
@@ -560,6 +610,25 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 
 			return (array) $this->license_data;
+		}
+		
+		/**
+		 * Getter method for Beta Status
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		boolean Beta Status
+		 */
+		public function get_beta_status() { 
+			
+			if ( ! $this->beta_status ) {
+				
+				$this->beta_status = $this->retrieve_beta_status();
+				
+			}
+			
+			return $this->beta_status;
+		
 		}
 		
 		/**
@@ -755,6 +824,26 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
+		 * Gets the Beta Status from the Database
+		 * 
+		 * @access		private
+		 * @since		{{VERSION}}
+		 * @return		boolean Beta Status
+		 */
+		private function retrieve_beta_status() {
+				
+			if ( isset( $_REQUEST[ $this->prefix . '_enable_beta' ] ) ) {
+				$this->beta_status = (bool) $_REQUEST[ $this->prefix . '_enable_beta' ];
+			}
+			else {
+				$this->beta_status = (bool) get_option( $this->prefix . '_enable_beta' );
+			}
+			
+			return $this->beta_status;
+			
+		}
+		
+		/**
 		 * Gets License Data from Database/Remote Store
 		 * 
 		 * @access		private
@@ -823,6 +912,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'version'   => $this->plugin_data['Version'],
 					'license'   => $this->license_key,
 					'author'    => $this->plugin_data['Author'],
+					'beta'		=> $this->get_beta_status(),
 				);
 				
 				/**
@@ -1164,6 +1254,44 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			return $message;
+			
+		}
+		
+		/**
+		 * Save the Beta Status when enabled
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function save_beta_status() {
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_beta' ] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_beta' ], $this->prefix . '_beta' )
+			   ) {
+				return;
+			}
+			
+			update_option( $this->prefix . '_enable_beta', true );
+			
+		}
+		
+		/**
+		 * Delete the Beta Status when disabled
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		void
+		 */
+		public function delete_beta_status() {
+			
+			if ( ! isset( $_REQUEST[ $this->prefix . '_beta' ] ) ||
+				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_beta' ], $this->prefix . '_beta' )
+			   ) {
+				return;
+			}
+			
+			delete_option( $this->prefix . '_enable_beta' );
 			
 		}
 		
