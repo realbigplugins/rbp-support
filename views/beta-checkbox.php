@@ -2,7 +2,7 @@
 /**
  * Outputs the Beta Enabling Checkbox
  *
- * @since {{VERSION}}
+ * @since 1.1.5
  *
  * @var string $plugin_prefix
  * @var string $license_status
