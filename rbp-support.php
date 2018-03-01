@@ -982,7 +982,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 							echo $register_message;
 			
-							if ( ! $this->get_license_key() ) {
+							if ( ! $this->get_license_key() && 
+							   ! empty( $this->plugin_data['PluginURI'] ) ) {
 								printf(
 									' ' . $l10n['purchase_message'],
 									'<a href="' . $this->plugin_data['PluginURI'] . '">',
