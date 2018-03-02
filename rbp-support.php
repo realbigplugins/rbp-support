@@ -122,6 +122,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		private $beta_status;
 		
 		/**
+		 * The version of the loaded copy of EDD_SL_Plugin_Updater
+		 *
+		 * @since		{{VERSION}}
+		 *
+		 * @var			string
+		 */
+		private $edd_sl_plugin_updater_version;
+		
+		/**
 		 * The Prefix used when creating/reading from the Database. This is determined based on the Text Domain within Plugin Data
 		 * If License Key and/or License Validity are not defined, this is used to determine where to look in the Database for them
 		 * It is also used to form the occasional Hook or Filter to make it specific to your Plugin
@@ -193,6 +202,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @return		string
 			 */
 			$this->prefix = apply_filters( 'rbp_support_prefix', $this->prefix );
+			
+			// Rip out the EDD SL Plugin Updater version and store it
+			$this->edd_sl_plugin_updater_version = $this->retrieve_edd_sl_plugin_updater_version();
 			
 			/**
 			 * Allow overriding the Store URL for your plugin if necessary
@@ -363,6 +375,26 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
+		 * If another plugin includes EDD_SL_Plugin_Updater before us, they could include an old version
+		 * This helps us know whether we are running the version we expect or higher
+		 * 
+		 * @access		public
+		 * @since		{{VERSION}}
+		 * @return		string EDD_SL_Plugin_Updater Class Version
+		 */
+		public function get_edd_sl_plugin_updater_version() {
+			
+			if ( ! $this->edd_sl_plugin_updater_version ) {
+				
+				$this->edd_sl_plugin_updater_version = $this->retrieve_edd_sl_plugin_updater_version();
+				
+			}
+			
+			return $this->edd_sl_plugin_updater_version;
+			
+		}
+		
+		/**
 		 * Internationalization
 		 *
 		 * @access		private
@@ -483,6 +515,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @return		void
 		 */
 		public function beta_checkbox() {
+			
+			// The loaded version of EDD_SL_Plugin_Updater does not support Betas, bail
+			if ( version_compare( $this->get_edd_sl_plugin_updater_version(), '1.6.9' ) == -1 ) return;
 			
 			// Makes the variable make more sense within the context of the HTML
 			$plugin_prefix = $this->prefix;
@@ -771,6 +806,35 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$this->license_validity = $license_validity;
 			
 			return $license_validity;
+			
+		}
+		
+		/**
+		 * Grabs the EDD_SL_Plugin_Updater Class version
+		 * There is no "Version" Property, so we have to rip it out of the PHP Docblock itself
+		 * 
+		 * @access		private
+		 * @since		{{VERSION}}
+		 * @return		string EDD_SL_Plugin_Updater Class Version
+		 */
+		private function retrieve_edd_sl_plugin_updater_version() {
+			
+			$reflector = new ReflectionClass( 'EDD_SL_Plugin_Updater' );
+			
+			$filename = $reflector->getFileName();
+			
+			if ( empty( $filename ) ) return;
+			
+			// Holds the PHP file contents of the included version of the Class
+			$plugin_updater = file_get_contents( $filename );
+			
+			// Search file for @version <version_number>
+			preg_match_all( '/@version\s([\d|.]+)/i', $plugin_updater, $matches );
+			
+			// We want our Capture Group for the first Match
+			$version = $matches[1][0];
+			
+			return $version;
 			
 		}
 		
