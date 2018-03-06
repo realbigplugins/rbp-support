@@ -375,8 +375,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		}
 		
 		/**
-		 * If another plugin includes EDD_SL_Plugin_Updater before us, they could include an old version
-		 * This helps us know whether we are running the version we expect or higher
+		 * We are forcibly loading the Class into a Namespace, so we do not need to worry about conflicts with other Plugins
+		 * As a result, we arguably know that we're always running at least v1.6.14 of EDD_SL_Plugin_Updater since RBP Support has never been put into the wild with a lower version
+		 * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future
 		 * 
 		 * @access		public
 		 * @since		{{VERSION}}
@@ -819,14 +820,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		private function retrieve_edd_sl_plugin_updater_version() {
 			
-			$reflector = new ReflectionClass( 'EDD_SL_Plugin_Updater' );
-			
-			$filename = $reflector->getFileName();
-			
-			if ( empty( $filename ) ) return;
-			
 			// Holds the PHP file contents of the included version of the Class
-			$plugin_updater = file_get_contents( $filename );
+			// Since we are eval-ing the code in order to force a Namespace, we cannot find the file path from the Class itself, so we must hardcode it
+			$plugin_updater = file_get_contents( __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php' );
 			
 			// Search file for @version <version_number>
 			preg_match_all( '/@version\s([\d|.]+)/i', $plugin_updater, $matches );
@@ -966,8 +962,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function setup_plugin_updates() {
 			
-			if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-				require_once __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php';
+			/**
+			 * This forces the EDD_SL_Plugin_Updater Class into a Namespace, thereby enabling us to never have to worry about other Plugins including an older/newer version than what we expect
+			 * Normally to accomplish this we would need to manually rename the Class or manually add the Namespace and thereby maintain our own copy of the Class in our Version Control instead of just pulling in changes
+			 * While hacky, this prevents us from needing to ensure that as the Class Updates we keep our modified Class Name or added Namespace from being overwritten
+			 * 
+			 * @since		{{VERSION}}
+			 */
+			if ( ! class_exists( 'RBP_Support\EDD_SL_Plugin_Updater' ) ) {
+				eval( 'namespace RBP_Support { ?>' . file_get_contents( __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php' ) . '}' );
 			}
 			
 			if ( is_admin() ) {
@@ -995,7 +998,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 
 				}
 				
-				$license = new EDD_SL_Plugin_Updater(
+				$license = new RBP_Support\EDD_SL_Plugin_Updater(
 					$this->store_url,
 					$this->plugin_file,
 					$api_params
