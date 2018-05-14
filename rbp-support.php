@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.1.5';
+		private $version = '1.2.0';
 		
 		/**
 		 * The RBP Store URL
@@ -124,7 +124,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * The version of the loaded copy of EDD_SL_Plugin_Updater
 		 *
-		 * @since		{{VERSION}}
+		 * @since		1.2.0
 		 *
 		 * @var			string
 		 */
@@ -380,7 +380,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future
 		 * 
 		 * @access		public
-		 * @since		{{VERSION}}
+		 * @since		1.2.0
 		 * @return		string EDD_SL_Plugin_Updater Class Version
 		 */
 		public function get_edd_sl_plugin_updater_version() {
@@ -815,7 +815,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * There is no "Version" Property, so we have to rip it out of the PHP Docblock itself
 		 * 
 		 * @access		private
-		 * @since		{{VERSION}}
+		 * @since		1.2.0
 		 * @return		string EDD_SL_Plugin_Updater Class Version
 		 */
 		private function retrieve_edd_sl_plugin_updater_version() {
@@ -967,7 +967,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * Normally to accomplish this we would need to manually rename the Class or manually add the Namespace and thereby maintain our own copy of the Class in our Version Control instead of just pulling in changes
 			 * While hacky, this prevents us from needing to ensure that as the Class Updates we keep our modified Class Name or added Namespace from being overwritten
 			 * 
-			 * @since		{{VERSION}}
+			 * @since		1.2.0
 			 */
 			if ( ! class_exists( 'RBP_Support\EDD_SL_Plugin_Updater' ) ) {
 				eval( 'namespace RBP_Support { ?>' . file_get_contents( __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php' ) . '}' );
@@ -1584,7 +1584,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the WordPress Install Info Header
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.2.0
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_wordpress_info_header' );
@@ -1595,7 +1595,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly before the WordPress Install Info List
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.2.0
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_before_wordpress_info_list' );
@@ -1605,7 +1605,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			/**
 			 * Allows text to be included directly after the WordPress Install Info List
 			 *                       
-			 * @since		{{VERSION}}
+			 * @since		1.2.0
 			 * @return		void
 			 */
 			do_action( $this->prefix . '_debug_file_after_wordpress_info_list' );
