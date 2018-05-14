@@ -1582,6 +1582,35 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			do_action( $this->prefix . '_debug_file_after_active_theme_data' );
 			
 			/**
+			 * Allows text to be included directly before the WordPress Install Info Header
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		void
+			 */
+			do_action( $this->prefix . '_debug_file_before_wordpress_info_header' );
+			
+			// WordPress Info
+			echo "\n= WordPress Info =\n";
+			
+			/**
+			 * Allows text to be included directly before the WordPress Install Info List
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		void
+			 */
+			do_action( $this->prefix . '_debug_file_before_wordpress_info_list' );
+			
+			echo "Version: " . get_bloginfo( 'version' ) . "\n";
+			
+			/**
+			 * Allows text to be included directly after the WordPress Install Info List
+			 *                       
+			 * @since		{{VERSION}}
+			 * @return		void
+			 */
+			do_action( $this->prefix . '_debug_file_after_wordpress_info_list' );
+			
+			/**
 			 * Allows text to be included directly before the PHP Info Header
 			 *                       
 			 * @since		1.0.4
