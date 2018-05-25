@@ -1,1 +1,1 @@
-"use strict";!function(n){n(document).ready(function(){n('.rbp-support-licensing-form input[name="ld_mailchimp_enable_beta"]').length<=0||n('input[name="ld_mailchimp_enable_beta"]').on("click",function(){n(this).closest("form").submit()})})}(jQuery);
+"use strict";!function(n){n(document).ready(function(){n('input[name$="_enable_beta"]').length<=0||n('input[name$="_enable_beta"]').on("click",function(){n(this).closest("form").submit()})})}(jQuery);
