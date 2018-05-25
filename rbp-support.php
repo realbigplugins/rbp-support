@@ -282,6 +282,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				'beta_checkbox' => array(
 					'label' => __( 'Enable Beta Releases', 'rbp-support' ),
 					'disclaimer' => __( 'Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk.', 'rbp-support' ),
+					'enabled_message' => _x( 'Beta Releases for %s enabled.', '%s is the Plugin Name', 'rbp-support' ),
+					'disabled_message' => _x( 'Beta Releases for %s disabled.', '%s is the Plugin Name', 'rbp-support' ),
 				),
 			) );
 			
@@ -306,12 +308,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			
-			if ( isset( $_REQUEST[ $this->prefix . '_enable_beta' ] ) ) {
+			if ( isset( $_REQUEST[ $this->prefix . '_enable_beta' ] ) && 
+					  ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
 				
 				add_action( 'admin_init', array( $this, 'save_beta_status' ) );
 				
 			}
-			else {
+			else if ( $this->get_beta_status() &&
+					 ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
 				
 				add_action( 'admin_init', array( $this, 'delete_beta_status' ) );
 				
@@ -573,7 +577,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function enqueue_licensing_scripts() {
 			
-			//wp_enqueue_script( $this->prefix . '_licensing' );
+			wp_enqueue_script( $this->prefix . '_licensing' );
 			wp_enqueue_style( $this->prefix . '_licensing' );
 			
 		}
@@ -1343,6 +1347,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			update_option( $this->prefix . '_enable_beta', true );
 			
+			$l10n = $this->l10n['beta_checkbox'];
+			
+			add_settings_error(
+				$this->settings_error,
+				'',
+				sprintf( $l10n['enabled_message'], $this->plugin_data['Name'] ),
+				'updated ' . $this->prefix . '-notice'
+			);
+			
 		}
 		
 		/**
@@ -1361,6 +1374,18 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			delete_option( $this->prefix . '_enable_beta' );
+			
+			// Reset value
+			$this->beta_status = false;
+			
+			$l10n = $this->l10n['beta_checkbox'];
+			
+			add_settings_error(
+				$this->settings_error,
+				'',
+				sprintf( $l10n['disabled_message'], $this->plugin_data['Name'] ),
+				'updated ' . $this->prefix . '-notice'
+			);
 			
 		}
 		
