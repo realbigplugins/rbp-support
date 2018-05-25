@@ -60,6 +60,8 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 		'beta_checkbox' => array(
 			'label' => __( 'Enable Beta Releases', <PLUGIN_TEXT_DOMAIN> ),
 			'disclaimer' => __( 'Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk.', <PLUGIN_TEXT_DOMAIN> ),
+			'enabled_message' => _x( 'Beta Releases for %s enabled.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
+			'disabled_message' => _x( 'Beta Releases for %s disabled.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
 		),
 	) );
     ```
