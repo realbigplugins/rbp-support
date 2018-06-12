@@ -1285,9 +1285,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * Grabs the appropriate Error Message for each License Error
 		 * 
 		 * @param		string $error_code   Type of Error
-		 * @param		array $license_data License Data response object from EDD API
-		 * @param		array  $plugin_data  get_plugin_data( <your_plugin_file>, false );
-		 *                                                                         
+		 * @param		object $license_data License Data response object from EDD API
+		 *                                                                    
 		 * @access		public
 		 * @since		1.0.0
 		 * @return		string Error Message
@@ -1301,7 +1300,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				case 'expired':
 					$message = sprintf(
 						$l10n['expired'],
-						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data['expires'], current_time( 'timestamp' ) ) )
+						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 					);
 					break;
 				case 'revoked':
