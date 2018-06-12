@@ -1255,12 +1255,10 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( $license_data->success === false ) {
 				
-				$message = $l10n['error'];
-				
 				add_settings_error(
 					$this->settings_error,
 					'',
-					$message,
+					sprintf( $l10n['error'], $this->plugin_data['Name'] ),
 					'error ' . $this->prefix . '-notice'
 				);
 				
