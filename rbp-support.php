@@ -278,6 +278,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'item_name_mismatch' => _x( 'This appears to be an invalid license key for %s.', '%s is the Plugin Name', 'rbp-support' ),
 					'no_activations_left' => __( 'Your license key has reached its activation limit.', 'rbp-support' ),
 					'default' => __( 'An error occurred, please try again.', 'rbp-support' ),
+					'no_connection' => _x( '%s: Cannot communicate with %s for License Key Validation. Please check your server configuration settings.', '%s is the Plugin Name followed by the Store URL', 'rbp-support' ),
 				),
 				'beta_checkbox' => array(
 					'label' => __( 'Enable Beta Releases', 'rbp-support' ),
@@ -777,6 +778,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			if ( is_wp_error( $response ) ) {
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
+					'error ' . $this->prefix . '-notice'
+				);
 				return false;
 			}
 			
@@ -946,6 +953,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 
 			if ( is_wp_error( $response ) ) {
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
+					'error ' . $this->prefix . '-notice'
+				);
 				return false;
 			}
 
@@ -1122,12 +1135,19 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			if ( is_wp_error( $response ) ) {
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
+					'error ' . $this->prefix . '-notice'
+				);
 				return false;
 			}
 			
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			
-			if ( $license_data->success === false ) {
+			if ( ! property_exists( $license_data, 'success' ) || 
+				$license_data->success === false ) {
 				
 				$message = $this->get_license_error_message(
 					$license_data->error,
@@ -1245,6 +1265,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// make sure the response came back okay
 			if ( is_wp_error( $response ) ) {
+				add_settings_error(
+					$this->settings_error,
+					'',
+					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
+					'error ' . $this->prefix . '-notice'
+				);
 				return false;
 			}
 			
@@ -1253,7 +1279,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$l10n = $this->l10n['license_deactivation'];
 			
-			if ( $license_data->success === false ) {
+			if ( ! property_exists( $license_data, 'success' ) || 
+				$license_data->success === false ) {
 				
 				add_settings_error(
 					$this->settings_error,
