@@ -147,27 +147,32 @@ msgid "Your license key has reached its activation limit."
 msgstr ""
 
 #: rbp-support.php:280
+msgctxt "%s is the Plugin Name followed by the Store URL"
+msgid "%s cannot communicate with %s for License Key Validation. Please check your server configuration settings."
+msgstr ""
+
+#: rbp-support.php:281
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: rbp-support.php:283
+#: rbp-support.php:284
 msgid "Enable Beta Releases"
 msgstr ""
 
-#: rbp-support.php:284
-msgid "Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk."
-msgstr ""
-
 #: rbp-support.php:285
-msgctxt "%s is the Plugin Name"
-msgid "Beta Releases for %s enabled."
+msgid "Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk."
 msgstr ""
 
 #: rbp-support.php:286
 msgctxt "%s is the Plugin Name"
+msgid "Beta Releases for %s enabled."
+msgstr ""
+
+#: rbp-support.php:287
+msgctxt "%s is the Plugin Name"
 msgid "Beta Releases for %s disabled."
 msgstr ""
 
-#: rbp-support.php:374
+#: rbp-support.php:375
 msgid "The RBP_SUPPORT_LOADED_FROM Constant is undefined. This should never happen."
 msgstr ""
