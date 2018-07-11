@@ -55,6 +55,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 			'site_inactive' => __( 'Your license is not active for this URL.', <PLUGIN_TEXT_DOMAIN> ),
 			'item_name_mismatch' => _x( 'This appears to be an invalid license key for %s.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
 			'no_activations_left' => __( 'Your license key has reached its activation limit.', <PLUGIN_TEXT_DOMAIN> ),
+			'no_connection' => _x( '%s cannot communicate with %s for License Key Validation. Please check your server configuration settings.', '%s is the Plugin Name followed by the Store URL', <PLUGIN_TEXT_DOMAIN> ),
 			'default' => __( 'An error occurred, please try again.', <PLUGIN_TEXT_DOMAIN> ),
 		),
 		'beta_checkbox' => array(

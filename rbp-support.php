@@ -277,8 +277,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'site_inactive' => __( 'Your license is not active for this URL.', 'rbp-support' ),
 					'item_name_mismatch' => _x( 'This appears to be an invalid license key for %s.', '%s is the Plugin Name', 'rbp-support' ),
 					'no_activations_left' => __( 'Your license key has reached its activation limit.', 'rbp-support' ),
-					'default' => __( 'An error occurred, please try again.', 'rbp-support' ),
 					'no_connection' => _x( '%s cannot communicate with %s for License Key Validation. Please check your server configuration settings.', '%s is the Plugin Name followed by the Store URL', 'rbp-support' ),
+					'default' => __( 'An error occurred, please try again.', 'rbp-support' ),
 				),
 				'beta_checkbox' => array(
 					'label' => __( 'Enable Beta Releases', 'rbp-support' ),
