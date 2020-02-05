@@ -271,7 +271,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'success' => _x( '%s license successfully deactivated.', '%s is the Plugin Name', 'rbp-support' ),
 				),
 				'license_error_messages' => array(
-					'expired' => _x( 'Your license key expired on %s.', '%s is a localized timestamp', 'rbp-support' ),
+					'expired' => _x( 'Your %s license key expired on %s.', 'The first %s is the Plugin name and the second %s is a localized timestamp', 'rbp-support' ),
 					'revoked' => __( 'Your license key has been disabled.', 'rbp-support' ),
 					'missing' => __( 'Invalid license.', 'rbp-support' ),
 					'site_inactive' => __( 'Your license is not active for this URL.', 'rbp-support' ),
@@ -1325,6 +1325,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				case 'expired':
 					$message = sprintf(
 						$l10n['expired'],
+						$this->plugin_data['Name'],
 						date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 					);
 					break;

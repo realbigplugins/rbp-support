@@ -49,7 +49,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 			'success' => _x( '%s license successfully deactivated.', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
 		),
 		'license_error_messages' => array(
-			'expired' => _x( 'Your license key expired on %s.', '%s is a localized timestamp', <PLUGIN_TEXT_DOMAIN> ),
+			'expired' => _x( 'Your %s license key expired on %s.', 'The first %s is the Plugin name and the second %s is a localized timestamp', <PLUGIN_TEXT_DOMAIN> ),
 			'revoked' => __( 'Your license key has been disabled.', <PLUGIN_TEXT_DOMAIN> ),
 			'missing' => __( 'Invalid license.', <PLUGIN_TEXT_DOMAIN> ),
 			'site_inactive' => __( 'Your license is not active for this URL.', <PLUGIN_TEXT_DOMAIN> ),
