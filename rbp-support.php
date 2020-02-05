@@ -787,15 +787,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				return false;
 			}
 			
-			$license_data = json_decode( wp_remote_retrieve_body( $response ), true );
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			
 			set_transient( $this->prefix . '_license_data', $license_data, DAY_IN_SECONDS );
 			
-			if ( ! $license_data['success'] ||
-				$license_data['license'] !== 'valid' ) {
+			if ( ! $license_data->success ||
+				$license_data->license !== 'valid' ) {
 				
 				$message = $this->get_license_error_message(
-					! $license_data['success'] && isset( $license_data['error'] ) ? $license_data['error'] : $license_data['license'],
+					! $license_data->success && property_exists( $license_data, 'error' ) ? $license_data->error : $license_data->license,
 					$license_data
 				);
 				
@@ -811,7 +811,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			
-			$license_validity = isset( $license_data['license'] ) ? $license_data['license'] : 'invalid';
+			$license_validity = property_exists( $license_data, 'license' ) ? $license_data->license : 'invalid';
 			
 			set_transient( $this->prefix . '_license_validity', $license_validity, DAY_IN_SECONDS );
 			
@@ -920,7 +920,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * 
 		 * @access		private
 		 * @since		1.0.0
-		 * @return 		array|bool License Data or FALSE on error.
+		 * @return 		object|bool License Data or FALSE on error.
 		 */
 		private function retrieve_license_data() {
 
@@ -962,7 +962,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				return false;
 			}
 
-			$data = json_decode( wp_remote_retrieve_body( $response ), true );
+			$data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			set_transient( $this->prefix . '_license_data', $data, DAY_IN_SECONDS );
 
@@ -1173,7 +1173,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					'updated ' . $this->prefix . '-notice'
 				);
 				
-				$status = isset( $license_data->license ) ? $license_data->license : 'invalid';
+				$status = property_exists( $license_data, 'license' ) ? $license_data->license : 'invalid';
 				
 				update_option( $this->prefix . '_license_status', $status );
 				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
