@@ -1,6 +1,8 @@
+import './lib/ancient-browser-support';
+
 ( function( $ ) {
 	
-	$( document ).ready( function() {
+	$( document ).on( 'ready', function() {
 		
 		if ( $( '.rbp-support-form' ).length <= 0 ) return;
 		

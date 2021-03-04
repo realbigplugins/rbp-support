@@ -684,7 +684,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			wp_register_script(
 				$this->prefix . '_form',
-				plugins_url( '/assets/js/form.js', __FILE__ ),
+				plugins_url( '/assets/dist/js/form.js', __FILE__ ),
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
 				true
@@ -692,7 +692,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			wp_register_style(
 				$this->prefix . '_form',
-				plugins_url( '/assets/css/form.css', __FILE__ ),
+				plugins_url( '/assets/dist/css/form.css', __FILE__ ),
 				array(),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
 				'all'
@@ -700,7 +700,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			wp_register_script(
 				$this->prefix . '_licensing',
-				plugins_url( '/assets/js/licensing.js', __FILE__ ),
+				plugins_url( '/assets/dist/js/licensing.js', __FILE__ ),
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
 				true
@@ -708,7 +708,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			wp_register_style(
 				$this->prefix . '_licensing',
-				plugins_url( '/assets/css/licensing.css', __FILE__ ),
+				plugins_url( '/assets/dist/css/licensing.css', __FILE__ ),
 				array(),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
 				'all'

@@ -1,1 +1,0 @@
-"use strict";!function(n){n(document).ready(function(){n('input[name$="_enable_beta"]').length<=0||n('input[name$="_enable_beta"]').on("click",function(){n(this).closest("form").submit()})})}(jQuery);
