@@ -47,7 +47,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $store_url = 'https://realbigplugins.com';
+		private $store_url = 'https://realbigplugins.test';
 		
 		/**
 		 * The full Plugin File path of the Plugin this Class is instantiated from
@@ -341,6 +341,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				add_action( 'admin_init', array( $this, 'get_license_validity') );
 				
 			}
+
+			// Ensure Contributors are handled correctly
+			add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 11, 3 );
 			
 			// Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
 			add_action( 'admin_init', array( $this, 'register_scripts' ) );
@@ -671,6 +674,47 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			return $this->beta_status;
 		
+		}
+
+		/**
+		 * Ensure that Contributors are loaded correctly from the API response
+		 * It is returned as an Object for each Contributor by default, but WP expects an Array
+		 *
+		 * @param   object  $data    plugins_api() result
+		 * @param   string  $action  Action name
+		 * @param   array   $args    plugins_api() args
+		 *
+		 * @access	public
+		 * @since	{{VERSION}}
+		 * @return  object           plugins_api() result
+		 */
+		public function plugins_api_filter( $data, $action, $args ) {
+
+			if ( $action !== 'plugin_information' ) return $data;
+
+			if ( isset( $data->contributors ) && ! empty( $data->contributors ) ) {
+
+				foreach ( $data->contributors as &$contributor ) {
+
+					if ( is_array( $contributor ) ) continue;
+
+					$new_data = array();
+
+					foreach ( $contributor as $key => $value ) {
+						$new_data[ $key ] = $value; 
+					}
+
+					$contributor = $new_data;
+
+				}
+
+				unset( $new_data );
+				unset( $contributor );
+
+			}
+
+			return $data;
+
 		}
 		
 		/**
