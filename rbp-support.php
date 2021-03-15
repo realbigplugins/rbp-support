@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $version = '1.3.0';
+		private $version = '1.4.0';
 		
 		/**
 		 * The RBP Store URL
@@ -685,7 +685,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @param   array   $args    plugins_api() args
 		 *
 		 * @access	public
-		 * @since	{{VERSION}}
+		 * @since	1.4.0
 		 * @return  object           plugins_api() result
 		 */
 		public function plugins_api_filter( $data, $action, $args ) {

@@ -310,6 +310,8 @@ function releaseCopy() {
         'admin/**/*',
         'assets/dist/**/*.*',
         'assets/dist/licenses/**/*',
+        'includes/**/*',
+        'views/**/*',
         'core/**/*',
         'core/library/**/*',
 		'!core/library/rbp-support/{build,build/**}',
@@ -334,7 +336,7 @@ function releaseCopy() {
         '!./**/RESOURCES.md',
         '!./**/*.xml',
         '!./**/composer.json',
-        '!./**/composer-lock.json'
+        '!./**/composer-lock.json',
     ], { base: './', allowEmpty: true } )
     .pipe(gulp.dest( textDomain ));
 }
