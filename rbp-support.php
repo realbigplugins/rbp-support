@@ -47,7 +47,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 *
 		 * @var			string
 		 */
-		private $store_url = 'https://realbigplugins.test';
+		private $store_url = 'https://realbigplugins.com';
 		
 		/**
 		 * The full Plugin File path of the Plugin this Class is instantiated from
