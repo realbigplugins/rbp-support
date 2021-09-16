@@ -877,7 +877,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// Holds the PHP file contents of the included version of the Class
 			// Since we are eval-ing the code in order to force a Namespace, we cannot find the file path from the Class itself, so we must hardcode it
-			$plugin_updater = file_get_contents( __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php' );
+			$plugin_updater = file_get_contents( __DIR__ . '/core/library/EDD-License-handler/EDD_SL_Plugin_Updater.php' );
 			
 			// Search file for @version <version_number>
 			preg_match_all( '/@version\s([\d|.]+)/i', $plugin_updater, $matches );
@@ -1031,7 +1031,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.2.0
 			 */
 			if ( ! class_exists( 'RBP_Support\EDD_SL_Plugin_Updater' ) ) {
-				eval( 'namespace RBP_Support { ?>' . file_get_contents( __DIR__ . '/includes/EDD-License-handler/EDD_SL_Plugin_Updater.php' ) . '}' );
+				eval( 'namespace RBP_Support { ?>' . file_get_contents( __DIR__ . '/core/library/EDD-License-handler/EDD_SL_Plugin_Updater.php' ) . '}' );
 			}
 			
 			if ( is_admin() ) {
