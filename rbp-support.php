@@ -1794,7 +1794,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 				// Prepend Message with RBP_Support Version and Plugin Name
 				$message_prefix = "Sent via RBP_Support v" . $this->get_version() . "\n" . 
-					"Plugin: " . $this->plugin_data['Name'] . " v" . $this->plugin_data['Version'] . 
+					"Plugin: {$this->plugin_data['Name']} v{$this->plugin_data['Version']}" . 
 					( ( $this->get_beta_status() ) ? ' (Betas Enabled)' : '' ) . "\n" . 
 					"Customer Name: $license_data[customer_name]\n" . 
 					"Customer Email: $license_data[customer_email]\n\n";
@@ -1818,9 +1818,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.1.0
 				 * @return		string Email Address
 				 */
-				$mail_to = apply_filters( "{$this->prefix}_support_email_mail_to', 'support@realbigplugins.com" );
+				$mail_to = apply_filters( "{$this->prefix}_support_email_mail_to", 'support@realbigplugins.com' );
 				
-				$message = $message_prefix . $message;
+				$message = "{$message_prefix}{$message}";
 
 				$result = wp_mail(
 					$mail_to,
