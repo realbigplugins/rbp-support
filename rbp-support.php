@@ -212,7 +212,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.1.0
 			 * @return		string
 			 */
-			$this->store_url = apply_filters( $this->prefix . '_store_url', $this->store_url );
+			$this->store_url = apply_filters( "{$this->prefix}_store_url", $this->store_url );
 			
 			/**
 			 * Allows the "Setting" for Settings Errors to be overriden
@@ -221,7 +221,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.0
 			 * @return		string
 			 */
-			$this->settings_error = apply_filters( $this->prefix . '_settings_error', $this->prefix . '_support' );
+			$this->settings_error = apply_filters( "{$this->prefix}_settings_error", "{$this->prefix}_support" );
 			
 			$this->license_key = $this->retrieve_license_key();
 			
@@ -288,9 +288,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				),
 			) );
 			
-			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
+			if ( isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ) {
 				
-				switch ( $_REQUEST[ $this->prefix . '_license_action' ] ) {
+				switch ( $_REQUEST[ "{$this->prefix}_license_action" ] ) {
 					case 'activate':
 					case 'save':
 						add_action( 'admin_init', array( $this, 'activate_license' ) );
@@ -309,20 +309,20 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				
 			}
 			
-			if ( isset( $_REQUEST[ $this->prefix . '_enable_beta' ] ) && 
-					  ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
+			if ( isset( $_REQUEST[ "{$this->prefix}_enable_beta" ] ) && 
+					  ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ) {
 				
 				add_action( 'admin_init', array( $this, 'save_beta_status' ) );
 				
 			}
 			else if ( $this->get_beta_status() &&
-					 ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
+					 ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ) {
 				
 				add_action( 'admin_init', array( $this, 'delete_beta_status' ) );
 				
 			}
 			
-			if ( isset( $_REQUEST[ $this->prefix . '_rbp_support_submit' ] ) ) {
+			if ( isset( $_REQUEST[ "{$this->prefix}_rbp_support_submit" ] ) ) {
 				
 				add_action( 'phpmailer_init', array( $this, 'add_debug_file_to_email' ) );
 				
@@ -331,8 +331,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			// Ensures all License Data is allowed to fully clear out from the database
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
-				   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'delete' ) === false ) {
+			if ( ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ||
+				   strpos( $_REQUEST[ "{$this->prefix}_license_action" ], 'delete' ) === false ) {
 			
 				// Set up plugin updates
 				add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
@@ -502,8 +502,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$l10n = $this->l10n['licensing_fields'];
 			
 			// Only grab the License Key to output on the Form if we haven't just deleted it
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ||
-				   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'delete' ) === false ) {
+			if ( ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ||
+				   strpos( $_REQUEST[ "{$this->prefix}_license_action" ], 'delete' ) === false ) {
 				$license_key = $this->get_license_key();
 			}
 				
@@ -567,8 +567,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function enqueue_form_scripts() {
 			
-			wp_enqueue_script( $this->prefix . '_form' );
-			wp_enqueue_style( $this->prefix . '_form' );
+			wp_enqueue_script( "{$this->prefix}_form" );
+			wp_enqueue_style( "{$this->prefix}_form" );
 			
 		}
 		
@@ -581,8 +581,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function enqueue_licensing_scripts() {
 			
-			wp_enqueue_script( $this->prefix . '_licensing' );
-			wp_enqueue_style( $this->prefix . '_licensing' );
+			wp_enqueue_script( "{$this->prefix}_licensing" );
+			wp_enqueue_style( "{$this->prefix}_licensing" );
 			
 		}
 		
@@ -727,7 +727,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		public function register_scripts() {
 			
 			wp_register_script(
-				$this->prefix . '_form',
+				"{$this->prefix}_form",
 				plugins_url( '/assets/dist/js/form.js', __FILE__ ),
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -735,7 +735,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_register_style(
-				$this->prefix . '_form',
+				"{$this->prefix}_form",
 				plugins_url( '/assets/dist/css/form.css', __FILE__ ),
 				array(),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -743,7 +743,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_register_script(
-				$this->prefix . '_licensing',
+				"{$this->prefix}_licensing",
 				plugins_url( '/assets/dist/js/licensing.js', __FILE__ ),
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -751,7 +751,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_register_style(
-				$this->prefix . '_licensing',
+				"{$this->prefix}_licensing",
 				plugins_url( '/assets/dist/css/licensing.css', __FILE__ ),
 				array(),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -759,9 +759,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_localize_script( 
-				$this->prefix . '_form',
-				$this->prefix . '_support_form',
-				apply_filters( $this->prefix . '_localize_form_script', wp_parse_args( array(
+				"{$this->prefix}_form",
+				"{$this->prefix}_support_form",
+				apply_filters( "{$this->prefix}_localize_form_script", wp_parse_args( array(
 					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				), $this->l10n['support_form']['enabled'] ) )
 			);
@@ -786,7 +786,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			}
 			
 			if ( ! isset( $_GET['force-check-license'] ) && 
-				$license_validity = get_transient( $this->prefix . '_license_validity' ) ) {
+				$license_validity = get_transient( "{$this->prefix}_license_validity" ) ) {
 				return $license_validity;
 			}
 			
@@ -803,7 +803,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.7
 			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
-			$item_id = apply_filters( $this->prefix . '_download_id', false );
+			$item_id = apply_filters( "{$this->prefix}_download_id", false );
 			
 			if ( $item_id ) {
 				
@@ -826,14 +826,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
-					'error ' . $this->prefix . '-notice'
+					'error ' . "{$this->prefix}-notice"
 				);
 				return false;
 			}
 			
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 			
-			set_transient( $this->prefix . '_license_data', $license_data, DAY_IN_SECONDS );
+			set_transient( "{$this->prefix}_license_data", $license_data, DAY_IN_SECONDS );
 			
 			if ( ! $license_data->success ||
 				$license_data->license !== 'valid' ) {
@@ -844,12 +844,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				);
 				
 				// Don't throw up an error. The License Action already has
-				if ( ! isset( $_REQUEST[ $this->prefix . '_license_action' ] ) ) {
+				if ( ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ) {
 					add_settings_error(
 						$this->settings_error,
 						'',
 						$message,
-						'error ' . $this->prefix . '-notice'
+						'error ' . "{$this->prefix}-notice"
 					);
 				}
 				
@@ -857,7 +857,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			$license_validity = property_exists( $license_data, 'license' ) ? $license_data->license : 'invalid';
 			
-			set_transient( $this->prefix . '_license_validity', $license_validity, DAY_IN_SECONDS );
+			set_transient( "{$this->prefix}_license_validity", $license_validity, DAY_IN_SECONDS );
 			
 			$this->license_validity = $license_validity;
 			
@@ -898,13 +898,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		private function retrieve_license_status() {
 			
-			if ( ! ( $license_status = $this->license_status = get_option( $this->prefix . '_license_status' ) ) ) {
+			if ( ! ( $license_status = $this->license_status = get_option( "{$this->prefix}_license_status" ) ) ) {
 				
 				return 'invalid';
 				
 			}
 			
-			if ( get_transient( $this->prefix . '_license_validity' ) !== 'valid' &&
+			if ( get_transient( "{$this->prefix}_license_validity" ) !== 'valid' &&
 				$this->check_license_validity() !== 'valid' ) {
 				
 				return 'invalid';
@@ -926,11 +926,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			if ( ! $this->license_key ) {
 				
-				if ( isset( $_REQUEST[ $this->prefix . '_license_key' ] ) ) {
-					$this->license_key = trim( $_REQUEST[ $this->prefix . '_license_key' ] );
+				if ( isset( $_REQUEST[ "{$this->prefix}_license_key" ] ) ) {
+					$this->license_key = trim( $_REQUEST[ "{$this->prefix}_license_key" ] );
 				}
 				else {
-					$this->license_key = trim( get_option( $this->prefix . '_license_key' ) );
+					$this->license_key = trim( get_option( "{$this->prefix}_license_key" ) );
 				}
 				
 			}
@@ -948,11 +948,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		private function retrieve_beta_status() {
 				
-			if ( isset( $_REQUEST[ $this->prefix . '_enable_beta' ] ) ) {
-				$this->beta_status = (bool) $_REQUEST[ $this->prefix . '_enable_beta' ];
+			if ( isset( $_REQUEST[ "{$this->prefix}_enable_beta" ] ) ) {
+				$this->beta_status = (bool) $_REQUEST[ "{$this->prefix}_enable_beta" ];
 			}
 			else {
-				$this->beta_status = (bool) get_option( $this->prefix . '_enable_beta' );
+				$this->beta_status = (bool) get_option( "{$this->prefix}_enable_beta" );
 			}
 			
 			return $this->beta_status;
@@ -968,7 +968,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		private function retrieve_license_data() {
 
-			$data = get_transient( $this->prefix . '_license_data' );
+			$data = get_transient( "{$this->prefix}_license_data" );
 
 			if ( $data ) {
 				return $data;
@@ -1001,14 +1001,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
-					'error ' . $this->prefix . '-notice'
+					'error ' . "{$this->prefix}-notice"
 				);
 				return false;
 			}
 
 			$data = json_decode( wp_remote_retrieve_body( $response ) );
 
-			set_transient( $this->prefix . '_license_data', $data, DAY_IN_SECONDS );
+			set_transient( "{$this->prefix}_license_data", $data, DAY_IN_SECONDS );
 
 			return $data;
 			
@@ -1050,7 +1050,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.0.7
 				 * @return		integer|boolean Download ID, false to use Download Name (default)
 				 */
-				$item_id = apply_filters( $this->prefix . '_download_id', false );
+				$item_id = apply_filters( "{$this->prefix}_download_id", false );
 
 				if ( $item_id ) {
 
@@ -1103,7 +1103,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 							 * @since		1.0.0
 							 * @return		string Register Plugin Message
 							 */
-							$register_message = apply_filters( $this->prefix . '_register_message', sprintf(
+							$register_message = apply_filters( "{$this->prefix}_register_message", sprintf(
 								$l10n['register_message'],
 								$this->plugin_data['Name']
 							) );
@@ -1136,15 +1136,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function activate_license() {
 			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license'] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license'], $this->prefix . '_license' )
+			if ( ! isset( $_REQUEST[ "{$this->prefix}_license"] ) ||
+				! wp_verify_nonce( $_REQUEST[ "{$this->prefix}_license" ], "{$this->prefix}_license" )
 			   ) {
 				return;
 			}
 			
 			$key = $this->get_license_key();
 			
-			update_option( $this->prefix . '_license_key', $key );
+			update_option( "{$this->prefix}_license_key", $key );
 			
 			$plugin_data = $this->plugin_data;
 			
@@ -1161,7 +1161,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.7
 			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
-			$item_id = apply_filters( $this->prefix . '_download_id', false );
+			$item_id = apply_filters( "{$this->prefix}_download_id", false );
 			
 			if ( $item_id ) {
 				
@@ -1183,7 +1183,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
-					'error ' . $this->prefix . '-notice'
+					'error ' . "{$this->prefix}-notice"
 				);
 				return false;
 			}
@@ -1202,7 +1202,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					$message,
-					'error ' . $this->prefix . '-notice'
+					'error ' . "{$this->prefix}-notice"
 				);
 				
 			}
@@ -1214,13 +1214,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $l10n, $this->plugin_data['Name'] ),
-					'updated ' . $this->prefix . '-notice'
+					'updated ' . "{$this->prefix}-notice"
 				);
 				
 				$status = property_exists( $license_data, 'license' ) ? $license_data->license : 'invalid';
 				
-				update_option( $this->prefix . '_license_status', $status );
-				set_transient( $this->prefix . '_license_validity', 'valid', DAY_IN_SECONDS );
+				update_option( "{$this->prefix}_license_status", $status );
+				set_transient( "{$this->prefix}_license_validity', 'valid", DAY_IN_SECONDS );
 				
 			}
 			
@@ -1235,13 +1235,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function delete_license() {
 			
-			delete_option( $this->prefix . '_license_key' );
-			delete_option( $this->prefix . '_license_status' );
-			delete_transient( $this->prefix . '_license_data' );
-			delete_transient( $this->prefix . '_license_validity' );
+			delete_option( "{$this->prefix}_license_key" );
+			delete_option( "{$this->prefix}_license_status" );
+			delete_transient( "{$this->prefix}_license_data" );
+			delete_transient( "{$this->prefix}_license_validity" );
 			
-			if ( isset( $_REQUEST[ $this->prefix . '_license_action' ] ) && 
-			   strpos( $_REQUEST[ $this->prefix . '_license_action' ], 'deactivate' ) === false ) {
+			if ( isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) && 
+			   strpos( $_REQUEST[ "{$this->prefix}_license_action" ], 'deactivate' ) === false ) {
 				
 				$l10n = $this->l10n['license_deletion'];
 				
@@ -1249,7 +1249,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $l10n, $this->plugin_data['Name'] ),
-					'updated ' . $this->prefix . '-notice'
+					'updated ' . "{$this->prefix}-notice"
 				);
 				
 			}
@@ -1265,8 +1265,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function deactivate_license() {
 			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_license' ] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_license' ], $this->prefix . '_license' )
+			if ( ! isset( $_REQUEST[ "{$this->prefix}_license" ] ) ||
+				! wp_verify_nonce( $_REQUEST[ "{$this->prefix}_license" ], "{$this->prefix}_license" )
 			   ) {
 				return;
 			}
@@ -1289,7 +1289,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.7
 			 * @return		integer|boolean Download ID, false to use Download Name (default)
 			 */
-			$item_id = apply_filters( $this->prefix . '_download_id', false );
+			$item_id = apply_filters( "{$this->prefix}_download_id", false );
 			
 			if ( $item_id ) {
 				
@@ -1313,7 +1313,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $this->l10n['license_error_messages']['no_connection'], $this->plugin_data['Name'], $this->store_url ),
-					'error ' . $this->prefix . '-notice'
+					'error ' . "{$this->prefix}-notice"
 				);
 				return false;
 			}
@@ -1330,7 +1330,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $l10n['error'], $this->plugin_data['Name'] ),
-					'error ' . $this->prefix . '-notice'
+					'error ' . "{$this->prefix}-notice"
 				);
 				
 			}
@@ -1340,11 +1340,11 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					$this->settings_error,
 					'',
 					sprintf( $l10n['success'], $this->plugin_data['Name'] ),
-					'updated ' . $this->prefix . '-notice'
+					'updated ' . "{$this->prefix}-notice"
 				);
 				
-				delete_option( $this->prefix . '_license_status' );
-				delete_transient( $this->prefix . '_license_validity' );
+				delete_option( "{$this->prefix}_license_status" );
+				delete_transient( "{$this->prefix}_license_validity" );
 				
 			}
 			
@@ -1408,13 +1408,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function save_beta_status() {
 			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_beta' ] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_beta' ], $this->prefix . '_beta' )
+			if ( ! isset( $_REQUEST[ "{$this->prefix}_beta" ] ) ||
+				! wp_verify_nonce( $_REQUEST[ "{$this->prefix}_beta" ], "{$this->prefix}_beta" )
 			   ) {
 				return;
 			}
 			
-			update_option( $this->prefix . '_enable_beta', true );
+			update_option( "{$this->prefix}_enable_beta", true );
 			
 			$l10n = $this->l10n['beta_checkbox'];
 			
@@ -1422,7 +1422,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$this->settings_error,
 				'',
 				sprintf( $l10n['enabled_message'], $this->plugin_data['Name'] ),
-				'updated ' . $this->prefix . '-notice'
+				"updated {$this->prefix}-notice"
 			);
 			
 		}
@@ -1436,13 +1436,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function delete_beta_status() {
 			
-			if ( ! isset( $_REQUEST[ $this->prefix . '_beta' ] ) ||
-				! wp_verify_nonce( $_REQUEST[ $this->prefix . '_beta' ], $this->prefix . '_beta' )
+			if ( ! isset( $_REQUEST[ "{$this->prefix}_beta" ] ) ||
+				! wp_verify_nonce( $_REQUEST[ "{$this->prefix}_beta" ], "{$this->prefix}_beta" )
 			   ) {
 				return;
 			}
 			
-			delete_option( $this->prefix . '_enable_beta' );
+			delete_option( "{$this->prefix}_enable_beta" );
 			
 			// Reset value
 			$this->beta_status = false;
@@ -1453,7 +1453,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				$this->settings_error,
 				'',
 				sprintf( $l10n['disabled_message'], $this->plugin_data['Name'] ),
-				'updated ' . $this->prefix . '-notice'
+				"updated {$this->prefix}-notice"
 			);
 			
 		}
@@ -1479,7 +1479,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_start' );
+			do_action( "{$this->prefix}_debug_file_start" );
 			
 			/**
 			 * Allows text to be included directly before the Installed Plugins Header
@@ -1487,7 +1487,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_installed_plugins_header' );
+			do_action( "{$this->prefix}_debug_file_before_installed_plugins_header" );
 
 			// Installed Plugins
 			$installed_plugins = get_plugins();
@@ -1502,7 +1502,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.0.4
 				 * @return		void
 				 */
-				do_action( $this->prefix . '_debug_file_before_installed_plugins_list' );
+				do_action( "{$this->prefix}_debug_file_before_installed_plugins_list" );
 
 				foreach ( $installed_plugins as $id => $plugin ) {
 					
@@ -1515,7 +1515,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @since		1.0.4
 					 * @return		void
 					 */
-					do_action( $this->prefix . '_debug_file_before_installed_plugin', $plugin, $id );
+					do_action( "{$this->prefix}_debug_file_before_installed_plugin", $plugin, $id );
 
 					echo "$plugin[Name]: $plugin[Version]\n";
 					
@@ -1528,7 +1528,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @since		1.0.4
 					 * @return		void
 					 */
-					do_action( $this->prefix . '_debug_file_after_installed_plugin', $plugin, $id );
+					do_action( "{$this->prefix}_debug_file_after_installed_plugin", $plugin, $id );
 					
 				}
 				
@@ -1540,7 +1540,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_after_installed_plugins_list' );
+			do_action( "{$this->prefix}_debug_file_after_installed_plugins_list" );
 			
 			/**
 			 * Allows text to be included directly before the Active Plugins Header
@@ -1548,7 +1548,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_active_plugins_header' );
+			do_action( "{$this->prefix}_debug_file_before_active_plugins_header" );
 
 			// Active Plugins
 			$active_plugins = get_option( 'active_plugins' );
@@ -1563,7 +1563,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.0.4
 				 * @return		void
 				 */
-				do_action( $this->prefix . '_debug_file_before_active_plugins_list' );
+				do_action( "{$this->prefix}_debug_file_before_active_plugins_list" );
 
 				foreach ( $active_plugins as $id ) {
 					
@@ -1579,7 +1579,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @since		1.0.4
 					 * @return		void
 					 */
-					do_action( $this->prefix . '_debug_file_before_active_plugin', $plugin, $plugin_path );
+					do_action( "{$this->prefix}_debug_file_before_active_plugin", $plugin, $plugin_path );
 					
 					if ( isset( $plugin['Name'] ) && 
 					   isset( $plugin['Version'] ) && 
@@ -1611,7 +1611,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @since		1.0.4
 					 * @return		void
 					 */
-					do_action( $this->prefix . '_debug_file_after_active_plugin', $plugin, $plugin_path );
+					do_action( "{$this->prefix}_debug_file_after_active_plugin", $plugin, $plugin_path );
 					
 				}
 				
@@ -1621,7 +1621,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.0.4
 				 * @return		void
 				 */
-				do_action( $this->prefix . '_debug_file_after_active_plugins_list' );
+				do_action( "{$this->prefix}_debug_file_after_active_plugins_list" );
 				
 			}
 			
@@ -1631,7 +1631,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_after_active_plugins_list' );
+			do_action( "{$this->prefix}_debug_file_after_active_plugins_list" );
 			
 			/**
 			 * Allows text to be included directly before the Active Theme Header
@@ -1639,7 +1639,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_active_theme_header' );
+			do_action( "{$this->prefix}_debug_file_before_active_theme_header" );
 
 			// Active Theme
 			echo "\n= Active Theme =\n";
@@ -1650,7 +1650,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_active_theme_data' );
+			do_action( "{$this->prefix}_debug_file_before_active_theme_data" );
 
 			$theme = wp_get_theme();
 
@@ -1673,7 +1673,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_after_active_theme_data' );
+			do_action( "{$this->prefix}_debug_file_after_active_theme_data" );
 			
 			/**
 			 * Allows text to be included directly before the WordPress Install Info Header
@@ -1681,7 +1681,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.2.0
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_wordpress_info_header' );
+			do_action( "{$this->prefix}_debug_file_before_wordpress_info_header" );
 			
 			// WordPress Info
 			echo "\n= WordPress Info =\n";
@@ -1692,7 +1692,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.2.0
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_wordpress_info_list' );
+			do_action( "{$this->prefix}_debug_file_before_wordpress_info_list" );
 			
 			echo "Version: " . get_bloginfo( 'version' ) . "\n";
 			
@@ -1702,7 +1702,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.2.0
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_after_wordpress_info_list' );
+			do_action( "{$this->prefix}_debug_file_after_wordpress_info_list" );
 			
 			/**
 			 * Allows text to be included directly before the PHP Info Header
@@ -1710,7 +1710,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_php_info_header' );
+			do_action( "{$this->prefix}_debug_file_before_php_info_header" );
 
 			// PHP Info
 			echo "\n= PHP Info =\n";
@@ -1721,7 +1721,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_before_php_info_list' );
+			do_action( "{$this->prefix}_debug_file_before_php_info_list" );
 			
 			echo "Version: " . phpversion();
 			
@@ -1731,7 +1731,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_after_php_info_list' );
+			do_action( "{$this->prefix}_debug_file_after_php_info_list" );
 			
 			/**
 			 * Allows text to be included at the end of the Debug File
@@ -1739,7 +1739,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.4
 			 * @return		void
 			 */
-			do_action( $this->prefix . '_debug_file_end' );
+			do_action( "{$this->prefix}_debug_file_end" );
 			
 			$output = ob_get_clean();
 
@@ -1756,8 +1756,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function send_support_email() {
 			
-			if ( ! isset( $_POST[ $this->prefix . '_support_nonce' ] ) ||
-				! wp_verify_nonce( $_POST[ $this->prefix . '_support_nonce' ], $this->prefix . '_send_support_email' ) ||
+			if ( ! isset( $_POST[ "{$this->prefix}_support_nonce" ] ) ||
+				! wp_verify_nonce( $_POST[ "{$this->prefix}_support_nonce" ], "{$this->prefix}_send_support_email" ) ||
 				! current_user_can( 'manage_options' ) ) {
 
 				return;
@@ -1773,7 +1773,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			 * @since		1.0.0
 			 * @return		array Support Email Data
 			 */
-			$data = apply_filters( $this->prefix . '_support_email_data', array(
+			$data = apply_filters( "{$this->prefix}_support_email_data", array(
 				'subject' => esc_attr( $_POST['support_subject'] ),
 				'message' => esc_attr( $_POST['support_message'] ),
 				'license_data' => $this->get_license_data(),
@@ -1808,7 +1808,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.0.1
 				 * @return		string Debug File Output
 				 */
-				$message_prefix = apply_filters( $this->prefix . '_support_email_before_message', $message_prefix );
+				$message_prefix = apply_filters( "{$this->prefix}_support_email_before_message", $message_prefix );
 				
 				/**
 				 * In the event that per-plugin we'd like to change the mail-to, we can
@@ -1818,7 +1818,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				 * @since		1.1.0
 				 * @return		string Email Address
 				 */
-				$mail_to = apply_filters( $this->prefix . '_support_email_mail_to', 'support@realbigplugins.com' );
+				$mail_to = apply_filters( "{$this->prefix}_support_email_mail_to', 'support@realbigplugins.com" );
 				
 				$message = $message_prefix . $message;
 
@@ -1873,7 +1873,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 					 * @since		1.0.6
 					 * @return		void
 					 */
-					do_action_ref_array( $this->prefix . '_rbp_support_phpmailer_init', array( &$phpmailer ) );
+					do_action_ref_array( "{$this->prefix}_rbp_support_phpmailer_init", array( &$phpmailer ) );
 					
 					break;
 					
