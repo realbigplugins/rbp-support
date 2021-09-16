@@ -542,8 +542,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function enqueue_form_scripts() {
 			
-			wp_enqueue_script( "{$this->prefix}_form" );
-			wp_enqueue_style( "{$this->prefix}_form" );
+			wp_enqueue_script( "rbp_support_form" );
+			wp_enqueue_style( "rbp_support_form" );
 			
 		}
 		
@@ -556,8 +556,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function enqueue_licensing_scripts() {
 			
-			wp_enqueue_script( "{$this->prefix}_licensing" );
-			wp_enqueue_style( "{$this->prefix}_licensing" );
+			wp_enqueue_script( "rbp_support_licensing" );
+			wp_enqueue_style( "rbp_support_licensing" );
 			
 		}
 		
@@ -727,7 +727,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		public function register_scripts() {
 			
 			wp_register_script(
-				"{$this->prefix}_form",
+				"rbp_support_form",
 				plugins_url( '/assets/dist/js/form.js', __FILE__ ),
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -735,7 +735,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_register_style(
-				"{$this->prefix}_form",
+				"rbp_support_form",
 				plugins_url( '/assets/dist/css/form.css', __FILE__ ),
 				array(),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -743,7 +743,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_register_script(
-				"{$this->prefix}_licensing",
+				"rbp_support_licensing",
 				plugins_url( '/assets/dist/js/licensing.js', __FILE__ ),
 				array( 'jquery' ),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -751,7 +751,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_register_style(
-				"{$this->prefix}_licensing",
+				"rbp_support_licensing",
 				plugins_url( '/assets/dist/css/licensing.css', __FILE__ ),
 				array(),
 				defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
@@ -759,9 +759,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			);
 			
 			wp_localize_script( 
-				"{$this->prefix}_form",
-				"{$this->prefix}_support_form",
-				apply_filters( "{$this->prefix}_localize_form_script", wp_parse_args( array(
+				"rbp_support_form",
+				"rbp_support_form",
+				apply_filters( "rbp_support_form_localize_form_script", wp_parse_args( array(
 					'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				), $this->l10n['support_form']['enabled'] ) )
 			);

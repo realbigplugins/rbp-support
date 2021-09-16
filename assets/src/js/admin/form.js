@@ -32,8 +32,6 @@ import './lib/ancient-browser-support';
 			
 			var $submitButton = $( '.rbp-support-form.javascript-interrupt' ).find( 'input[type="submit"]' );
 			
-			console.log( $submitButton );
-			
 			// Check to see if it is our Submit Button
 			// A lot of our plugins tie into other systems (EDD, PSP, etc.) which often means we're creating something inside of another <form> with little options to place outside of it
 			if ( $( document.activeElement ).attr( 'name' ).indexOf( '_rbp_support_submit' ) > -1 ) {

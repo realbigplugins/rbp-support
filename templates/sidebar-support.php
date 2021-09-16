@@ -67,7 +67,7 @@ defined( 'ABSPATH' ) || die();
 
 			<p>
 				
-				<input type="submit" name="<?php echo $plugin_prefix; ?>_rbp_support_submit" class="button" value="<?php _e( 'Send', 'rbp-support' ); ?>" />
+				<input type="submit" name="<?php echo $plugin_prefix; ?>_rbp_support_submit_button" class="button" value="<?php echo $l10n['send_button']; ?>" />
 				
 				<?php
 				/**
