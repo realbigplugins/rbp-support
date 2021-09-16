@@ -450,33 +450,22 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function support_form() {
 			
-			// Makes the variable make more sense within the context of the HTML
-			$plugin_prefix = $this->prefix;
-			
-			$plugin_name = $this->plugin_data['Name'];
-			
 			if ( $this->get_license_status() == 'valid' ) {
-				
-				$l10n = $this->l10n['support_form']['enabled'];
-				
-				if ( is_file( $this->plugin_dir . 'rbp-support/sidebar-support.php' ) ) {
-					include $this->plugin_dir . 'rbp-support/sidebar-support.php';
-				}
-				else {
-					include __DIR__ . '/views/sidebar-support.php';
-				}
+
+				$this->load_template( 'sidebar-support.php', array(
+					'plugin_prefix' => $this->prefix,
+					'plugin_name' => $this->plugin_data['Name'],
+					'l10n' => $this->l10n['support_form']['enabled'],
+				) );
 				
 			}
 			else {
-				
-				$l10n = $this->l10n['support_form']['disabled'];
-				
-				if ( is_file( $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php' ) ) {
-					include $this->plugin_dir . 'rbp-support/sidebar-support-disabled.php';
-				}
-				else {
-					include __DIR__ . '/views/sidebar-support-disabled.php';
-				}
+
+				$this->load_template( 'sidebar-support-disabled.php', array(
+					'plugin_prefix' => $this->prefix,
+					'plugin_name' => $this->plugin_data['Name'],
+					'l10n' => $this->l10n['support_form']['disabled'],
+				) );
 				
 			}
 			
@@ -492,27 +481,20 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function licensing_fields() {
 			
-			// Makes the variable make more sense within the context of the HTML
-			$plugin_prefix = $this->prefix;
-			$license_status = $this->get_license_status();
-			
-			$license_key = '';
-			$plugin_name = $this->plugin_data['Name'];
-			
-			$l10n = $this->l10n['licensing_fields'];
-			
 			// Only grab the License Key to output on the Form if we haven't just deleted it
+			$license_key = '';
 			if ( ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ||
 				   strpos( $_REQUEST[ "{$this->prefix}_license_action" ], 'delete' ) === false ) {
 				$license_key = $this->get_license_key();
 			}
 				
-			if ( is_file( $this->plugin_dir . 'rbp-support/licensing-fields.php' ) ) {
-				include $this->plugin_dir . 'rbp-support/licensing-fields.php';
-			}
-			else {
-				include __DIR__ . '/views/licensing-fields.php';
-			}
+			$this->load_template( 'licensing-fields.php', array(
+				'plugin_prefix' => $this->prefix,
+				'license_status' => $this->get_license_status(),
+				'license_key' => $license_key,
+				'plugin_name' => $this->plugin_data['Name'],
+				'l10n' => $this->l10n['licensing_fields'],
+			) );
 			
 		}
 		
@@ -527,20 +509,13 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			// The loaded version of EDD_SL_Plugin_Updater does not support Betas, bail
 			if ( version_compare( $this->get_edd_sl_plugin_updater_version(), '1.6.9' ) == -1 ) return;
-			
-			// Makes the variable make more sense within the context of the HTML
-			$plugin_prefix = $this->prefix;
-			$license_status = $this->get_license_status();
-			$beta_enabled = $this->get_beta_status();
-			
-			$l10n = $this->l10n['beta_checkbox'];
-				
-			if ( file_exists( $this->plugin_dir . 'rbp-support/beta-checkbox.php' ) ) {
-				include $this->plugin_dir . 'rbp-support/beta-checkbox.php';
-			}
-			else {
-				include __DIR__ . '/views/beta-checkbox.php';
-			}
+
+			$this->load_template( 'beta-checkbox.php', array(
+				'plugin_prefix' => $this->prefix,
+				'license_status' => $this->get_license_status(),
+				'beta_enabled' => $this->get_beta_status(),
+				'l10n' => $this->l10n['beta_checkbox'],
+			) );
 			
 		}
 		
@@ -674,6 +649,31 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			
 			return $this->beta_status;
 		
+		}
+
+		/**
+		 * [load_template description]
+		 *
+		 * @param   string $template_path  Path to the template file, relative to the ./ directory
+		 * @param   array $args            Associative array of variables to pass through
+		 *
+		 * @access	public
+		 * @since	{{VERSION}}
+		 * @return  void
+		 */
+		public function load_template( $template_path, $args = array() ) {
+
+			$template_path = ltrim( $template_path, '/' );
+
+			extract( $args );
+
+			if ( is_file( "{$this->plugin_dir}rbp-support/{$template_path}" ) ) {
+				include "{$this->plugin_dir}rbp-support/{$template_path}";
+			}
+			else {
+				include trailingslashit( __DIR__ ) . "templates/{$template_path}";
+			}
+
 		}
 
 		/**

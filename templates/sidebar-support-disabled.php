@@ -9,7 +9,7 @@
  * @var array  $l10n
  *
  * @package rbp-support
- * @subpackage rbp-support/views
+ * @subpackage rbp-support/templates
  */
 
 defined( 'ABSPATH' ) || die();
