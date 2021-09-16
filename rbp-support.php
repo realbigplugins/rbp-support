@@ -1824,8 +1824,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 
 				$result = wp_mail(
 					$mail_to,
-					$subject,
-					$message,
+					stripslashes( html_entity_decode( $subject, ENT_QUOTES, 'UTF-8' ) ),
+					stripslashes( html_entity_decode( $message, ENT_QUOTES, 'UTF-8' ) ),
 					array(
 						"From: $license_data[customer_name] <$license_data[customer_email]>",
 						"X-RBP-SUPPORT: " . $this->get_version(),
@@ -1839,8 +1839,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 				add_settings_error(
 					$this->settings_error,
 					'',
-					$result ? $l10n['success'] :
-						$l10n['error'],
+					$result ? $l10n['success'] : $l10n['error'],
 					$result ? 'updated' : 'error'
 				);
 				
