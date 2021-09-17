@@ -4,3 +4,4 @@ node_modules/
 bower_components/
 *.zip
 packaged/
+.vscode/launch.json
