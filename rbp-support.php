@@ -56,7 +56,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          *
          * @var			string
          */
-        public $plugin_file;
+        private $plugin_file;
         
         /**
          * The full path to the containing directory of the Plugin File. This is for convenience within the Class
@@ -122,15 +122,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         private $beta_status;
         
         /**
-         * The version of the loaded copy of EDD_SL_Plugin_Updater
-         *
-         * @since		1.2.0
-         *
-         * @var			string
-         */
-        private $edd_sl_plugin_updater_version;
-        
-        /**
          * The Prefix used when creating/reading from the Database. This is determined based on the Text Domain within Plugin Data
          * If License Key and/or License Validity are not defined, this is used to determine where to look in the Database for them
          * It is also used to form the occasional Hook or Filter to make it specific to your Plugin
@@ -158,7 +149,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * 
          * @var 	string
          */
-        public $license_activation_uri;
+        private $license_activation_uri;
         
         /**
          * Stores the localization for each String in use by RBP Support
@@ -169,7 +160,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * 
          * @var			array
          */
-        public $l10n;
+        private $l10n;
+
+        /**
+         * Holds the updater object. This sets up everything necessary to pull updates from our site.
+         *
+         * @var RBP_Support_Updater
+         */
+        private $updater;
         
         /**
          * RBP_Support constructor.
@@ -219,9 +217,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
              */
             $this->prefix = apply_filters( 'rbp_support_prefix', $this->prefix );
             
-            // Rip out the EDD SL Plugin Updater version and store it
-            $this->edd_sl_plugin_updater_version = $this->retrieve_edd_sl_plugin_updater_version();
-            
             /**
              * Allow overriding the Store URL for your plugin if necessary
              * 
@@ -241,7 +236,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             
             $this->license_key = $this->retrieve_license_key();
             
-            $this->beta_status = $this->retrieve_beta_status();
+            $this->beta_status = $this->get_beta_status();
 
             $this->license_activation_uri = $license_activation_uri;
             
@@ -351,20 +346,18 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             // Ensures all License Data is allowed to fully clear out from the database
             if ( ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ||
                    strpos( $_REQUEST[ "{$this->prefix}_license_action" ], 'delete' ) === false ) {
-            
-                // Set up plugin updates
-                add_action( 'admin_init', array( $this, 'setup_plugin_updates' ) );
 
                 // Check License Validity
                 add_action( 'admin_init', array( $this, 'get_license_validity') );
                 
             }
-
-            // Ensure Contributors are handled correctly
-            add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 11, 3 );
             
             // Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
             add_action( 'admin_init', array( $this, 'register_scripts' ) );
+
+            // Set up the Updater functionality
+            require_once trailingslashit( __DIR__ ) . 'core/updater/class-rbp-support-updater.php';
+            $this->updater = new RBP_Support_Updater( $this );
             
         }
         
@@ -403,7 +396,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         /**
          * We are forcibly loading the Class into a Namespace, so we do not need to worry about conflicts with other Plugins
          * As a result, we arguably know that we're always running at least v1.6.14 of EDD_SL_Plugin_Updater since RBP Support has never been put into the wild with a lower version
-         * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future
+         * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future for debug purposes
          * 
          * @access		public
          * @since		1.2.0
@@ -411,13 +404,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          */
         public function get_edd_sl_plugin_updater_version() {
             
-            if ( ! $this->edd_sl_plugin_updater_version ) {
-                
-                $this->edd_sl_plugin_updater_version = $this->retrieve_edd_sl_plugin_updater_version();
-                
-            }
-            
-            return $this->edd_sl_plugin_updater_version;
+            return $this->updater->get_edd_sl_plugin_updater_version();
             
         }
         
@@ -524,9 +511,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * @return		void
          */
         public function beta_checkbox() {
-            
-            // The loaded version of EDD_SL_Plugin_Updater does not support Betas, bail
-            if ( version_compare( $this->get_edd_sl_plugin_updater_version(), '1.6.9' ) == -1 ) return;
 
             $this->load_template( 'beta-checkbox.php', array(
                 'plugin_prefix' => $this->prefix,
@@ -661,7 +645,12 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             
             if ( ! $this->beta_status ) {
                 
-                $this->beta_status = $this->retrieve_beta_status();
+                if ( isset( $_REQUEST[ "{$this->prefix}_enable_beta" ] ) ) {
+                    $this->beta_status = (bool) $_REQUEST[ "{$this->prefix}_enable_beta" ];
+                }
+                else {
+                    $this->beta_status = (bool) get_option( "{$this->prefix}_enable_beta" );
+                }
                 
             }
             
@@ -670,7 +659,63 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         }
 
         /**
-         * [load_template description]
+         * Retrieve the Store URL for this object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  string  Store URL
+         */
+        public function get_store_url() {
+            return $this->store_url;
+        }
+
+        /**
+         * Retrieves the Prefix for this object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  string  Prefix
+         */
+        public function get_prefix() {
+            return $this->prefix;
+        }
+
+        /**
+         * Retrieves the Plugin File for this object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  string  Plugin File
+         */
+        public function get_plugin_file() {
+            return $this->plugin_file;
+        }
+
+        /**
+         * Retrieves the License Activation URI for this object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  string  License Activation URI
+         */
+        public function get_license_activation_uri() {
+            return $this->license_activation_uri;
+        }
+
+        /**
+         * Retrieves the Localization options for this object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  array  Localization options
+         */
+        public function get_l10n() {
+            return $this->l10n;
+        }
+
+        /**
+         * Load a template file, passing in variables
+         * If it exists, it will load a matching template from the plugin that created this class as an override
          *
          * @param   string $template_path  Path to the template file, relative to the ./ directory
          * @param   array $args            Associative array of variables to pass through
@@ -691,47 +736,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             else {
                 include trailingslashit( __DIR__ ) . "templates/{$template_path}";
             }
-
-        }
-
-        /**
-         * Ensure that Contributors are loaded correctly from the API response
-         * It is returned as an Object for each Contributor by default, but WP expects an Array
-         *
-         * @param   object  $data    plugins_api() result
-         * @param   string  $action  Action name
-         * @param   array   $args    plugins_api() args
-         *
-         * @access	public
-         * @since	1.4.0
-         * @return  object           plugins_api() result
-         */
-        public function plugins_api_filter( $data, $action, $args ) {
-
-            if ( $action !== 'plugin_information' ) return $data;
-
-            if ( isset( $data->contributors ) && ! empty( $data->contributors ) ) {
-
-                foreach ( $data->contributors as &$contributor ) {
-
-                    if ( is_array( $contributor ) ) continue;
-
-                    $new_data = array();
-
-                    foreach ( $contributor as $key => $value ) {
-                        $new_data[ $key ] = $value; 
-                    }
-
-                    $contributor = $new_data;
-
-                }
-
-                unset( $new_data );
-                unset( $contributor );
-
-            }
-
-            return $data;
 
         }
         
@@ -884,30 +888,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         }
         
         /**
-         * Grabs the EDD_SL_Plugin_Updater Class version
-         * There is no "Version" Property, so we have to rip it out of the PHP Docblock itself
-         * 
-         * @access		private
-         * @since		1.2.0
-         * @return		string EDD_SL_Plugin_Updater Class Version
-         */
-        private function retrieve_edd_sl_plugin_updater_version() {
-            
-            // Holds the PHP file contents of the included version of the Class
-            // Since we are eval-ing the code in order to force a Namespace, we cannot find the file path from the Class itself, so we must hardcode it
-            $plugin_updater = file_get_contents( __DIR__ . '/core/library/EDD-License-handler/EDD_SL_Plugin_Updater.php' );
-            
-            // Search file for @version <version_number>
-            preg_match_all( '/@version\s([\d|.]+)/i', $plugin_updater, $matches );
-            
-            // We want our Capture Group for the first Match
-            $version = $matches[1][0];
-            
-            return $version;
-            
-        }
-        
-        /**
          * Gets the License Status from the Database
          * 
          * @access		private
@@ -954,26 +934,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             }
             
             return $this->license_key;
-            
-        }
-        
-        /**
-         * Gets the Beta Status from the Database
-         * 
-         * @access		private
-         * @since		1.1.5
-         * @return		boolean Beta Status
-         */
-        private function retrieve_beta_status() {
-                
-            if ( isset( $_REQUEST[ "{$this->prefix}_enable_beta" ] ) ) {
-                $this->beta_status = (bool) $_REQUEST[ "{$this->prefix}_enable_beta" ];
-            }
-            else {
-                $this->beta_status = (bool) get_option( "{$this->prefix}_enable_beta" );
-            }
-            
-            return $this->beta_status;
             
         }
         
@@ -1029,66 +989,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             set_transient( "{$this->prefix}_license_data", $data, DAY_IN_SECONDS );
 
             return $data;
-            
-        }
-        
-        /**
-         * Sets up Plugin Updates as well as place a License Nag within the Plugins Table
-         * 
-         * @access		public
-         * @since		1.0.0
-         * @return		void
-         */
-        public function setup_plugin_updates() {
-            
-            /**
-             * This forces the EDD_SL_Plugin_Updater Class into a Namespace, thereby enabling us to never have to worry about other Plugins including an older/newer version than what we expect
-             * Normally to accomplish this we would need to manually rename the Class or manually add the Namespace and thereby maintain our own copy of the Class in our Version Control instead of just pulling in changes
-             * While hacky, this prevents us from needing to ensure that as the Class Updates we keep our modified Class Name or added Namespace from being overwritten
-             * 
-             * @since		1.2.0
-             */
-            if ( ! class_exists( 'RBP_Support\EDD_SL_Plugin_Updater' ) ) {
-                eval( 'namespace RBP_Support { ?>' . file_get_contents( __DIR__ . '/core/library/EDD-License-handler/EDD_SL_Plugin_Updater.php' ) . '}' );
-            }
-            
-            if ( is_admin() ) {
-                
-                $api_params = array(
-                    'item_name' => $this->plugin_data['Name'],
-                    'version'   => $this->plugin_data['Version'],
-                    'license'   => $this->license_key,
-                    'author'    => $this->plugin_data['Author'],
-                    'beta'		=> $this->get_beta_status(),
-                );
-                
-                /**
-                 * Allow using Download ID for License interactions if desired
-                 * 
-                 * @since		1.0.7
-                 * @return		integer|boolean Download ID, false to use Download Name (default)
-                 */
-                $item_id = apply_filters( "{$this->prefix}_download_id", false );
-
-                if ( $item_id ) {
-
-                    $api_params['item_id'] = (int) $item_id;
-                    unset( $api_params['item_name'] );
-
-                }
-                
-                $license = new RBP_Support\EDD_SL_Plugin_Updater(
-                    $this->store_url,
-                    $this->plugin_file,
-                    $api_params
-                );
-                
-                if ( $this->get_license_validity() != 'valid' ) {
-                    add_action( 'after_plugin_row_' . plugin_basename( $this->plugin_file ),
-                        array( $this, 'show_license_nag' ), 10, 2 );
-                }
-                
-            }
             
         }
         
