@@ -1082,49 +1082,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @return		void
 		 */
 		public function show_license_nag() {
-			
-			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-			
-			$l10n = $this->l10n['license_nag'];
-			
-			?>
 
-			<tr class="plugin-update-tr">
-				<td colspan="<?php echo $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
-					<div class="update-message">
-						<?php
+			$this->load_template( 'license-nag.php', array(
+				'wp_list_table' => _get_list_table( 'WP_Plugins_List_Table' ),
+				'prefix' => $this->prefix,
+				'register_message' => $this->l10n['license_nag']['register_message'],
+				'purchase_message' => $this->l10n['license_nag']['purchase_message'],
+				'plugin_uri' => $this->plugin_data['PluginURI'],
+				'plugin_name' => $this->plugin_data['Name'],
+				'license_key' => $this->get_license_key,
+			) );
 
-							/**
-							 * We can't know or predict the URL of your Plugin's Settings/Licensing page
-							 * This filter will allow you to include a link to it if you want
-							 * 
-							 * @param		string Register Plugin Message
-							 * 
-							 * @since		1.0.0
-							 * @return		string Register Plugin Message
-							 */
-							$register_message = apply_filters( "{$this->prefix}_register_message", sprintf(
-								$l10n['register_message'],
-								$this->plugin_data['Name']
-							) );
-			
-							echo $register_message;
-			
-							if ( ! $this->get_license_key() && 
-							   ! empty( $this->plugin_data['PluginURI'] ) ) {
-								printf(
-									' ' . $l10n['purchase_message'],
-									'<a href="' . $this->plugin_data['PluginURI'] . '">',
-									'</a>'
-								);
-							}
-			
-						?>
-					</div>
-				</td>
-			</tr>
-
-			<?php
 		}
 		
 		/**
