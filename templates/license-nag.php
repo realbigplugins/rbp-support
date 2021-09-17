@@ -26,8 +26,7 @@ defined( 'ABSPATH' ) || die();
             <?php
 
                 /**
-                 * We can't know or predict the URL of your Plugin's Settings/Licensing page
-                 * This filter will allow you to include a link to it if you want
+                 * This Filter was originally included as a way to potentially include a link to the License Activation page, but this is now an option as part of the plugin Constructor
                  * 
                  * @param		string Register Plugin Message
                  * 

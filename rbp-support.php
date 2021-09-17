@@ -150,6 +150,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 * @var			string
 		 */
 		private $settings_error;
+
+		/**
+		 * Holds a link to the License Activation URI to help direct our users to where they need to enter their License Key
+		 *
+		 * @since	{{VERSION}}
+		 * 
+		 * @var 	string
+		 */
+		public $license_activation_uri;
 		
 		/**
 		 * Stores the localization for each String in use by RBP Support
@@ -165,18 +174,25 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		/**
 		 * RBP_Support constructor.
 		 * 
-		 * @param		string $plugin_file Path to the Plugin File. REQUIRED
-		 * @param		array  $l10n        Localization for Strings within RBP Support. This also allows you to alter text strings without the need to override templates.
+		 * @param		string $plugin_file 			Path to the Plugin File. REQUIRED
+		 * @param		string $license_activation_uri	URI to the page where a user would activate their License Key
+		 * @param		array  $l10n        			Localization for Strings within RBP Support. This also allows you to alter text strings without the need to override templates.
 		 *                                                                                                                           
 		 * @since		1.0.0
 		 */
-		function __construct( $plugin_file = null, $l10n = array() ) {
+		function __construct( $plugin_file = null, $license_activation_uri = '', $l10n = array() ) {
 			
 			$this->load_textdomain();
 			
 			if ( $plugin_file == null || 
 			   ! is_string( $plugin_file ) ) {
 				throw new Exception( __( 'Missing Plugin File Path in RBP_Support Constructor', 'rbp-support' ) );
+			}
+
+			if ( $license_activation_uri && is_array( $license_activation_uri ) ) {
+				// Help support plugins that may not have updated to the new Constructor format
+				$l10n = $license_activation_uri;
+				$license_activation_uri = '';
 			}
 
 			if ( ! function_exists( 'get_plugin_data' ) ) {
@@ -226,6 +242,8 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 			$this->license_key = $this->retrieve_license_key();
 			
 			$this->beta_status = $this->retrieve_beta_status();
+
+			$this->license_activation_uri = $license_activation_uri;
 			
 			/**
 			 * Takes passed in localization for Strings and uses those where applicable rather than the "built-in" ones
@@ -1083,10 +1101,16 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 		 */
 		public function show_license_nag() {
 
+			$register_message = $this->l10n['license_nag']['register_message'];
+
+			if ( $this->license_activation_uri ) {
+				$register_message = "<a href=\"{$this->license_activation_uri}\">{$register_message}</a>";
+			}
+
 			$this->load_template( 'license-nag.php', array(
 				'wp_list_table' => _get_list_table( 'WP_Plugins_List_Table' ),
 				'prefix' => $this->prefix,
-				'register_message' => $this->l10n['license_nag']['register_message'],
+				'register_message' => $register_message,
 				'purchase_message' => $this->l10n['license_nag']['purchase_message'],
 				'plugin_uri' => $this->plugin_data['PluginURI'],
 				'plugin_name' => $this->plugin_data['Name'],

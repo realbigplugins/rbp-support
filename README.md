@@ -11,7 +11,7 @@ Using this submodule is super easy! Just follow the following steps and you'll b
 2. Next, instantiate the Class like so. The Array as the second parameter allows you to provide your own Translations or otherwise replace text Strings throughout RBP Support with text that you'd prefer. By doing this, the translations in use lives inside your own Plugin, which will make more sense to volunteer translators.
     ```
     require_once __DIR__ . '/whatever/path/you/want/rbp-support.php';
-    $this->support = new RBP_Support( <PATH_TO_PLUGIN_FILE>, array(
+    $this->support = new RBP_Support( <PATH_TO_PLUGIN_FILE>, <LICENSE_ACTIVATION_URI>, array(
 		'support_form' => array(
 			'enabled' => array(
 				'title' => _x( 'Need some help with %s?', '%s is the Plugin Name', <PLUGIN_TEXT_DOMAIN> ),
