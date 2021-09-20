@@ -29,6 +29,8 @@ class RBP_Support_Updater {
 
     /**
      * RBP_Support_Updater constructor.
+     * 
+     * @param		RBP_Support $rbp_support    RBP_Support object, used to pull in some settings
      *
      * @since {{VERSION}}
      */
