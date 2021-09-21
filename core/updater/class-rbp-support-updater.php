@@ -102,13 +102,40 @@ class RBP_Support_Updater {
                 $api_params
             );
             
-            if ( $this->rbp_support->get_license_validity() != 'valid' ) {
+            if ( ! $this->rbp_support->get_license_key() || $this->rbp_support->get_license_validity() != 'valid' || $this->rbp_support->get_license_status() != 'valid' ) {
                 add_action( 'after_plugin_row_' . plugin_basename( $this->rbp_support->get_plugin_file() ),
                     array( $this, 'show_license_nag' ), 10, 2 );
             }
             
         }
         
+    }
+
+    /**
+     * Displays a nag to activate the license.
+     *
+     * @access		public
+     * @since		1.0.0
+     * @return		void
+     */
+    public function show_license_nag() {
+
+        $register_message = $this->rbp_support->get_l10n()['license_nag']['register_message'];
+
+        if ( $this->rbp_support->get_license_activation_uri() ) {
+            $register_message = "<a href=\"{$this->rbp_support->get_license_activation_uri()}\">{$register_message}</a>";
+        }
+
+        $this->rbp_support->load_template( 'license-nag.php', array(
+            'wp_list_table' => _get_list_table( 'WP_Plugins_List_Table' ),
+            'prefix' => $this->rbp_support->get_prefix(),
+            'register_message' => $register_message,
+            'purchase_message' => $this->rbp_support->get_l10n()['license_nag']['purchase_message'],
+            'plugin_uri' => $this->rbp_support->plugin_data['PluginURI'],
+            'plugin_name' => $this->rbp_support->plugin_data['Name'],
+            'license_key' => $this->rbp_support->get_license_key(),
+        ) );
+
     }
 
     /**

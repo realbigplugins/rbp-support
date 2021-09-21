@@ -3,6 +3,7 @@
  * Outputs the licensing settings.
  *
  * @since 1.0.0
+ * @updated {{VERSION}}
  *
  * @var string $plugin_prefix
  * @var string $license_key
@@ -33,7 +34,7 @@ defined( 'ABSPATH' ) || die();
     <?php wp_nonce_field( $plugin_prefix . '_license', $plugin_prefix . '_nonce' ); ?>
 
     <input type="text" name="<?php echo $plugin_prefix; ?>_license_key" id="<?php echo $plugin_prefix; ?>_license_key"
-           class="regular-text" <?php echo $license_key ? 'disabled' : ''; ?>
+           class="regular-text" <?php echo $license_key && $license_status == 'valid' ? 'disabled' : ''; ?>
            value="<?php echo esc_attr( $license_key ); ?>"/>
 
     <?php if ( $license_key ) : ?>
