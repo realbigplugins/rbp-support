@@ -228,11 +228,11 @@ class RBP_Support_License_Key {
         $this->delete_license_data();
         $license_data = $this->get_license_data();
         
-        if ( ! isset( $license_data['success'] ) || 
-            $license_data['success'] === false ) {
+        if ( ( isset( $license_data['success'] ) && ! $license_data['success'] ) ||
+            $license_data['license'] !== 'valid' ) {
             
             $message = $this->get_license_error_message(
-                $license_data['error'],
+                isset( $license_data['error'] )? $license_data['error'] : $license_data['license'],
                 $license_data
             );
             
@@ -460,6 +460,7 @@ class RBP_Support_License_Key {
                 $message = $l10n['site_inactive'];
                 break;
             case 'item_name_mismatch':
+            case 'invalid_item_id':
                 $message = sprintf( $l10n['item_name_mismatch'], $this->rbp_support->get_plugin_data()['Name'] );
                 break;
             case 'no_activations_left':
