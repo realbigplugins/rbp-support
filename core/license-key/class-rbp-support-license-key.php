@@ -258,6 +258,10 @@ class RBP_Support_License_Key {
             $status = isset( $license_data['license'] ) ? $license_data['license'] : 'invalid';
             
             update_option( "{$this->rbp_support->get_prefix()}_license_status", $status );
+
+            // Fixes visual glitch 
+            $this->license_status = false;
+
             set_transient( "{$this->rbp_support->get_prefix()}_license_validity", $status, DAY_IN_SECONDS );
             
         }
@@ -543,7 +547,7 @@ class RBP_Support_License_Key {
             
             $this->license_status = 'valid';
             
-            if ( ! ( $license_status = $this->license_status = get_option( "{$this->rbp_support->get_prefix()}_license_status" ) ) ) {
+            if ( ! get_option( "{$this->rbp_support->get_prefix()}_license_status" ) ) {
             
                 $this->license_status = 'invalid';
                 
