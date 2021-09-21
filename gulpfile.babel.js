@@ -97,10 +97,10 @@ function sass() {
 			} )
 		)
 		.pipe(
-			$.if( PRODUCTION, $.cleanCss( { compatibility: 'ie9' } ) )
+			$.cleanCss( { compatibility: 'ie9' } )
 		)
 		.pipe(
-			$.if( ! PRODUCTION, $.sourcemaps.write() )
+			$.sourcemaps.write( '.' )
 		)
 		.pipe(
 			$.if( REVISIONING && PRODUCTION || REVISIONING && DEV, $.rev() )
@@ -121,6 +121,7 @@ function sass() {
 // In production, the file is minified
 const webpack = {
   config: {
+    devtool: 'inline-source-map',
     module: {
       rules: [
         {
@@ -148,17 +149,13 @@ const webpack = {
     var bulidConfig = Object.assign(webpack.config, {
     });
 
-    if ( ! PRODUCTION ) {
-      bulidConfig.devtool = 'inline-source-map';
-    }
-
     return gulp.src(PATHS.entries.js, { allowEmpty: true } )
       .pipe(named())
       .pipe(webpackStream(bulidConfig, webpack2))
       .pipe( $.sourcemaps.init( { loadMaps: true } ) )
       .pipe($.uglify())
       .pipe(
-        $.if( ! PRODUCTION, $.sourcemaps.write() )
+        $.sourcemaps.write( '.' )
       )
       .pipe($.if(REVISIONING && PRODUCTION || REVISIONING && DEV, $.rev()))
       .pipe(gulp.dest(PATHS.dist + '/js'))
@@ -190,7 +187,7 @@ gulp.task('webpack:watch', webpack.watch);
 
 function tinymce() {
 
-	return gulp.src( "assets/src/js/admin/tinymce/**/*.js" )
+	return gulp.src( "src/assets/js/admin/tinymce/**/*.js" )
 		.pipe( $.foreach( function( stream, file ) {
 			return stream
 				.pipe( $.babel() )
@@ -203,10 +200,10 @@ function tinymce() {
 // Copy images to the "dist" folder
 // In production, the images are compressed
 function images() {
-  return gulp.src('assets/src/img/**/*')
-    .pipe($.if(PRODUCTION, $.imagemin({
+  return gulp.src('src/assets/img/**/*')
+    .pipe($.imagemin({
       progressive: true
-    })))
+    }))
     .pipe(gulp.dest(PATHS.dist + '/img'));
 }
 
@@ -232,10 +229,10 @@ function reload(done) {
 // Watch for changes to static assets, pages, Sass, and JavaScript
 function watch() {
   gulp.watch(PATHS.assets, copy);
-  gulp.watch('assets/src/scss/**/*.scss').on('all', sass);
+  gulp.watch('src/assets/scss/**/*.scss').on('all', sass);
   //gulp.watch('**/*.php').on('all', browser.reload);
-  gulp.watch('assets/src/js/**/*.js').on('all', gulp.series('webpack:build', tinymce));
-  gulp.watch('assets/src/img/**/*').on('all', gulp.series(images));
+  gulp.watch('src/assets/js/**/*.js').on('all', gulp.series('webpack:build', tinymce));
+  gulp.watch('src/assets/img/**/*').on('all', gulp.series(images));
 }
 
 // Build the "dist" folder by running all of the below tasks
@@ -308,8 +305,8 @@ function releaseCopy() {
   return gulp.src([
 		'!.git/**/*',
         'admin/**/*',
-        'assets/dist/**/*.*',
-        'assets/dist/licenses/**/*',
+        'dist/assets/**/*.*',
+        'dist/assets/licenses/**/*',
         'includes/**/*',
         'views/**/*',
         'core/**/*',

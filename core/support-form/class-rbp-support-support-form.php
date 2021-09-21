@@ -519,7 +519,7 @@ class RBP_Support_Support_Form {
 
         wp_register_script(
             'rbp_support_form',
-            plugins_url( '/assets/dist/js/form.js', $this->rbp_support->get_file_path() ),
+            plugins_url( '/dist/assets/js/form.js', $this->rbp_support->get_file_path() ),
             array( 'jquery' ),
             defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
             true
@@ -527,7 +527,7 @@ class RBP_Support_Support_Form {
         
         wp_register_style(
             'rbp_support_form',
-            plugins_url( '/assets/dist/css/form.css', $this->rbp_support->get_file_path() ),
+            plugins_url( '/dist/assets/css/form.css', $this->rbp_support->get_file_path() ),
             array(),
             defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
             'all'

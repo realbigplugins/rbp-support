@@ -701,7 +701,7 @@ class RBP_Support_License_Key {
 
         wp_register_script(
             'rbp_support_licensing',
-            plugins_url( '/assets/dist/js/licensing.js', $this->rbp_support->get_file_path() ),
+            plugins_url( '/dist/assets/js/licensing.js', $this->rbp_support->get_file_path() ),
             array( 'jquery' ),
             defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
             true
@@ -709,7 +709,7 @@ class RBP_Support_License_Key {
         
         wp_register_style(
             'rbp_support_licensing',
-            plugins_url( '/assets/dist/css/licensing.css', $this->rbp_support->get_file_path() ),
+            plugins_url( '/dist/assets/css/licensing.css', $this->rbp_support->get_file_path() ),
             array(),
             defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
             'all'
