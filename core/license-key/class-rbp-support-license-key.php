@@ -568,6 +568,33 @@ class RBP_Support_License_Key {
     }
 
     /**
+     * Register Scripts for the License Key form
+     *
+     * @access  public
+     * @since   {{VERSION}}
+     * @return  void
+     */
+    public function register_scripts() {
+
+        wp_register_script(
+            'rbp_support_licensing',
+            plugins_url( '/assets/dist/js/licensing.js', $this->rbp_support->get_file_path() ),
+            array( 'jquery' ),
+            defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
+            true
+        );
+        
+        wp_register_style(
+            'rbp_support_licensing',
+            plugins_url( '/assets/dist/css/licensing.css', $this->rbp_support->get_file_path() ),
+            array(),
+            defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
+            'all'
+        );
+
+    }
+
+    /**
      * Enqueuee the scripts for the License Key form
      *
      * @access  public
@@ -576,8 +603,8 @@ class RBP_Support_License_Key {
      */
     public function enqueue_scripts() {
 
-        wp_enqueue_script( "rbp_support_licensing" );
-        wp_enqueue_style( "rbp_support_licensing" );
+        wp_enqueue_script( 'rbp_support_licensing' );
+        wp_enqueue_style( 'rbp_support_licensing' );
 
     }
 

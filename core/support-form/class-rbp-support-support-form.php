@@ -509,6 +509,41 @@ class RBP_Support_Support_Form {
     }
 
     /**
+     * Register Scripts for the Support Form
+     *
+     * @access  public
+     * @since   {{VERSION}}
+     * @return  void
+     */
+    public function register_scripts() {
+
+        wp_register_script(
+            'rbp_support_form',
+            plugins_url( '/assets/dist/js/form.js', $this->rbp_support->get_file_path() ),
+            array( 'jquery' ),
+            defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
+            true
+        );
+        
+        wp_register_style(
+            'rbp_support_form',
+            plugins_url( '/assets/dist/css/form.css', $this->rbp_support->get_file_path() ),
+            array(),
+            defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->rbp_support->get_version(),
+            'all'
+        );
+
+        wp_localize_script( 
+            'rbp_support_form',
+            'rbp_support_form',
+            apply_filters( "rbp_support_form_localize_support_form_script", wp_parse_args( array(
+                'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            ), $this->rbp_support->get_l10n()['support_form']['enabled'] ) )
+        );
+
+    }
+
+    /**
      * Enqueuee the scripts for the Support Form
      *
      * @access  public

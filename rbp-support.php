@@ -295,9 +295,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
                 add_action( 'admin_init', array( $this, 'delete_beta_status' ) );
                 
             }
-            
-            // Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
-            add_action( 'admin_init', array( $this, 'register_scripts' ) );
 
             // Set up the Updater functionality
             require_once trailingslashit( __DIR__ ) . 'core/updater/class-rbp-support-updater.php';
@@ -310,6 +307,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             // Set up Support Form logicStorage
             require_once trailingslashit( __DIR__ ) . 'core/support-form/class-rbp-support-support-form.php';
             $this->support_form_class = new RBP_Support_Support_Form( $this );
+            
+            // Scripts are registered/localized, but it is on the Plugin Developer to enqueue them
+            add_action( 'admin_init', array( $this, 'register_scripts' ) );
             
         }
         
@@ -658,46 +658,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * @return		void
          */
         public function register_scripts() {
-            
-            wp_register_script(
-                "rbp_support_form",
-                plugins_url( '/assets/dist/js/form.js', __FILE__ ),
-                array( 'jquery' ),
-                defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
-                true
-            );
-            
-            wp_register_style(
-                "rbp_support_form",
-                plugins_url( '/assets/dist/css/form.css', __FILE__ ),
-                array(),
-                defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
-                'all'
-            );
-            
-            wp_register_script(
-                "rbp_support_licensing",
-                plugins_url( '/assets/dist/js/licensing.js', __FILE__ ),
-                array( 'jquery' ),
-                defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
-                true
-            );
-            
-            wp_register_style(
-                "rbp_support_licensing",
-                plugins_url( '/assets/dist/css/licensing.css', __FILE__ ),
-                array(),
-                defined( 'WP_DEBUG' ) && WP_DEBUG ? time() : $this->get_version(),
-                'all'
-            );
-            
-            wp_localize_script( 
-                "rbp_support_form",
-                "rbp_support_form",
-                apply_filters( "rbp_support_form_localize_form_script", wp_parse_args( array(
-                    'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-                ), $this->l10n['support_form']['enabled'] ) )
-            );
+
+            $this->license_key_class->register_scripts();
+            $this->support_form_class->register_scripts();
             
         }
         
