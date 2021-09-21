@@ -44,7 +44,7 @@ class RBP_Support_Support_Form {
      * You can override the Template as needed, but it should pull in any and all data for your Plugin automatically
      * 
      * @access		public
-     * @since		1.0.0
+     * @since		{{VERSION}}
      * @return		void
      */
     public function support_form() {

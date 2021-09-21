@@ -21,7 +21,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Key for this Plugin
      *
-     * @since		1.0.0
+     * @since		{{VERSION}}
      *
      * @var			string
      */
@@ -30,7 +30,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Status for the License Key
      *
-     * @since		1.0.0
+     * @since		{{VERSION}}
      *
      * @var			string
      */
@@ -39,7 +39,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Validity for the License Key
      *
-     * @since		1.0.0
+     * @since		{{VERSION}}
      *
      * @var			string
      */
@@ -48,11 +48,20 @@ class RBP_Support_License_Key {
     /**
      * The stored License Data for the License Key
      *
-     * @since		1.0.0
+     * @since		{{VERSION}}
      *
      * @var			array
      */
     private $license_data;
+
+    /**
+     * The stored Beta Status for the Plugin
+     *
+     * @since		{{VERSION}}
+     *
+     * @var			boolean
+     */
+    private $beta_status;
 
     /**
      * RBP_Support_License_Key constructor.
@@ -95,6 +104,19 @@ class RBP_Support_License_Key {
             
         }
 
+        if ( isset( $_REQUEST[ "{$this->rbp_support->get_prefix()}_enable_beta" ] ) && 
+                ! isset( $_REQUEST[ "{$this->rbp_support->get_prefix()}_license_action" ] ) ) {
+            
+            add_action( 'admin_init', array( $this, 'save_beta_status' ) );
+            
+        }
+        else if ( $this->get_beta_status() &&
+                ! isset( $_REQUEST[ "{$this->rbp_support->get_prefix()}_license_action" ] ) ) {
+            
+            add_action( 'admin_init', array( $this, 'delete_beta_status' ) );
+            
+        }
+
     }
 
     /**
@@ -122,6 +144,24 @@ class RBP_Support_License_Key {
             'l10n' => $this->rbp_support->get_l10n()['licensing_fields'],
         ) );
 
+    }
+
+    /**
+     * Outputs the Beta Enabler Checkbox
+     * 
+     * @access		public
+     * @since		{{VERSION}}
+     * @return		void
+     */
+    public function beta_checkbox() {
+
+        $this->rbp_support->load_template( 'beta-checkbox.php', array(
+            'plugin_prefix' => $this->rbp_support->get_prefix(),
+            'license_status' => $this->get_license_status(),
+            'beta_enabled' => $this->get_beta_status(),
+            'l10n' => $this->rbp_support->get_l10n()['beta_checkbox'],
+        ) );
+        
     }
 
     /**
@@ -326,18 +366,77 @@ class RBP_Support_License_Key {
         }
         
     }
+
+    /**
+     * Save the Beta Status when enabled
+     * 
+     * @access		public
+     * @since		1.1.5
+     * @return		void
+     */
+    public function save_beta_status() {
+        
+        if ( ! isset( $_REQUEST[ "{$this->rbp_support->get_prefix()}_beta" ] ) ||
+            ! wp_verify_nonce( $_REQUEST[ "{$this->rbp_support->get_prefix()}_beta" ], "{$this->rbp_support->get_prefix()}_beta" )
+            ) {
+            return;
+        }
+        
+        update_option( "{$this->rbp_support->get_prefix()}_enable_beta", true );
+        
+        $l10n = $this->rbp_support->get_l10n()['beta_checkbox'];
+        
+        add_settings_error(
+            $this->settings_error,
+            '',
+            sprintf( $l10n['enabled_message'], $this->rbp_support->plugin_data['Name'] ),
+            "updated {$this->rbp_support->get_prefix()}-notice"
+        );
+        
+    }
+    
+    /**
+     * Delete the Beta Status when disabled
+     * 
+     * @access		public
+     * @since		1.1.5
+     * @return		void
+     */
+    public function delete_beta_status() {
+        
+        if ( ! isset( $_REQUEST[ "{$this->rbp_support->get_prefix()}_beta" ] ) ||
+            ! wp_verify_nonce( $_REQUEST[ "{$this->rbp_support->get_prefix()}_beta" ], "{$this->rbp_support->get_prefix()}_beta" )
+            ) {
+            return;
+        }
+        
+        delete_option( "{$this->rbp_support->get_prefix()}_enable_beta" );
+        
+        // Reset value
+        $this->beta_status = false;
+        
+        $l10n = $this->rbp_support->get_l10n()['beta_checkbox'];
+        
+        add_settings_error(
+            $this->settings_error,
+            '',
+            sprintf( $l10n['disabled_message'], $this->rbp_support->plugin_data['Name'] ),
+            "updated {$this->rbp_support->get_prefix()}-notice"
+        );
+        
+    }
     
     /**
      * Grabs the appropriate Error Message for each License Error
      * 
      * @param		string $error_code   Type of Error
      * @param		object $license_data License Data response object from EDD API
-     *                                                                    
-     * @access		public
+     * 
+     * @access		private
      * @since		1.0.0
      * @return		string Error Message
      */
-    public function get_license_error_message( $error_code, $license_data ) {
+    private function get_license_error_message( $error_code, $license_data ) {
         
         $l10n = $this->rbp_support->get_l10n()['license_error_messages'];
         
@@ -380,7 +479,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Validty
      * 
      * @access		public
-     * @since		1.0.0
+     * @since		{{VERSION}}
      * @return		string License Validity
      */
     public function get_license_validity() {
@@ -434,7 +533,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Status
      * 
      * @access		public
-     * @since		1.0.0
+     * @since		{{VERSION}}
      * @return		string License Status
      */
     public function get_license_status() {
@@ -466,7 +565,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Key
      * 
      * @access		public
-     * @since		1.0.0
+     * @since		{{VERSION}}
      * @return		string License Key
      */
     public function get_license_key() {
@@ -490,7 +589,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Data
      * 
      * @access		public
-     * @since		1.0.0
+     * @since		{{VERSION}}
      * @return		array License Data
      */
     public function get_license_data() {
@@ -565,6 +664,30 @@ class RBP_Support_License_Key {
 
         return $this->license_data;
 
+    }
+
+    /**
+     * Getter method for Beta Status
+     * 
+     * @access		public
+     * @since		{{VERSION}}
+     * @return		boolean Beta Status
+     */
+    public function get_beta_status() {
+        
+        if ( ! $this->beta_status ) {
+            
+            if ( isset( $_REQUEST[ "{$this->rbp_support->get_prefix()}_enable_beta" ] ) ) {
+                $this->beta_status = (bool) $_REQUEST[ "{$this->rbp_support->get_prefix()}_enable_beta" ];
+            }
+            else {
+                $this->beta_status = (bool) get_option( "{$this->rbp_support->get_prefix()}_enable_beta" );
+            }
+            
+        }
+        
+        return $this->beta_status;
+    
     }
 
     /**

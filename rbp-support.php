@@ -77,15 +77,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         public $plugin_data;
         
         /**
-         * The stored Beta Status for the Plugin
-         *
-         * @since		1.1.5
-         *
-         * @var			boolean
-         */
-        private $beta_status;
-        
-        /**
          * The Prefix used when creating/reading from the Database. This is determined based on the Text Domain within Plugin Data
          * If License Key and/or License Validity are not defined, this is used to determine where to look in the Database for them
          * It is also used to form the occasional Hook or Filter to make it specific to your Plugin
@@ -217,8 +208,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
              * @return		string
              */
             $this->settings_error = apply_filters( "{$this->prefix}_settings_error", "{$this->prefix}_support" );
-            
-            $this->beta_status = $this->get_beta_status();
 
             $this->license_activation_uri = $license_activation_uri;
             
@@ -282,19 +271,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
                     'disabled_message' => _x( 'Beta Releases for %s disabled.', '%s is the Plugin Name', 'rbp-support' ),
                 ),
             ) );
-            
-            if ( isset( $_REQUEST[ "{$this->prefix}_enable_beta" ] ) && 
-                      ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ) {
-                
-                add_action( 'admin_init', array( $this, 'save_beta_status' ) );
-                
-            }
-            else if ( $this->get_beta_status() &&
-                     ! isset( $_REQUEST[ "{$this->prefix}_license_action" ] ) ) {
-                
-                add_action( 'admin_init', array( $this, 'delete_beta_status' ) );
-                
-            }
 
             // Set up the Updater functionality
             require_once trailingslashit( __DIR__ ) . 'core/updater/class-rbp-support-updater.php';
@@ -433,12 +409,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          */
         public function beta_checkbox() {
 
-            $this->load_template( 'beta-checkbox.php', array(
-                'plugin_prefix' => $this->prefix,
-                'license_status' => $this->license_key_class->get_license_status(),
-                'beta_enabled' => $this->get_beta_status(),
-                'l10n' => $this->l10n['beta_checkbox'],
-            ) );
+            $this->license_key_class->beta_checkbox();
             
         }
         
@@ -541,20 +512,9 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * @since		1.1.5
          * @return		boolean Beta Status
          */
-        public function get_beta_status() { 
-            
-            if ( ! $this->beta_status ) {
-                
-                if ( isset( $_REQUEST[ "{$this->prefix}_enable_beta" ] ) ) {
-                    $this->beta_status = (bool) $_REQUEST[ "{$this->prefix}_enable_beta" ];
-                }
-                else {
-                    $this->beta_status = (bool) get_option( "{$this->prefix}_enable_beta" );
-                }
-                
-            }
-            
-            return $this->beta_status;
+        public function get_beta_status() {
+
+            return $this->license_key_class->get_beta_status();
         
         }
 
@@ -661,65 +621,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
 
             $this->license_key_class->register_scripts();
             $this->support_form_class->register_scripts();
-            
-        }
-        
-        /**
-         * Save the Beta Status when enabled
-         * 
-         * @access		public
-         * @since		1.1.5
-         * @return		void
-         */
-        public function save_beta_status() {
-            
-            if ( ! isset( $_REQUEST[ "{$this->prefix}_beta" ] ) ||
-                ! wp_verify_nonce( $_REQUEST[ "{$this->prefix}_beta" ], "{$this->prefix}_beta" )
-               ) {
-                return;
-            }
-            
-            update_option( "{$this->prefix}_enable_beta", true );
-            
-            $l10n = $this->l10n['beta_checkbox'];
-            
-            add_settings_error(
-                $this->settings_error,
-                '',
-                sprintf( $l10n['enabled_message'], $this->plugin_data['Name'] ),
-                "updated {$this->prefix}-notice"
-            );
-            
-        }
-        
-        /**
-         * Delete the Beta Status when disabled
-         * 
-         * @access		public
-         * @since		1.1.5
-         * @return		void
-         */
-        public function delete_beta_status() {
-            
-            if ( ! isset( $_REQUEST[ "{$this->prefix}_beta" ] ) ||
-                ! wp_verify_nonce( $_REQUEST[ "{$this->prefix}_beta" ], "{$this->prefix}_beta" )
-               ) {
-                return;
-            }
-            
-            delete_option( "{$this->prefix}_enable_beta" );
-            
-            // Reset value
-            $this->beta_status = false;
-            
-            $l10n = $this->l10n['beta_checkbox'];
-            
-            add_settings_error(
-                $this->settings_error,
-                '',
-                sprintf( $l10n['disabled_message'], $this->plugin_data['Name'] ),
-                "updated {$this->prefix}-notice"
-            );
             
         }
         

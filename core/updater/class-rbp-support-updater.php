@@ -185,7 +185,7 @@ class RBP_Support_Updater {
      * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future for debug purposes
      * 
      * @access		public
-     * @since		1.2.0
+     * @since		{{VERSION}}
      * @return		string EDD_SL_Plugin_Updater Class Version
      */
     public function get_edd_sl_plugin_updater_version( $plugin_updater_class_contents = '' ) {
