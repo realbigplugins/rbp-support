@@ -568,6 +568,20 @@ class RBP_Support_License_Key {
     }
 
     /**
+     * Enqueuee the scripts for the License Key form
+     *
+     * @access  public
+     * @since   {{VERSION}}
+     * @return  void
+     */
+    public function enqueue_scripts() {
+
+        wp_enqueue_script( "rbp_support_licensing" );
+        wp_enqueue_style( "rbp_support_licensing" );
+
+    }
+
+    /**
      * Deletes any stored License Validity
      *
      * @access  private
