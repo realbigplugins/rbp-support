@@ -100,7 +100,7 @@ function sass() {
 			$.cleanCss( { compatibility: 'ie9' } )
 		)
 		.pipe(
-			$.sourcemaps.write( '.' )
+			$.if( ! PRODUCTION, $.sourcemaps.write( '.' ) )
 		)
 		.pipe(
 			$.if( REVISIONING && PRODUCTION || REVISIONING && DEV, $.rev() )
@@ -155,7 +155,7 @@ const webpack = {
       .pipe( $.sourcemaps.init( { loadMaps: true } ) )
       .pipe($.uglify())
       .pipe(
-        $.sourcemaps.write( '.' )
+        $.if( ! PRODUCTION, $.sourcemaps.write( '.' ) )
       )
       .pipe($.if(REVISIONING && PRODUCTION || REVISIONING && DEV, $.rev()))
       .pipe(gulp.dest(PATHS.dist + '/js'))
