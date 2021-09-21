@@ -501,6 +501,7 @@ class RBP_Support_License_Key {
 
             if ( $data ) {
                 $this->license_data = $data;
+                // Array casting here to ensure plugins that have previously stored this an object won't fail
                 return (array) $data;
             }
 
@@ -554,7 +555,7 @@ class RBP_Support_License_Key {
 
             }
 
-            $data = json_decode( wp_remote_retrieve_body( $response ) );
+            $data = json_decode( wp_remote_retrieve_body( $response ), true );
 
             set_transient( "{$this->rbp_support->get_prefix()}_license_data", $data, DAY_IN_SECONDS );
 
@@ -562,7 +563,7 @@ class RBP_Support_License_Key {
             
         }
 
-        return (array) $this->license_data;
+        return $this->license_data;
 
     }
 
