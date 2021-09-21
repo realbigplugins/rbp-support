@@ -55,7 +55,7 @@ class RBP_Support_Support_Form {
 
             $this->rbp_support->load_template( 'sidebar-support.php', array(
                 'plugin_prefix' => $this->rbp_support->get_prefix(),
-                'plugin_name' => $this->rbp_support->plugin_data['Name'],
+                'plugin_name' => $this->rbp_support->get_plugin_data()['Name'],
                 'l10n' => $l10n['enabled'],
             ) );
             
@@ -64,7 +64,7 @@ class RBP_Support_Support_Form {
 
             $this->rbp_support->load_template( 'sidebar-support-disabled.php', array(
                 'plugin_prefix' => $this->rbp_support->get_prefix(),
-                'plugin_name' => $this->rbp_support->plugin_data['Name'],
+                'plugin_name' => $this->rbp_support->get_plugin_data()['Name'],
                 'l10n' => $l10n['disabled'],
             ) );
             
@@ -420,7 +420,7 @@ class RBP_Support_Support_Form {
             
             // Prepend Message with RBP_Support Version and Plugin Name
             $message_prefix = "Sent via RBP_Support v" . $this->rbp_support->get_version() . "\n" . 
-                "Plugin: {$this->rbp_support->plugin_data['Name']} v{$this->rbp_support->plugin_data['Version']}" . 
+                "Plugin: {$this->rbp_support->get_plugin_data()['Name']} v{$this->rbp_support->get_plugin_data()['Version']}" . 
                 ( ( $this->rbp_support->get_beta_status() ) ? ' (Betas Enabled)' : '' ) . "\n" . 
                 "Customer Name: $license_data[customer_name]\n" . 
                 "Customer Email: $license_data[customer_email]\n\n";

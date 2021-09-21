@@ -140,7 +140,7 @@ class RBP_Support_License_Key {
             'plugin_prefix' => $this->rbp_support->get_prefix(),
             'license_status' => $this->get_license_status(),
             'license_key' => $license_key,
-            'plugin_name' => $this->rbp_support->plugin_data['Name'],
+            'plugin_name' => $this->rbp_support->get_plugin_data()['Name'],
             'l10n' => $this->rbp_support->get_l10n()['licensing_fields'],
         ) );
 
@@ -183,7 +183,7 @@ class RBP_Support_License_Key {
         
         update_option( "{$this->rbp_support->get_prefix()}_license_key", $key );
         
-        $plugin_data = $this->rbp_support->plugin_data;
+        $plugin_data = $this->rbp_support->get_plugin_data();
         
         $api_params = array(
             'edd_action' => 'activate_license',
@@ -219,7 +219,7 @@ class RBP_Support_License_Key {
             add_settings_error(
                 $this->rbp_support->get_settings_error(),
                 '',
-                sprintf( $this->rbp_support->get_l10n()['license_error_messages']['no_connection'], $this->rbp_support->plugin_data['Name'], $this->rbp_support->get_store_url() ),
+                sprintf( $this->rbp_support->get_l10n()['license_error_messages']['no_connection'], $this->rbp_support->get_plugin_data()['Name'], $this->rbp_support->get_store_url() ),
                 'error ' . "{$this->rbp_support->get_prefix()}-notice"
             );
             return false;
@@ -251,7 +251,7 @@ class RBP_Support_License_Key {
             add_settings_error(
                 $this->rbp_support->get_settings_error(),
                 '',
-                sprintf( $l10n, $this->rbp_support->plugin_data['Name'] ),
+                sprintf( $l10n, $this->rbp_support->get_plugin_data()['Name'] ),
                 'updated ' . "{$this->rbp_support->get_prefix()}-notice"
             );
             
@@ -286,7 +286,7 @@ class RBP_Support_License_Key {
             add_settings_error(
                 $this->rbp_support->get_settings_error(),
                 '',
-                sprintf( $l10n, $this->rbp_support->plugin_data['Name'] ),
+                sprintf( $l10n, $this->rbp_support->get_plugin_data()['Name'] ),
                 'updated ' . "{$this->rbp_support->get_prefix()}-notice"
             );
             
@@ -311,7 +311,7 @@ class RBP_Support_License_Key {
         
         $key = $this->get_license_key();
         
-        $plugin_data = $this->rbp_support->plugin_data;
+        $plugin_data = $this->rbp_support->get_plugin_data();
         
         // data to send in our API request
         $api_params = array(
@@ -347,7 +347,7 @@ class RBP_Support_License_Key {
             add_settings_error(
                 $this->rbp_support->get_settings_error(),
                 '',
-                sprintf( $l10n['error'], $this->rbp_support->plugin_data['Name'] ),
+                sprintf( $l10n['error'], $this->rbp_support->get_plugin_data()['Name'] ),
                 'error ' . "{$this->rbp_support->get_prefix()}-notice"
             );
             
@@ -357,7 +357,7 @@ class RBP_Support_License_Key {
             add_settings_error(
                 $this->rbp_support->get_settings_error(),
                 '',
-                sprintf( $l10n['success'], $this->rbp_support->plugin_data['Name'] ),
+                sprintf( $l10n['success'], $this->rbp_support->get_plugin_data()['Name'] ),
                 'updated ' . "{$this->rbp_support->get_prefix()}-notice"
             );
             
@@ -389,7 +389,7 @@ class RBP_Support_License_Key {
         add_settings_error(
             $this->settings_error,
             '',
-            sprintf( $l10n['enabled_message'], $this->rbp_support->plugin_data['Name'] ),
+            sprintf( $l10n['enabled_message'], $this->rbp_support->get_plugin_data()['Name'] ),
             "updated {$this->rbp_support->get_prefix()}-notice"
         );
         
@@ -420,7 +420,7 @@ class RBP_Support_License_Key {
         add_settings_error(
             $this->settings_error,
             '',
-            sprintf( $l10n['disabled_message'], $this->rbp_support->plugin_data['Name'] ),
+            sprintf( $l10n['disabled_message'], $this->rbp_support->get_plugin_data()['Name'] ),
             "updated {$this->rbp_support->get_prefix()}-notice"
         );
         
@@ -445,7 +445,7 @@ class RBP_Support_License_Key {
             case 'expired':
                 $message = sprintf(
                     $l10n['expired'],
-                    $this->rbp_support->plugin_data['Name'],
+                    $this->rbp_support->get_plugin_data()['Name'],
                     date_i18n( get_option( 'date_format', 'F j, Y' ), strtotime( $license_data['expires'], current_time( 'timestamp' ) ) )
                 );
                 break;
@@ -460,7 +460,7 @@ class RBP_Support_License_Key {
                 $message = $l10n['site_inactive'];
                 break;
             case 'item_name_mismatch':
-                $message = sprintf( $l10n['item_name_mismatch'], $this->rbp_support->plugin_data['Name'] );
+                $message = sprintf( $l10n['item_name_mismatch'], $this->rbp_support->get_plugin_data()['Name'] );
                 break;
             case 'no_activations_left':
                 $message = $l10n['no_activations_left'];
@@ -613,7 +613,7 @@ class RBP_Support_License_Key {
             $api_params = array(
                 'edd_action' => 'check_license',
                 'license' => $license_key,
-                'item_name' => $this->rbp_support->plugin_data['Name'],
+                'item_name' => $this->rbp_support->get_plugin_data()['Name'],
                 'url' => home_url(),
             );
 
@@ -646,7 +646,7 @@ class RBP_Support_License_Key {
                 add_settings_error(
                    $this->rbp_support->get_settings_error(),
                     '',
-                    sprintf( $this->rbp_support->get_l10n()['license_error_messages']['no_connection'], $this->rbp_support->plugin_data['Name'], $this->rbp_support->get_store_url() ),
+                    sprintf( $this->rbp_support->get_l10n()['license_error_messages']['no_connection'], $this->rbp_support->get_plugin_data()['Name'], $this->rbp_support->get_store_url() ),
                     'error ' . "{$this->rbp_support->get_prefix()}-notice"
                 );
 

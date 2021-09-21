@@ -74,7 +74,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          *
          * @var			array
          */
-        public $plugin_data;
+        private $plugin_data;
         
         /**
          * The Prefix used when creating/reading from the Database. This is determined based on the Text Domain within Plugin Data
@@ -150,7 +150,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * @param		string $plugin_file 			Path to the Plugin File. REQUIRED
          * @param		string $license_activation_uri	URI to the page where a user would activate their License Key
          * @param		array  $l10n        			Localization for Strings within RBP Support. This also allows you to alter text strings without the need to override templates.
-         *                                                                                                                           
+         * 
          * @since		1.0.0
          */
         function __construct( $plugin_file = null, $license_activation_uri = '', $l10n = array() ) {
@@ -322,21 +322,6 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         }
         
         /**
-         * We are forcibly loading the Class into a Namespace, so we do not need to worry about conflicts with other Plugins
-         * As a result, we arguably know that we're always running at least v1.6.14 of EDD_SL_Plugin_Updater since RBP Support has never been put into the wild with a lower version
-         * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future for debug purposes
-         * 
-         * @access		public
-         * @since		1.2.0
-         * @return		string EDD_SL_Plugin_Updater Class Version
-         */
-        public function get_edd_sl_plugin_updater_version() {
-            
-            return $this->updater_class->get_edd_sl_plugin_updater_version();
-            
-        }
-        
-        /**
          * Internationalization
          *
          * @access		private
@@ -504,6 +489,21 @@ if ( ! class_exists( 'RBP_Support' ) ) {
             return $this->license_key_class->get_license_data();
 
         }
+
+        /**
+         * We are forcibly loading the Class into a Namespace, so we do not need to worry about conflicts with other Plugins
+         * As a result, we arguably know that we're always running at least v1.6.14 of EDD_SL_Plugin_Updater since RBP Support has never been put into the wild with a lower version
+         * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future for debug purposes
+         * 
+         * @access		public
+         * @since		1.2.0
+         * @return		string EDD_SL_Plugin_Updater Class Version
+         */
+        public function get_edd_sl_plugin_updater_version() {
+            
+            return $this->updater_class->get_edd_sl_plugin_updater_version();
+            
+        }
         
         /**
          * Getter method for Beta Status
@@ -538,6 +538,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          */
         public function get_prefix() {
             return $this->prefix;
+        }
+
+        /**
+         * Retrieves Plugin Data for this object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  array  Plugin Data
+         */
+        public function get_plugin_data() {
+            return $this->plugin_data;
         }
 
         /**

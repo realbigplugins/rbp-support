@@ -74,10 +74,10 @@ class RBP_Support_Updater {
         if ( is_admin() ) {
             
             $api_params = array(
-                'item_name' => $this->rbp_support->plugin_data['Name'],
-                'version'   => $this->rbp_support->plugin_data['Version'],
+                'item_name' => $this->rbp_support->get_plugin_data()['Name'],
+                'version'   => $this->rbp_support->get_plugin_data()['Version'],
                 'license'   => $this->rbp_support->get_license_key(),
-                'author'    => $this->rbp_support->plugin_data['Author'],
+                'author'    => $this->rbp_support->get_plugin_data()['Author'],
                 'beta'		=> $this->rbp_support->get_beta_status(),
             );
             
@@ -131,8 +131,8 @@ class RBP_Support_Updater {
             'prefix' => $this->rbp_support->get_prefix(),
             'register_message' => $register_message,
             'purchase_message' => $this->rbp_support->get_l10n()['license_nag']['purchase_message'],
-            'plugin_uri' => $this->rbp_support->plugin_data['PluginURI'],
-            'plugin_name' => $this->rbp_support->plugin_data['Name'],
+            'plugin_uri' => $this->rbp_support->get_plugin_data()['PluginURI'],
+            'plugin_name' => $this->rbp_support->get_plugin_data()['Name'],
             'license_key' => $this->rbp_support->get_license_key(),
         ) );
 
