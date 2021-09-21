@@ -465,6 +465,7 @@ class RBP_Support_License_Key {
                 break;
             case 'item_name_mismatch':
             case 'invalid_item_id':
+            case 'license_not_activable':
                 $message = sprintf( $l10n['item_name_mismatch'], $this->rbp_support->get_plugin_data()['Name'] );
                 break;
             case 'no_activations_left':
