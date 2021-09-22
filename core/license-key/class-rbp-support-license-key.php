@@ -339,6 +339,24 @@ class RBP_Support_License_Key {
             unset( $api_params['item_name'] );
             
         }
+
+        $response = wp_remote_get(
+            add_query_arg( $api_params, $this->rbp_support->get_store_url() ),
+            array(
+                'timeout' => 10,
+                'sslverify' => false,
+            )
+        );
+        
+        if ( is_wp_error( $response ) ) {
+            add_settings_error(
+                $this->rbp_support->get_settings_error(),
+                '',
+                sprintf( $this->rbp_support->get_l10n()['license_error_messages']['no_connection'], $this->rbp_support->get_plugin_data()['Name'], $this->rbp_support->get_store_url() ),
+                'error ' . "{$this->rbp_support->get_prefix()}-notice"
+            );
+            return false;
+        }
         
         $this->delete_license_data();
         $license_data = $this->get_license_data();
