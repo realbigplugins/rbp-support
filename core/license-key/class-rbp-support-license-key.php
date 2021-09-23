@@ -199,7 +199,7 @@ class RBP_Support_License_Key {
             
         }
         
-        $response = wp_remote_get(
+        $response = wp_safe_remote_get(
             add_query_arg( $api_params, $this->rbp_support->get_store_url() ),
             array(
                 'timeout' => 10,
@@ -328,7 +328,7 @@ class RBP_Support_License_Key {
 
         }
 
-        $response = wp_remote_get(
+        $response = wp_safe_remote_get(
             add_query_arg( $api_params, $this->rbp_support->get_store_url() ),
             array(
                 'timeout' => 10,
@@ -649,7 +649,7 @@ class RBP_Support_License_Key {
             }
 
             // Call the custom API.
-            $response = wp_remote_get(
+            $response = wp_safe_remote_get(
                 add_query_arg( $api_params, $this->rbp_support->get_store_url() ),
                 array(
                     'timeout'   => 10,
