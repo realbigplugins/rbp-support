@@ -2,7 +2,7 @@
 /**
  * Class RBP_Support_Support_Form
  *
- * @since {{VERSION}}
+ * @since 2.0.0
  *
  * @package RBP_Support
  * @subpackage RBP_Support/core/support-form
@@ -12,7 +12,7 @@ class RBP_Support_Support_Form {
     /**
      * The main RBP Support object, used to grab some global data
      *
-     * @since       {{VERSION}}
+     * @since       2.0.0
      * 
      * @var         RBP_Support
      */
@@ -23,7 +23,7 @@ class RBP_Support_Support_Form {
      * 
      * @param		RBP_Support $rbp_support    RBP_Support object, used to pull in some settings
      *
-     * @since {{VERSION}}
+     * @since 2.0.0
      */
     function __construct( $rbp_support ) {
 
@@ -44,7 +44,7 @@ class RBP_Support_Support_Form {
      * You can override the Template as needed, but it should pull in any and all data for your Plugin automatically
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		void
      */
     public function support_form() {
@@ -512,7 +512,7 @@ class RBP_Support_Support_Form {
      * Register Scripts for the Support Form
      *
      * @access  public
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     public function register_scripts() {
@@ -547,7 +547,7 @@ class RBP_Support_Support_Form {
      * Enqueuee the scripts for the Support Form
      *
      * @access  public
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     public function enqueue_scripts() {
