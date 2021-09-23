@@ -89,7 +89,7 @@ class RBP_Support_Updater {
              */
             $item_id = apply_filters( "{$this->rbp_support->get_prefix()}_download_id", false );
 
-            if ( $item_id ) {
+            if ( $item_id = $this->rbp_support->get_item_id() ) {
 
                 $api_params['item_id'] = (int) $item_id;
                 unset( $api_params['item_name'] );

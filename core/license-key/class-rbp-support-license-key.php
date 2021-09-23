@@ -192,15 +192,7 @@ class RBP_Support_License_Key {
             'url' => home_url()
         );
         
-        /**
-         * Allow using Download ID for License interactions if desired
-         * 
-         * @since		1.0.7
-         * @return		integer|boolean Download ID, false to use Download Name (default)
-         */
-        $item_id = apply_filters( "{$this->rbp_support->get_prefix()}_download_id", false );
-        
-        if ( $item_id ) {
+        if ( $item_id = $this->rbp_support->get_item_id() ) {
             
             $api_params['item_id'] = (int) $item_id;
             unset( $api_params['item_name'] );

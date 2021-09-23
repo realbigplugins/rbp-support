@@ -98,6 +98,15 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         private $settings_error;
 
         /**
+         * This is the Download ID on the website. This allows for more accurate License interactions by not relying on the Download Title matching the Plugin Name exactly
+         *
+         * @since   {{VERSION}}
+         * 
+         * @var     integer
+         */
+        private $item_id;
+
+        /**
          * Holds a link to the License Activation URI to help direct our users to where they need to enter their License Key
          *
          * @since	{{VERSION}}
@@ -208,6 +217,14 @@ if ( ! class_exists( 'RBP_Support' ) ) {
              * @return		string
              */
             $this->settings_error = apply_filters( "{$this->prefix}_settings_error", "{$this->prefix}_support" );
+
+            /**
+             * Allow using Download ID for License interactions if desired
+             * 
+             * @since		1.0.7
+             * @return		integer|boolean Download ID, false to use Download Name  (default)
+             */
+            $this->item_id = apply_filters( "{$this->prefix}_download_id", false );
 
             $this->license_activation_uri = $license_activation_uri;
             
@@ -593,6 +610,17 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          */
         public function get_settings_error() {
             return $this->settings_error;
+        }
+
+        /**
+         * Retrieves the set Item ID to use for the object
+         *
+         * @access  public
+         * @since   {{VERSION}}
+         * @return  integer|boolean  Item ID. False for unset
+         */
+        public function get_item_id() {
+            return $this->item_id;
         }
 
         /**
