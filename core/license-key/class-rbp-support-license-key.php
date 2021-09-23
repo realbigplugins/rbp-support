@@ -216,15 +216,19 @@ class RBP_Support_License_Key {
             );
             return false;
         }
+        
+        $response_body = json_decode( wp_remote_retrieve_body( $response ), true );
 
         $this->delete_license_data();
-        $license_data = $this->get_license_data();
+        $this->set_license_data( $response_body );
+
+        $license_data = $response_body;
         
         if ( ( isset( $license_data['success'] ) && ! $license_data['success'] ) ||
             $license_data['license'] !== 'valid' ) {
             
             $message = $this->get_license_error_message(
-                isset( $license_data['error'] )? $license_data['error'] : $license_data['license'],
+                isset( $license_data['error'] ) ? $license_data['error'] : $license_data['license'],
                 $license_data
             );
             
@@ -316,20 +320,12 @@ class RBP_Support_License_Key {
             'item_name'  => $plugin_data['Name'],
             'url'        => home_url()
         );
-        
-        /**
-         * Allow using Download ID for License interactions if desired
-         * 
-         * @since		1.0.7
-         * @return		integer|boolean Download ID, false to use Download Name (default)
-         */
-        $item_id = apply_filters( "{$this->rbp_support->get_prefix()}_download_id", false );
-        
-        if ( $item_id ) {
-            
+
+        if ( $item_id = $this->rbp_support->get_item_id() ) {
+
             $api_params['item_id'] = (int) $item_id;
             unset( $api_params['item_name'] );
-            
+
         }
 
         $response = wp_remote_get(
@@ -350,8 +346,12 @@ class RBP_Support_License_Key {
             return false;
         }
         
+        $response_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
         $this->delete_license_data();
-        $license_data = $this->get_license_data();
+        $this->set_license_data( $response_body );
+
+        $license_data = $response_body;
         
         $l10n = $this->rbp_support->get_l10n()['license_deactivation'];
         
@@ -679,6 +679,23 @@ class RBP_Support_License_Key {
         }
 
         return $this->license_data;
+
+    }
+
+    /**
+     * Forcibly set the License Data
+     *
+     * @param   array  $license_data  License Data
+     *
+     * @access  private
+     * @since   {{VERSION}}
+     * @return  array                 License Data
+     */
+    private function set_license_data( $license_data ) {
+
+        set_transient( "{$this->rbp_support->get_prefix()}_license_data", $data, DAY_IN_SECONDS );
+
+        $this->license_data = $license_data;
 
     }
 

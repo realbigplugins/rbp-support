@@ -80,14 +80,6 @@ class RBP_Support_Updater {
                 'author'    => $this->rbp_support->get_plugin_data()['Author'],
                 'beta'		=> $this->rbp_support->get_beta_status(),
             );
-            
-            /**
-             * Allow using Download ID for License interactions if desired
-             * 
-             * @since		1.0.7
-             * @return		integer|boolean Download ID, false to use Download Name (default)
-             */
-            $item_id = apply_filters( "{$this->rbp_support->get_prefix()}_download_id", false );
 
             if ( $item_id = $this->rbp_support->get_item_id() ) {
 
