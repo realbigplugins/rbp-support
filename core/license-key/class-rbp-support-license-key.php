@@ -488,7 +488,7 @@ class RBP_Support_License_Key {
                         'payment_id' => $license_data['payment_id'],
                     ), 'https://realbigplugins.com/checkout/purchase-history/?action=manage_licenses' );
 
-                    $message .= " <a href=\"{$upgrade_link}\">{$l10n['manage_license_link_text']}</a>";
+                    $message .= " <a href=\"{$upgrade_link}\" target=\"_blank\">{$l10n['manage_license_link_text']}</a>";
 
                 }
 
