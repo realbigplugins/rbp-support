@@ -479,7 +479,19 @@ class RBP_Support_License_Key {
                 $message = sprintf( $l10n['item_name_mismatch'], $this->rbp_support->get_plugin_data()['Name'] );
                 break;
             case 'no_activations_left':
+
                 $message = $l10n['no_activations_left'];
+
+                if ( isset( $license_data['payment_id'] ) && $license_data['payment_id'] ) {
+
+                    $upgrade_link = add_query_arg( array(
+                        'payment_id' => $license_data['payment_id'],
+                    ), 'https://realbigplugins.com/checkout/purchase-history/?action=manage_licenses' );
+
+                    $message .= " <a href=\"{$upgrade_link}\">{$l10n['manage_license_link_text']}</a>";
+
+                }
+
                 break;
             default:
                 $message = $l10n['default'];
