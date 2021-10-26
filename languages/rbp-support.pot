@@ -1,8 +1,8 @@
-# Copyright (C) 2021 RBP_Support
-# This file is distributed under the same license as the RBP_Support package.
+# Copyright (C) 2021 rbp_support
+# This file is distributed under the same license as the rbp_support package.
 msgid ""
 msgstr ""
-"Project-Id-Version: RBP_Support\n"
+"Project-Id-Version: rbp_support\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,165 +13,169 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:179, rbp-support.php:179
+#: rbp-support.php:171
 msgid "Missing Plugin File Path in RBP_Support Constructor"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:239, packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:249, rbp-support.php:239, rbp-support.php:249
+#: rbp-support.php:240, rbp-support.php:250
 msgctxt "%s is the Plugin Name"
 msgid "Need some help with %s?"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:240, rbp-support.php:240
+#: rbp-support.php:241
 msgid "Subject"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:241, rbp-support.php:241
+#: rbp-support.php:242
 msgid "Message"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:242, packaged/rbp-support-1.4.0/rbp-support/views/sidebar-support.php:70, rbp-support.php:242, views/sidebar-support.php:70
+#: rbp-support.php:243
 msgid "Send"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:243, rbp-support.php:243
+#: rbp-support.php:244
 msgctxt "Both %s are used to place HTML for the <a> in the message"
 msgid "We make other cool plugins and share updates and special offers to anyone who %ssubscribes here%s."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:244, rbp-support.php:244
+#: rbp-support.php:245
 msgctxt "Only used by legacy browsers for JavaScript Form Validation"
 msgid "This field is required"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:245, rbp-support.php:245
+#: rbp-support.php:246
 msgid "Support message succesfully sent!"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:246, rbp-support.php:246
+#: rbp-support.php:247
 msgid "Could not send support message."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:250, rbp-support.php:250
+#: rbp-support.php:251
 msgid "Premium support is disabled. Please register your product and activate your license for this website to enable."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:254, rbp-support.php:254
+#: rbp-support.php:255
 msgctxt "%s is the Plugin Name"
 msgid "%s License"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:255, rbp-support.php:255
+#: rbp-support.php:256
 msgid "Deactivate"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:256, rbp-support.php:256
+#: rbp-support.php:257
 msgid "Activate"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:257, rbp-support.php:257
+#: rbp-support.php:258
 msgid "Delete and Deactivate"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:258, rbp-support.php:258
+#: rbp-support.php:259
 msgid "Delete"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:259, rbp-support.php:259
+#: rbp-support.php:260
 msgid "License Active"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:260, rbp-support.php:260
+#: rbp-support.php:261
 msgid "License Inactive"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:261, rbp-support.php:261
+#: rbp-support.php:262
 msgid "Save and Activate"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:264, rbp-support.php:264
+#: rbp-support.php:265
 msgctxt "%s is the Plugin Name"
 msgid "Register your copy of %s now to receive automatic updates and support."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:265, rbp-support.php:265
+#: rbp-support.php:266
 msgctxt "Both %s are used to place HTML for the <a> in the message"
 msgid "If you do not have a license key, you can %1$spurchase one%2$s."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:267, rbp-support.php:267
+#: rbp-support.php:268
 msgctxt "%s is the Plugin Name"
 msgid "%s license successfully activated."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:268, rbp-support.php:268
+#: rbp-support.php:269
 msgctxt "%s is the Plugin Name"
 msgid "%s license successfully deleted."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:270, rbp-support.php:270
+#: rbp-support.php:271
 msgctxt "%s is the Plugin Name"
 msgid "Error: could not deactivate the license for %s"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:271, rbp-support.php:271
+#: rbp-support.php:272
 msgctxt "%s is the Plugin Name"
 msgid "%s license successfully deactivated."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:274, rbp-support.php:274
+#: rbp-support.php:275
 msgctxt "The first %s is the Plugin name and the second %s is a localized timestamp"
 msgid "Your %s license key expired on %s."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:275, rbp-support.php:275
+#: rbp-support.php:276
 msgid "Your license key has been disabled."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:276, rbp-support.php:276
+#: rbp-support.php:277
 msgid "Invalid license."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:277, rbp-support.php:277
+#: rbp-support.php:278
 msgid "Your license is not active for this URL."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:278, rbp-support.php:278
+#: rbp-support.php:279
 msgctxt "%s is the Plugin Name"
 msgid "This appears to be an invalid license key for %s."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:279, rbp-support.php:279
+#: rbp-support.php:280
 msgid "Your license key has reached its activation limit."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:280, rbp-support.php:280
+#: rbp-support.php:281
+msgid "You can manage your license key here."
+msgstr ""
+
+#: rbp-support.php:282
 msgctxt "%s is the Plugin Name followed by the Store URL"
 msgid "%s cannot communicate with %s for License Key Validation. Please check your server configuration settings."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:281, rbp-support.php:281
+#: rbp-support.php:283
 msgid "An error occurred, please try again."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:284, rbp-support.php:284
+#: rbp-support.php:286
 msgid "Enable Beta Releases"
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:285, rbp-support.php:285
+#: rbp-support.php:287
 msgid "Beta Releases should not be considered as Stable. Enabling this on your Production Site is done at your own risk."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:286, rbp-support.php:286
+#: rbp-support.php:288
 msgctxt "%s is the Plugin Name"
 msgid "Beta Releases for %s enabled."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:287, rbp-support.php:287
+#: rbp-support.php:289
 msgctxt "%s is the Plugin Name"
 msgid "Beta Releases for %s disabled."
 msgstr ""
 
-#: packaged/rbp-support-1.4.0/rbp-support/rbp-support.php:378, rbp-support.php:378
+#: rbp-support.php:335
 msgid "The RBP_SUPPORT_LOADED_FROM Constant is undefined. This should never happen."
 msgstr ""

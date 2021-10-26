@@ -2,7 +2,7 @@
 /**
  * Class RBP_Support_Updater
  *
- * @since {{VERSION}}
+ * @since 2.0.0
  *
  * @package RBP_Support
  * @subpackage RBP_Support/core/updater
@@ -21,7 +21,7 @@ class RBP_Support_Updater {
     /**
      * The main RBP Support object, used to grab some global data
      *
-     * @since       {{VERSION}}
+     * @since       2.0.0
      * 
      * @var         RBP_Support
      */
@@ -32,7 +32,7 @@ class RBP_Support_Updater {
      * 
      * @param		RBP_Support $rbp_support    RBP_Support object, used to pull in some settings
      *
-     * @since {{VERSION}}
+     * @since 2.0.0
      */
     function __construct( $rbp_support ) {
 
@@ -177,7 +177,7 @@ class RBP_Support_Updater {
      * However, this helps us know whether we are running the version we expect or higher. It can potentially be helpful in the future for debug purposes
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		string EDD_SL_Plugin_Updater Class Version
      */
     public function get_edd_sl_plugin_updater_version( $plugin_updater_class_contents = '' ) {

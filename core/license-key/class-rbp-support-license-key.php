@@ -2,7 +2,7 @@
 /**
  * Class RBP_Support_License_Key
  *
- * @since {{VERSION}}
+ * @since 2.0.0
  *
  * @package RBP_Support
  * @subpackage RBP_Support/core/license-key
@@ -12,7 +12,7 @@ class RBP_Support_License_Key {
     /**
      * The main RBP Support object, used to grab some global data
      *
-     * @since       {{VERSION}}
+     * @since       2.0.0
      * 
      * @var         RBP_Support
      */
@@ -21,7 +21,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Key for this Plugin
      *
-     * @since		{{VERSION}}
+     * @since		2.0.0
      *
      * @var			string
      */
@@ -30,7 +30,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Status for the License Key
      *
-     * @since		{{VERSION}}
+     * @since		2.0.0
      *
      * @var			string
      */
@@ -39,7 +39,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Validity for the License Key
      *
-     * @since		{{VERSION}}
+     * @since		2.0.0
      *
      * @var			string
      */
@@ -48,7 +48,7 @@ class RBP_Support_License_Key {
     /**
      * The stored License Data for the License Key
      *
-     * @since		{{VERSION}}
+     * @since		2.0.0
      *
      * @var			array
      */
@@ -57,7 +57,7 @@ class RBP_Support_License_Key {
     /**
      * The stored Beta Status for the Plugin
      *
-     * @since		{{VERSION}}
+     * @since		2.0.0
      *
      * @var			boolean
      */
@@ -68,7 +68,7 @@ class RBP_Support_License_Key {
      * 
      * @param		RBP_Support $rbp_support    RBP_Support object, used to pull in some settings
      *
-     * @since {{VERSION}}
+     * @since 2.0.0
      */
     function __construct( $rbp_support ) {
 
@@ -124,7 +124,7 @@ class RBP_Support_License_Key {
      * You can override the Template as needed, but it should pull in any and all data for your Plugin automatically
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		void
      */
     public function licensing_fields() {
@@ -150,7 +150,7 @@ class RBP_Support_License_Key {
      * Outputs the Beta Enabler Checkbox
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		void
      */
     public function beta_checkbox() {
@@ -507,7 +507,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Validty
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		string License Validity
      */
     public function get_license_validity() {
@@ -561,7 +561,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Status
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		string License Status
      */
     public function get_license_status() {
@@ -593,7 +593,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Key
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		string License Key
      */
     public function get_license_key() {
@@ -617,7 +617,7 @@ class RBP_Support_License_Key {
      * Getter Method for License Data
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		array License Data
      */
     public function get_license_data() {
@@ -700,7 +700,7 @@ class RBP_Support_License_Key {
      * @param   array  $license_data  License Data
      *
      * @access  private
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  array                 License Data
      */
     private function set_license_data( $license_data ) {
@@ -715,7 +715,7 @@ class RBP_Support_License_Key {
      * Getter method for Beta Status
      * 
      * @access		public
-     * @since		{{VERSION}}
+     * @since		2.0.0
      * @return		boolean Beta Status
      */
     public function get_beta_status() {
@@ -739,7 +739,7 @@ class RBP_Support_License_Key {
      * Register Scripts for the License Key form
      *
      * @access  public
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     public function register_scripts() {
@@ -766,7 +766,7 @@ class RBP_Support_License_Key {
      * Enqueuee the scripts for the License Key form
      *
      * @access  public
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     public function enqueue_scripts() {
@@ -780,7 +780,7 @@ class RBP_Support_License_Key {
      * Deletes any stored License Validity
      *
      * @access  private
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     private function delete_license_validity() {
@@ -797,7 +797,7 @@ class RBP_Support_License_Key {
      * Deletes any stored License Data
      *
      * @access  private
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     private function delete_license_data() {
@@ -814,7 +814,7 @@ class RBP_Support_License_Key {
      * Deletes a stored License Key
      *
      * @access  private
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     private function delete_license_key() {
@@ -829,7 +829,7 @@ class RBP_Support_License_Key {
      * Deletes a stored License Status
      *
      * @access  private
-     * @since   {{VERSION}}
+     * @since   2.0.0
      * @return  void
      */
     private function delete_license_status() {

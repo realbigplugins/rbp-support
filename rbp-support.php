@@ -38,7 +38,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          *
          * @var			string
          */
-        private $version = '1.4.0';
+        private $version = '2.0.0';
         
         /**
          * The RBP Store URL
@@ -100,7 +100,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         /**
          * This is the Download ID on the website. This allows for more accurate License interactions by not relying on the Download Title matching the Plugin Name exactly
          *
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * 
          * @var     integer
          */
@@ -109,7 +109,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         /**
          * Holds a link to the License Activation URI to help direct our users to where they need to enter their License Key
          *
-         * @since	{{VERSION}}
+         * @since	2.0.0
          * 
          * @var 	string
          */
@@ -129,7 +129,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         /**
          * Holds the updater object. This sets up everything necessary to pull updates from our site.
          * 
-         * @since   {{VERSION}}
+         * @since   2.0.0
          *
          * @var RBP_Support_Updater
          */
@@ -138,7 +138,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         /**
          * Holds the license key object. This sets up everything necessary to activate, deactivate, and store license keys
          * 
-         * @since   {{VERSION}}
+         * @since   2.0.0
          *
          * @var RBP_Support_License_Key
          */
@@ -147,7 +147,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
         /**
          * Holds the support form object. This sets up everything necessary to activate, deactivate, and store license keys
          * 
-         * @since   {{VERSION}}
+         * @since   2.0.0
          *
          * @var RBP_Support_Support_Form
          */
@@ -540,7 +540,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieve the Store URL for this object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  string  Store URL
          */
         public function get_store_url() {
@@ -551,7 +551,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves the Prefix for this object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  string  Prefix
          */
         public function get_prefix() {
@@ -562,7 +562,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves Plugin Data for this object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  array  Plugin Data
          */
         public function get_plugin_data() {
@@ -573,7 +573,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves the Plugin File for this object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  string  Plugin File
          */
         public function get_plugin_file() {
@@ -584,7 +584,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves the License Activation URI for this object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  string  License Activation URI
          */
         public function get_license_activation_uri() {
@@ -595,7 +595,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves the Localization options for this object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  array  Localization options
          */
         public function get_l10n() {
@@ -606,7 +606,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves the set Settings error to use for the object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  string  Settings Error
          */
         public function get_settings_error() {
@@ -617,7 +617,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * Retrieves the set Item ID to use for the object
          *
          * @access  public
-         * @since   {{VERSION}}
+         * @since   2.0.0
          * @return  integer|boolean  Item ID. False for unset
          */
         public function get_item_id() {
@@ -632,7 +632,7 @@ if ( ! class_exists( 'RBP_Support' ) ) {
          * @param   array $args            Associative array of variables to pass through
          *
          * @access	public
-         * @since	{{VERSION}}
+         * @since	2.0.0
          * @return  void
          */
         public function load_template( $template_path, $args = array() ) {
