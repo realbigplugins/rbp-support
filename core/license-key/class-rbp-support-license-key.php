@@ -705,7 +705,7 @@ class RBP_Support_License_Key {
      */
     private function set_license_data( $license_data ) {
 
-        set_transient( "{$this->rbp_support->get_prefix()}_license_data", $data, DAY_IN_SECONDS );
+        set_transient( "{$this->rbp_support->get_prefix()}_license_data", $license_data, DAY_IN_SECONDS );
 
         $this->license_data = $license_data;
 
