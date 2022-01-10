@@ -225,10 +225,12 @@ class RBP_Support_License_Key {
         $license_data = $response_body;
         
         if ( ( isset( $license_data['success'] ) && ! $license_data['success'] ) ||
-            $license_data['license'] !== 'valid' ) {
+            ( isset( $license_data['license'] ) && $license_data['license'] !== 'valid' ) ) {
+
+            $status = isset( $license_data['license'] ) ? $license_data['license'] : 'invalid';
             
             $message = $this->get_license_error_message(
-                isset( $license_data['error'] ) ? $license_data['error'] : $license_data['license'],
+                isset( $license_data['error'] ) ? $license_data['error'] : $status,
                 $license_data
             );
             
@@ -526,10 +528,12 @@ class RBP_Support_License_Key {
             $license_data = $this->get_license_data();
             
             if ( ( isset( $license_data['success'] ) && ! $license_data['success'] ) ||
-                $license_data['license'] !== 'valid' ) {
+                ( isset( $license_data['license'] ) && $license_data['license'] !== 'valid' ) ) {
+
+                $status = isset( $license_data['license'] ) ? $license_data['license'] : 'invalid';
                 
                 $message = $this->get_license_error_message(
-                    ! $license_data['success'] && isset( $license_data['error'] ) ? $license_data['error'] : $license_data['license'],
+                    ! $license_data['success'] && isset( $license_data['error'] ) ? $license_data['error'] : $status,
                     $license_data
                 );
                 
