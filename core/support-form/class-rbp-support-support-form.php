@@ -417,13 +417,22 @@ class RBP_Support_Support_Form {
 
         }
         else {
+
+            $current_user = wp_get_current_user();
+
+            $email_address = ( $current_user->user_email ) ? $current_user->user_email : 'No Email Address Set';
+
+            $name = ( $current_user->first_name ) ? $current_user->first_name : $current_user->display_name;
+            $name = ( $current_user->first_name && $current_user->last_name ) ? $name . ' ' . $current_user->last_name : $name;
             
             // Prepend Message with RBP_Support Version and Plugin Name
             $message_prefix = "Sent via RBP_Support v" . $this->rbp_support->get_version() . "\n" . 
                 "Plugin: {$this->rbp_support->get_plugin_data()['Name']} v{$this->rbp_support->get_plugin_data()['Version']}" . 
                 ( ( $this->rbp_support->get_beta_status() ) ? ' (Betas Enabled)' : '' ) . "\n" . 
                 "Customer Name: $license_data[customer_name]\n" . 
-                "Customer Email: $license_data[customer_email]\n\n";
+                "Customer Email: $license_data[customer_email]\n" . 
+                "Current User Name: $name\n" . 
+                "Current User Email: $email_address" . "\n\n";
             
             /**
              * Prepend some information before the Message Content
