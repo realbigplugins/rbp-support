@@ -1,4 +1,4 @@
-# Copyright (C) 2021 rbp_support
+# Copyright (C) 2022 rbp_support
 # This file is distributed under the same license as the rbp_support package.
 msgid ""
 msgstr ""
