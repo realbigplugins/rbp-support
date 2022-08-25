@@ -777,6 +777,7 @@ class RBP_Support_License_Key {
 
         wp_enqueue_script( 'rbp_support_licensing' );
         wp_enqueue_style( 'rbp_support_licensing' );
+        wp_style_add_data( 'rbp_support_licensing', 'rtl', 'replace' );
 
     }
 

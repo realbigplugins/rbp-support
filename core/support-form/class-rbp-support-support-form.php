@@ -563,6 +563,7 @@ class RBP_Support_Support_Form {
 
         wp_enqueue_script( 'rbp_support_form' );
         wp_enqueue_style( 'rbp_support_form' );
+        wp_style_add_data( 'rbp_support_form', 'rtl', 'replace' );
 
     }
 
